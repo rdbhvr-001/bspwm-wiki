@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4018648d.js";
+            window.path_to_searchindex_js = "searchindex-1d5a0e57.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-0fa95834.js"></script>
@@ -175,14 +175,32 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="doc741-introduction"><a class="header" href="#doc741-introduction">Doc741 Introduction</a></h1>
+                        <h1 id="preface"><a class="header" href="#preface">Preface</a></h1>
 <h2 id="what-exactly-is-doc741"><a class="header" href="#what-exactly-is-doc741">What exactly is Doc741?</a></h2>
-<p>It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).
-BSPWM (I will use lowercase from hereon..)  is a tiling window manager which uses binary space partition system. (C students must have known what it means). Unlike other dynamic window managers like dwm and awesomewm, bspwm is what you configure and use. It is possible to do anything with correct integration of configs : bspwm + sxhkd + eww or polybar, you will get a perfectly aligned environment that obeys your thoughts. I named this documentation as doc741 because it is short and aligns with documentation policy of my interest.</p>
-<h2 id="why-did-i-create-this-documentation"><a class="header" href="#why-did-i-create-this-documentation">Why did I create this documentation?</a></h2>
-<p><strong>Reason 1 :</strong> There has not been enough documentation on bspwm as far I have surfed the web.
-<strong>Reason 2 :</strong> I want to create an ideal bspwm working environment using all the commands that ever existed in bspwm to create a sophisticated working environment that I like.
-<strong>Reason 3</strong> : As a part of open source contribution, which can be used by my friends.</p>
+<ul>
+<li>It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).</li>
+<li>Bspwm is a tiling window manager which uses binary space partition system. (C students must have known what it means). Unlike other dynamic window managers like dwm and awesomewm, bspwm is what you configure and use. It is possible to do anything with correct integration of configs : bspwm + sxhkd + eww or polybar, you will get a perfectly aligned environment that obeys your thoughts. I named this documentation as doc741 because it is short and aligns with documentation policy of my interest.</li>
+<li>If you do not know what exactly is binary space partitioning, don’t worry, the documentation will teach you.</li>
+</ul>
+<h2 id="what-exactly-is-the-purpose-of-the-doc741"><a class="header" href="#what-exactly-is-the-purpose-of-the-doc741">What exactly is the purpose of The Doc741?</a></h2>
+<ul>
+<li>There has not been a very good documentation about the bspwm window manager in the web. Many beginners in linux stumble upon understanding the workflow and the exact process behind bspwm and struggle by copying someone else’s configuration blindly hoping that it works on their system too. Real power users do not copy, they build upon an already existing config or build something entirely from the scratch.</li>
+<li>Linux punishes weak fundamentals, not because it is cruel towards you, but because it wants to make you stronger. Understanding about The Binary Space Partitioning Window Manager and Binary Space Partitioning before writing your first bspwm configuration will make you write optimised and good configs better than your copycat versions.</li>
+<li>Most of the configurations are using bspwm in an underrated way. For example, people rerely use the <code>query selectors with flags</code> to batch-manipulate windows. Here’s an on-liner that toggles hidden states across all windows…</li>
+</ul>
+<p><strong>bash</strong></p>
+<pre><code>if [ -n "$(bspc query -N -n .hidden)" ]; then flag=off; else flag=on; fi
+for i in $(bspc query -N); do 
+    bspc node $i --flag hidden=$flag
+done
+
+</code></pre>
+<ul>
+<li>The above code matters because it unhides or hides all windows dynamically, no tiling rules or scratchpads, reproducible, scriptable UI hacks…</li>
+<li>Another powerful feature is the <code>selector magic : @</code>, which looks like : <code>bspc node -f @parent</code>, which lets you targe relative nodes - parent, first child, brother, etc…</li>
+<li>This documentation aims in providing short scripts, cool tips for speeding up workflows, links to several popular bspwm configurations for quick references, a detailed explanation for the working logic behind bspwm, complete manipulation of the windows, advanced configurations and complex logic structures like : <strong>Open alacritty in the second workspace on every sunday nights in horizontally tiled mode along with ncmpcpp in a seperate alacritty window with so and so split ratio</strong>, when you have the habit of listening to music on sunday nights while working!</li>
+<li>Everything you want to know about the bspwm window manager, you will get in this…</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="mastering-bspwm"><a href="#mastering-bspwm" class="header">Mastering Bspwm</a></h1>
 <p>To master <strong>bspwm</strong> (Binary Space Partitioning Window Manager), you must move beyond simple configuration and understand it as a programmable environment. Because <code>bspwm</code> is merely a C program controlled by a socket client (<code>bspc</code>), mastery is equivalent to mastering the <code>bspc</code> command and the logic of binary trees.</p>
