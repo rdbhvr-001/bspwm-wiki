@@ -1,0 +1,1018 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Writing Configs - example-book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4018648d.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-0fa95834.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">example-book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="comprehensive-guide-to-bspwm-configuration"><a class="header" href="#comprehensive-guide-to-bspwm-configuration">Comprehensive Guide to BSPWM Configuration</a></h1>
+<h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
+<p>This documentation provides an in-depth exploration of <strong>bspwm</strong> (Binary Space Partitioning Window Manager) configuration, derived entirely from authoritative web sources. BSPWM is a sophisticated tiling window manager that represents windows as leaves of a full binary tree, controlled entirely through the <strong>bspc</strong> command-line client. This guide comprehensively covers every flag, command-line option, configuration setting, and advanced technique required to create a highly sophisticated and customized BSPWM environment. The documentation is organized to progress from foundational concepts through complex configuration scenarios, with detailed explanations of each component extracted directly from official documentation and community resources.</p>
+<h2 id="understanding-the-architecture-and-fundamental-concepts"><a class="header" href="#understanding-the-architecture-and-fundamental-concepts">Understanding the Architecture and Fundamental Concepts</a></h2>
+<h3 id="the-binary-space-partitioning-model"><a class="header" href="#the-binary-space-partitioning-model">The Binary Space Partitioning Model</a></h3>
+<p>BSPWM fundamentally operates differently from other tiling window managers through its binary tree architecture. Unlike traditional grid-based layouts, BSPWM represents windows as the leaves of a full binary tree, where each split divides the available space into exactly two nodes. This architectural choice provides exceptional flexibility for window arrangements and enables sophisticated manipulation of window layouts through tree operations. The window manager only responds to X11 events and messages received on a dedicated socket, which is handled exclusively through the <strong>bspc</strong> client.</p>
+<h3 id="the-client-server-model"><a class="header" href="#the-client-server-model">The Client-Server Model</a></h3>
+<p>The relationship between BSPWM and its control interface is built on a socket-based client-server model. BSPWM itself runs as a daemon and listens on a socket for messages from <strong>bspc</strong>, the command-line client that sends configuration commands and window management instructions. This separation provides exceptional modularity and allows complete configuration through shell scripts, making BSPWM exceptionally scriptable compared to window managers that require specialized configuration languages. The socket path, by default, follows the pattern <code>/tmp/bspwm&lt;hostname&gt;_&lt;display&gt;_&lt;screen&gt;-socket</code>, but can be customized through the <code>BSPWM_SOCKET</code> environment variable.</p>
+<h3 id="configuration-file-structure"><a class="header" href="#configuration-file-structure">Configuration File Structure</a></h3>
+<p>BSPWM configuration resides in a single shell script located at <code>$XDG_CONFIG_HOME/bspwm/bspwmrc</code>, which typically resolves to <code>~/.config/bspwm/bspwmrc</code>. This configuration file contains shell commands that invoke <strong>bspc</strong> to set up the window manager environment. The beauty of this approach lies in its simplicity: no special configuration language is required, and users can leverage any shell scripting capabilities to create dynamic, conditional configurations. When BSPWM starts, it executes this shell script, which should contain commands to start necessary daemons (like keyboard managers), set up monitors and desktops, configure display properties, and launch supporting applications.</p>
+<h2 id="bspwm-command-structure-and-domains"><a class="header" href="#bspwm-command-structure-and-domains">BSPWM Command Structure and Domains</a></h2>
+<h3 id="overview-of-the-bspc-command"><a class="header" href="#overview-of-the-bspc-command">Overview of the BSPC Command</a></h3>
+<p>The <strong>bspc</strong> command functions as the exclusive interface to BSPWM, accepting a specific structure that organizes functionality into domains. The general syntax follows: <code>bspc DOMAIN [SELECTOR] COMMANDS</code>. This structure allows granular control over window manager behavior, from global settings to desktop-specific configurations to individual window manipulations. Understanding this hierarchical structure is essential for creating sophisticated configurations.</p>
+<h3 id="available-domains-and-their-purposes"><a class="header" href="#available-domains-and-their-purposes">Available Domains and Their Purposes</a></h3>
+<p>BSPWM organizes all functionality into six primary domains:</p>
+<ol>
+<li><strong>node</strong>: Controls individual window (node) operations</li>
+<li><strong>desktop</strong>: Manages desktop/workspace-level settings</li>
+<li><strong>monitor</strong>: Handles monitor-specific configurations</li>
+<li><strong>query</strong>: Retrieves metadata and state information</li>
+<li><strong>rule</strong>: Defines window matching and application rules</li>
+<li><strong>wm</strong>: Controls global window manager states</li>
+</ol>
+<p>Additionally, specialized domains handle <strong>config</strong>, <strong>subscribe</strong>, and <strong>quit</strong> operations. The <strong>subscribe</strong> domain enables event-driven scripting, a powerful feature for creating dynamic window management behaviors.</p>
+<h2 id="node-domain-individual-window-control"><a class="header" href="#node-domain-individual-window-control">Node Domain: Individual Window Control</a></h2>
+<h3 id="node-specific-commands"><a class="header" href="#node-specific-commands">Node-Specific Commands</a></h3>
+<p>The <strong>node</strong> domain manages individual windows (called nodes in BSPWM terminology). When no selector is provided, the command defaults to the focused node. All node operations follow the syntax: <code>bspc node [NODE_SEL] COMMAND</code>.</p>
+<h4 id="focus-operations--f-and---focus"><a class="header" href="#focus-operations--f-and---focus">Focus Operations: <code>-f</code> and <code>--focus</code></a></h4>
+<p>The <strong>-f</strong> or <strong>–focus</strong> flag changes focus to a specified node. When used alone, it focuses the selected node; when given a NODE_SEL argument, it focuses that specific node. For example:</p>
+<ul>
+<li><code>bspc node -f west</code> - Focus the window to the west</li>
+<li><code>bspc node -f biggest</code> - Focus the largest window</li>
+</ul>
+<p>The focus command respects node selectors and modifiers, enabling complex selection patterns.</p>
+<h4 id="activation--a-and---activate"><a class="header" href="#activation--a-and---activate">Activation: <code>-a</code> and <code>--activate</code></a></h4>
+<p>The <strong>-a</strong> or <strong>–activate</strong> flag differs from focus by setting a node as active without necessarily giving it keyboard focus. This distinction is important in multi-monitor setups where you may want to highlight a window’s visual state independently of input focus. The activate command accepts an optional NODE_SEL parameter.</p>
+<h4 id="desktop-transfer--d-and---to-desktop"><a class="header" href="#desktop-transfer--d-and---to-desktop">Desktop Transfer: <code>-d</code> and <code>--to-desktop</code></a></h4>
+<p>The <strong>-d</strong> or <strong>–to-desktop</strong> flag sends a node to a specified desktop. The syntax is: <code>bspc node -d DESKTOP_SEL</code>. The optional <strong>–follow</strong> flag can be appended to maintain focus on the moved node after transfer. For example:</p>
+<ul>
+<li><code>bspc node -d '^2' --follow</code> - Move focused node to desktop 2 and maintain focus</li>
+</ul>
+<h4 id="monitor-transfer--m-and---to-monitor"><a class="header" href="#monitor-transfer--m-and---to-monitor">Monitor Transfer: <code>-m</code> and <code>--to-monitor</code></a></h4>
+<p>The <strong>-m</strong> or <strong>–to-monitor</strong> flag transfers a node to a specified monitor. Syntax: <code>bspc node -m MONITOR_SEL</code>. The <strong>–follow</strong> flag similarly maintains focus after the transfer. This is particularly useful in multi-monitor setups for dynamically redistributing windows.</p>
+<h4 id="node-to-node-transfer--n-and---to-node"><a class="header" href="#node-to-node-transfer--n-and---to-node">Node-to-Node Transfer: <code>-n</code> and <code>--to-node</code></a></h4>
+<p>The <strong>-n</strong> or <strong>–to-node</strong> flag moves a node to become a sibling of another specified node. This powerful operation enables precise positioning within the binary tree structure. The <strong>–follow</strong> flag again allows focus to follow the transferred node. Example:</p>
+<ul>
+<li><code>bspc node -n newest.!automatic.local</code> - Move focused node to the newest preselected area</li>
+</ul>
+<h4 id="swapping-nodes--s-and---swap"><a class="header" href="#swapping-nodes--s-and---swap">Swapping Nodes: <code>-s</code> and <code>--swap</code></a></h4>
+<p>The <strong>-s</strong> or <strong>–swap</strong> flag exchanges positions of two nodes in the tree, effectively swapping their visual positions and tiling spaces. The syntax is: <code>bspc node -s NODE_SEL</code>. The <strong>–follow</strong> flag moves focus to the swapped node’s new position. This differs from moving: the nodes exchange places rather than one replacing the other.</p>
+<h4 id="preselection-direction--p-and---presel-dir"><a class="header" href="#preselection-direction--p-and---presel-dir">Preselection Direction: <code>-p</code> and <code>--presel-dir</code></a></h4>
+<p>The <strong>-p</strong> or <strong>–presel-dir</strong> flag enables manual insertion mode by specifying where the next spawned window should appear relative to the current node. Valid directions are: <code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>. Additionally, <code>~DIR</code> syntax cancels a preselection if it matches the specified direction. For example:</p>
+<ul>
+<li><code>bspc node -p east</code> - Next window spawns to the east of current node</li>
+<li><code>bspc node -p ~east</code> - Cancel east preselection if currently active</li>
+</ul>
+<h4 id="preselection-ratio--o-and---presel-ratio"><a class="header" href="#preselection-ratio--o-and---presel-ratio">Preselection Ratio: <code>-o</code> and <code>--presel-ratio</code></a></h4>
+<p>The <strong>-o</strong> or <strong>–presel-ratio</strong> flag sets the proportion of space allocated to the preselected area. The RATIO parameter must be between 0 and 1. For instance, <code>bspc node -o 0.4</code> allocates 40% of space to the preselected area and 60% to the existing content. This works in conjunction with preselection direction.</p>
+<h4 id="node-movement--v-and---move"><a class="header" href="#node-movement--v-and---move">Node Movement: <code>-v</code> and <code>--move</code></a></h4>
+<p>The <strong>-v</strong> or <strong>–move</strong> flag shifts a node’s position by pixel offsets. Syntax: <code>bspc node -v dx dy</code>. Both <strong>dx</strong> and <strong>dy</strong> are pixel values representing horizontal and vertical displacement. This command is particularly useful for floating windows, allowing pixel-perfect positioning adjustments.</p>
+<h4 id="node-resizing--z-and---resize"><a class="header" href="#node-resizing--z-and---resize">Node Resizing: <code>-z</code> and <code>--resize</code></a></h4>
+<p>The <strong>-z</strong> or <strong>–resize</strong> flag adjusts node dimensions by specifying an edge and pixel adjustments. Valid edges include: <code>top</code>, <code>left</code>, <code>bottom</code>, <code>right</code>, <code>top_left</code>, <code>top_right</code>, <code>bottom_right</code>, <code>bottom_left</code>. Syntax: <code>bspc node -z EDGE dx dy</code>. The <strong>dx</strong> and <strong>dy</strong> values represent horizontal and vertical pixel adjustments. For example:</p>
+<ul>
+<li><code>bspc node -z right 20 0</code> - Expand right edge by 20 pixels</li>
+</ul>
+<h4 id="node-typesplit-cycling--y-and---type"><a class="header" href="#node-typesplit-cycling--y-and---type">Node Type/Split Cycling: <code>-y</code> and <code>--type</code></a></h4>
+<p>The <strong>-y</strong> or <strong>–type</strong> flag changes or cycles the split type of a node’s parent. Valid arguments are <code>horizontal</code>, <code>vertical</code>, or <code>next</code> to cycle between types. This operation rotates the tree’s splitting orientation. Example:</p>
+<ul>
+<li><code>bspc node -y next</code> - Toggle between horizontal and vertical splits</li>
+</ul>
+<h4 id="split-ratio-adjustment--r-and---ratio"><a class="header" href="#split-ratio-adjustment--r-and---ratio">Split Ratio Adjustment: <code>-r</code> and <code>--ratio</code></a></h4>
+<p>The <strong>-r</strong> or <strong>–ratio</strong> flag modifies the split ratio of a node’s parent, controlling space distribution between siblings. Syntax: <code>bspc node -r RATIO</code> where RATIO is a decimal from 0-1, or <code>(+|-)(PIXELS|FRACTION)</code> for relative adjustments. For instance:</p>
+<ul>
+<li><code>bspc node -r 0.6</code> - Set split ratio to 60/40</li>
+<li><code>bspc node -r +0.05</code> - Increase split ratio by 5%</li>
+</ul>
+<h4 id="tree-rotation--r-and---rotate"><a class="header" href="#tree-rotation--r-and---rotate">Tree Rotation: <code>-R</code> and <code>--rotate</code></a></h4>
+<p>The <strong>-R</strong> or <strong>–rotate</strong> flag rotates the tree rooted at the selected node. Valid angles are: <code>90</code>, <code>270</code>, <code>180</code>. This operation is useful for dynamically rearranging window hierarchies. Example:</p>
+<ul>
+<li><code>bspc node -R 90</code> - Rotate tree 90 degrees clockwise</li>
+</ul>
+<h4 id="tree-flipping--f-and---flip"><a class="header" href="#tree-flipping--f-and---flip">Tree Flipping: <code>-F</code> and <code>--flip</code></a></h4>
+<p>The <strong>-F</strong> or <strong>–flip</strong> flag flips the tree rooted at the selected node. Valid directions are: <code>horizontal</code>, <code>vertical</code>. This mirrors the tree structure along the specified axis. Example:</p>
+<ul>
+<li><code>bspc node -F horizontal</code> - Flip tree horizontally</li>
+</ul>
+<h4 id="tree-equalization--e-and---equalize"><a class="header" href="#tree-equalization--e-and---equalize">Tree Equalization: <code>-E</code> and <code>--equalize</code></a></h4>
+<p>The <strong>-E</strong> or <strong>–equalize</strong> flag resets all split ratios within a node’s subtree to their default values (typically 0.5). This is useful for restoring a balanced layout after manual ratio adjustments.</p>
+<h4 id="tree-balancing--b-and---balance"><a class="header" href="#tree-balancing--b-and---balance">Tree Balancing: <code>-B</code> and <code>--balance</code></a></h4>
+<p>The <strong>-B</strong> or <strong>–balance</strong> flag adjusts split ratios within a subtree so all leaves occupy equal area. Unlike equalization, which resets all ratios identically, balancing respects the existing tree structure while equalizing final window areas.</p>
+<h4 id="tree-circulation--c-and---circulate"><a class="header" href="#tree-circulation--c-and---circulate">Tree Circulation: <code>-C</code> and <code>--circulate</code></a></h4>
+<p>The <strong>-C</strong> or <strong>–circulate</strong> flag moves windows within a tree in a circular pattern. Valid directions are: <code>forward</code>, <code>backward</code>. This operation is particularly useful for dynamic window rotation without explicit swapping.</p>
+<h4 id="node-state--t-and---state"><a class="header" href="#node-state--t-and---state">Node State: <code>-t</code> and <code>--state</code></a></h4>
+<p>The <strong>-t</strong> or <strong>–state</strong> flag changes a node’s state (tiling mode). Valid states are: <code>tiled</code>, <code>pseudo_tiled</code>, <code>floating</code>, <code>fullscreen</code>. The <code>~</code> prefix toggles to the previous state if the current state matches, or restores the previous state if no state is specified. Syntax: <code>bspc node -t STATE</code>. Examples:</p>
+<ul>
+<li><code>bspc node -t floating</code> - Make window floating</li>
+<li><code>bspc node -t ~floating</code> - Toggle floating state</li>
+</ul>
+<h4 id="node-flags--g-and---flag"><a class="header" href="#node-flags--g-and---flag">Node Flags: <code>-g</code> and <code>--flag</code></a></h4>
+<p>The <strong>-g</strong> or <strong>–flag</strong> flag manages binary flags that modify node behavior. Valid flags are: <code>hidden</code>, <code>sticky</code>, <code>private</code>, <code>locked</code>, <code>marked</code>, <code>urgent</code>. The flag syntax accepts optional <code>=on|off</code> to explicitly set state. Each flag serves a specific purpose:</p>
+<ul>
+<li><strong>hidden</strong>: Node is hidden and doesn’t occupy tiling space</li>
+<li><strong>sticky</strong>: Node stays on the focused desktop of its monitor</li>
+<li><strong>private</strong>: Node resists movement and resizing during automatic insertion</li>
+<li><strong>locked</strong>: Node ignores the close (<code>-c</code>) message</li>
+<li><strong>marked</strong>: Arbitrary flag used for custom operations; unmarked automatically when sent to a preselected node</li>
+<li><strong>urgent</strong>: Indicates window urgency (typically set externally); used for window selection</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li><code>bspc node -g sticky=on</code> - Make window sticky</li>
+<li><code>bspc node -g marked</code> - Toggle marked flag</li>
+</ul>
+<h4 id="node-layering--l-and---layer"><a class="header" href="#node-layering--l-and---layer">Node Layering: <code>-l</code> and <code>--layer</code></a></h4>
+<p>The <strong>-l</strong> or <strong>–layer</strong> flag changes a node’s stacking layer. Valid layers are: <code>below</code>, <code>normal</code>, <code>above</code>. BSPWM maintains three stacking layers where below &lt; normal &lt; above, and within each layer: tiled/pseudo_tiled &lt; floating &lt; fullscreen. Examples:</p>
+<ul>
+<li><code>bspc node -l above</code> - Place window above all others</li>
+<li><code>bspc node -l below</code> - Place window below all others</li>
+</ul>
+<h4 id="receptacle-insertion--i-and---insert-receptacle"><a class="header" href="#receptacle-insertion--i-and---insert-receptacle">Receptacle Insertion: <code>-i</code> and <code>--insert-receptacle</code></a></h4>
+<p>The <strong>-i</strong> or <code>--insert-receptacle</code> flag creates a receptacle (empty leaf node) at the selected node’s position. Receptacles are particularly useful for creating predefined layouts that can be filled with windows later.</p>
+<h4 id="node-closure--c-and---close"><a class="header" href="#node-closure--c-and---close">Node Closure: <code>-c</code> and <code>--close</code></a></h4>
+<p>The <strong>-c</strong> or <strong>–close</strong> flag closes a node by sending it the close message. This respects the <code>locked</code> flag; if set, the message is ignored.</p>
+<h4 id="node-termination--k-and-kill"><a class="header" href="#node-termination--k-and-kill">Node Termination: <code>-k</code> and <strong>–kill</strong></a></h4>
+<p>The <strong>-k</strong> or <strong>–kill</strong> flag forcibly terminates a node’s window regardless of flags or settings. This is a hard termination that bypasses all safety mechanisms.</p>
+<h3 id="node-selector-syntax"><a class="header" href="#node-selector-syntax">Node Selector Syntax</a></h3>
+<p>Node selectors determine which nodes are affected by commands. They follow the pattern: <code>[REFERENCE#]DESCRIPTOR[.MODIFIER]*</code>.</p>
+<h4 id="node-descriptors"><a class="header" href="#node-descriptors">Node Descriptors</a></h4>
+<p>Descriptors specify the initial node selection:</p>
+<ul>
+<li><strong>DIR</strong> (north|west|south|east): Relative direction</li>
+<li><strong>CYCLE_DIR</strong> (next|prev): Cyclic direction</li>
+<li><strong>any</strong>: Any node</li>
+<li><strong>first_ancestor</strong>: First non-leaf ancestor</li>
+<li><strong>last</strong>: Most recently focused</li>
+<li><strong>newest</strong>: Most recently created</li>
+<li><strong>older</strong>: Older than focused in history</li>
+<li><strong>newer</strong>: Newer than focused in history</li>
+<li><strong>focused</strong>: Currently focused node</li>
+<li><strong>pointed</strong>: Node under mouse pointer</li>
+<li><strong>biggest</strong>: Largest node by area</li>
+<li><strong>smallest</strong>: Smallest node by area</li>
+<li><strong>&lt;node_id&gt;</strong>: Direct node ID reference</li>
+</ul>
+<h4 id="node-modifiers"><a class="header" href="#node-modifiers">Node Modifiers</a></h4>
+<p>Modifiers further filter the selection:</p>
+<ul>
+<li><strong>[!]focused</strong>: Currently/not currently focused</li>
+<li><strong>[!]active</strong>: Active/not active on desktop</li>
+<li><strong>[!]automatic</strong>: In automatic/manual insertion mode</li>
+<li><strong>[!]local</strong>: On/not on current desktop</li>
+<li><strong>[!]leaf</strong>: Is/isn’t a leaf node</li>
+<li><strong>[!]window</strong>: Has/doesn’t have a window</li>
+<li><strong>[!]STATE</strong>: Matches/doesn’t match state (tiled|pseudo_tiled|floating|fullscreen)</li>
+<li><strong>[!]FLAG</strong>: Has/doesn’t have flag (hidden|sticky|private|locked|marked|urgent)</li>
+<li><strong>[!]LAYER</strong>: On/not on layer (below|normal|above)</li>
+<li><strong>[!]SPLIT_TYPE</strong>: Split type (horizontal|vertical)</li>
+<li><strong>[!]same_class</strong>: Same/different class as focused</li>
+<li><strong>[!]descendant_of</strong>: Is/isn’t descendant of reference</li>
+<li><strong>[!]ancestor_of</strong>: Is/isn’t ancestor of reference</li>
+</ul>
+<h4 id="path-jumps"><a class="header" href="#path-jumps">Path Jumps</a></h4>
+<p>Path jumps navigate the tree structure:</p>
+<ul>
+<li><strong>first|1</strong>: First child</li>
+<li><strong>second|2</strong>: Second child</li>
+<li><strong>brother</strong>: Sibling node</li>
+<li><strong>parent</strong>: Parent node</li>
+<li><strong>DIR</strong>: Directional jump</li>
+</ul>
+<h2 id="desktop-domain-workspace-management"><a class="header" href="#desktop-domain-workspace-management">Desktop Domain: Workspace Management</a></h2>
+<h3 id="desktop-specific-commands"><a class="header" href="#desktop-specific-commands">Desktop-Specific Commands</a></h3>
+<p>The <strong>desktop</strong> domain manages workspace-level settings and operations. Syntax: <code>bspc desktop [DESKTOP_SEL] COMMAND</code>. If no DESKTOP_SEL is provided, the focused desktop is targeted.</p>
+<h4 id="desktop-focus--f-and---focus"><a class="header" href="#desktop-focus--f-and---focus">Desktop Focus: <code>-f</code> and <code>--focus</code></a></h4>
+<p>The <strong>-f</strong> or <strong>–focus</strong> flag switches focus to a specified desktop. Example:</p>
+<ul>
+<li><code>bspc desktop -f '^2'</code> - Focus the 2nd desktop</li>
+<li><code>bspc desktop -f next</code> - Focus next desktop</li>
+</ul>
+<h4 id="desktop-activation--a-and---activate"><a class="header" href="#desktop-activation--a-and---activate">Desktop Activation: <code>-a</code> and <code>--activate</code></a></h4>
+<p>The <strong>-a</strong> or <strong>–activate</strong> flag sets a desktop as active (similar to node activation). This is distinct from focus and is useful in multi-monitor scenarios.</p>
+<h4 id="desktop-transfer-to-monitor--m-and---to-monitor"><a class="header" href="#desktop-transfer-to-monitor--m-and---to-monitor">Desktop Transfer to Monitor: <code>-m</code> and <code>--to-monitor</code></a></h4>
+<p>The <strong>-m</strong> or <code>--to-monitor</code> flag transfers a desktop to a different monitor. Syntax: <code>bspc desktop -m MONITOR_SEL</code>. The optional <strong>–follow</strong> flag moves focus to the transferred desktop.</p>
+<h4 id="desktop-swapping--s-and---swap"><a class="header" href="#desktop-swapping--s-and---swap">Desktop Swapping: <code>-s</code> and <code>--swap</code></a></h4>
+<p>The <strong>-s</strong> or <strong>–swap</strong> flag exchanges two desktops. Syntax: <code>bspc desktop -s DESKTOP_SEL</code>. The <strong>–follow</strong> flag maintains focus continuity.</p>
+<h4 id="layout-selection--l-and---layout"><a class="header" href="#layout-selection--l-and---layout">Layout Selection: <code>-l</code> and <code>--layout</code></a></h4>
+<p>The <strong>-l</strong> or <code>--layout</code> flag sets or cycles the desktop’s layout. Valid layouts are: <code>tiled</code>, <code>monocle</code>, or <code>next</code> to cycle. BSPWM provides two built-in layouts:</p>
+<ul>
+<li><strong>tiled</strong>: Standard binary space partitioning with visible splits</li>
+<li><strong>monocle</strong>: Fullscreen layout where only the most recently focused tiled/pseudo_tiled window is visible</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li><code>bspc desktop -l monocle</code> - Switch to monocle layout</li>
+<li><code>bspc desktop -l next</code> - Cycle to next layout</li>
+</ul>
+<h4 id="desktop-renaming--n-and---rename"><a class="header" href="#desktop-renaming--n-and---rename">Desktop Renaming: <code>-n</code> and <code>--rename</code></a></h4>
+<p>The <strong>-n</strong> or <code>--rename</code> flag changes a desktop’s name. Syntax: <code>bspc desktop -n &lt;new_name&gt;</code>. Desktop names are used in keybindings and configurations.</p>
+<h4 id="desktop-cycling--b-and---bubble"><a class="header" href="#desktop-cycling--b-and---bubble">Desktop Cycling: <code>-b</code> and <code>--bubble</code></a></h4>
+<p>The <strong>-b</strong> or <code>--bubble</code> flag moves a desktop within the monitor’s desktop list. Direction values are <code>next</code> or <code>prev</code>. This reorders desktops without changing their content.</p>
+<h4 id="desktop-removal--r-and-remove"><a class="header" href="#desktop-removal--r-and-remove">Desktop Removal: <code>-r</code> and `–remove**</a></h4>
+<p>The <strong>-r</strong> or <code>--remove</code> flag deletes a desktop. Windows on the removed desktop are transferred to the next available desktop.</p>
+<h3 id="desktop-selector-syntax"><a class="header" href="#desktop-selector-syntax">Desktop Selector Syntax</a></h3>
+<p>Desktop selectors determine which desktops are affected.</p>
+<h4 id="desktop-descriptors"><a class="header" href="#desktop-descriptors">Desktop Descriptors</a></h4>
+<ul>
+<li><strong>CYCLE_DIR</strong> (next|prev): Cyclic direction</li>
+<li><strong>any</strong>: Any desktop</li>
+<li><strong>last</strong>: Most recently focused</li>
+<li><strong>newest</strong>: Most recently created</li>
+<li><strong>older</strong>: Older in history</li>
+<li><strong>newer</strong>: Newer in history</li>
+<li><strong>focused</strong>: Currently focused</li>
+<li><strong>^&lt; n &gt;</strong>: The nth desktop</li>
+<li><strong>MONITOR_SEL:focused</strong>: Focused desktop on specified monitor</li>
+<li><strong>&lt;desktop_id&gt;</strong>: Direct ID reference</li>
+<li><strong>&lt;desktop_name&gt;</strong>: By name</li>
+</ul>
+<h4 id="desktop-modifiers"><a class="header" href="#desktop-modifiers">Desktop Modifiers</a></h4>
+<ul>
+<li><strong>[!]focused</strong>: Currently/not focused</li>
+<li><strong>[!]active</strong>: Active/not active on desktop</li>
+<li><strong>[!]occupied</strong>: Has/doesn’t have windows</li>
+<li><strong>[!]urgent</strong>: Contains/doesn’t contain urgent windows</li>
+<li><strong>[!]local</strong>: On/not on current monitor</li>
+<li><strong>[!]LAYOUT</strong>: Matches/doesn’t match layout</li>
+<li><strong>[!]user_LAYOUT</strong>: Custom layout matching</li>
+</ul>
+<h2 id="monitor-domain-multi-monitor-configuration"><a class="header" href="#monitor-domain-multi-monitor-configuration">Monitor Domain: Multi-Monitor Configuration</a></h2>
+<h3 id="monitor-specific-commands"><a class="header" href="#monitor-specific-commands">Monitor-Specific Commands</a></h3>
+<p>The <strong>monitor</strong> domain controls monitor-specific settings and operations. Syntax: <code>bspc monitor [MONITOR_SEL] COMMAND</code>.</p>
+<h4 id="monitor-focus--f-and---focus"><a class="header" href="#monitor-focus--f-and---focus">Monitor Focus: <code>-f</code> and <code>--focus</code></a></h4>
+<p>The <strong>-f</strong> or <code>--focus</code> flag switches focus to a specified monitor. Example:</p>
+<ul>
+<li><code>bspc monitor -f DP-1</code> - Focus monitor named DP-1</li>
+<li><code>bspc monitor -f next</code> - Focus next monitor</li>
+</ul>
+<h4 id="monitor-swapping--s-and---swap"><a class="header" href="#monitor-swapping--s-and---swap">Monitor Swapping: <code>-s</code> and <code>--swap</code></a></h4>
+<p>The <strong>-s</strong> or <code>--swap</code> flag exchanges two monitors. This is useful for reversing display order.</p>
+<h4 id="add-desktops--a-and---add-desktops"><a class="header" href="#add-desktops--a-and---add-desktops">Add Desktops: <code>-a</code> and <code>--add-desktops</code></a></h4>
+<p>The <strong>-a</strong> or <code>--add-desktops</code> flag creates new desktops on a monitor. Syntax: <code>bspc monitor -a &lt;name&gt;...</code>. Multiple desktop names can be provided. Example:</p>
+<ul>
+<li><code>bspc monitor -a I II III IV V</code> - Create five desktops named I through V</li>
+</ul>
+<h4 id="reorder-desktops--o-and---reorder-desktops"><a class="header" href="#reorder-desktops--o-and---reorder-desktops">Reorder Desktops: <code>-o</code> and <code>--reorder-desktops</code></a></h4>
+<p>The <strong>-o</strong> or <code>--reorder-desktops</code> flag changes the order of desktops on a monitor. Syntax: <code>bspc monitor -o &lt;name&gt;...</code>. The order must match existing desktop names.</p>
+<h4 id="reset-desktops--d-and---reset-desktops"><a class="header" href="#reset-desktops--d-and---reset-desktops">Reset Desktops: <code>-d</code> and <code>--reset-desktops</code></a></h4>
+<p>The <strong>-d</strong> or <code>--reset-desktops</code> flag reconfigures desktops, adding, removing, or renaming as needed. Syntax: <code>bspc monitor -d &lt;name&gt;...</code>. This command automatically handles all necessary adjustments.</p>
+<h4 id="monitor-rectangle--g-and---rectangle"><a class="header" href="#monitor-rectangle--g-and---rectangle">Monitor Rectangle: <code>-g</code> and <code>--rectangle</code></a></h4>
+<p>The <strong>-g</strong> or <code>--rectangle</code> flag manually sets monitor geometry. Syntax: <code>bspc monitor -g WxH+X+Y</code>. This is useful for multi-display configurations or unusual setups.</p>
+<h4 id="monitor-renaming--n-and---rename"><a class="header" href="#monitor-renaming--n-and---rename">Monitor Renaming: <code>-n</code> and <code>--rename</code></a></h4>
+<p>The <strong>-n</strong> or <code>--rename</code> flag changes a monitor’s name. Syntax: <code>bspc monitor -n &lt;new_name&gt;</code>.</p>
+<h4 id="monitor-removal--r-and---remove"><a class="header" href="#monitor-removal--r-and---remove">Monitor Removal: <code>-r</code> and <code>--remove</code></a></h4>
+<p>The <strong>-r</strong> or <code>--remove</code> flag removes a monitor from management. Desktops on the removed monitor are transferred to remaining monitors.</p>
+<h3 id="monitor-selector-syntax"><a class="header" href="#monitor-selector-syntax">Monitor Selector Syntax</a></h3>
+<p>Monitor selectors determine which monitors are affected.</p>
+<h4 id="monitor-descriptors"><a class="header" href="#monitor-descriptors">Monitor Descriptors</a></h4>
+<ul>
+<li><strong>DIR</strong> (north|west|south|east): Spatial direction</li>
+<li><strong>CYCLE_DIR</strong> (next|prev): Cyclic direction</li>
+<li><strong>any</strong>: Any monitor</li>
+<li><strong>last</strong>: Most recently focused</li>
+<li><strong>newest</strong>: Most recently added</li>
+<li><strong>older</strong>: Older in history</li>
+<li><strong>newer</strong>: Newer in history</li>
+<li><strong>focused</strong>: Currently focused</li>
+<li><strong>pointed</strong>: Monitor under pointer</li>
+<li><strong>primary</strong>: Primary monitor</li>
+<li><strong>^&lt; n &gt;</strong>: The nth monitor</li>
+<li><strong>&lt;monitor_id&gt;</strong>: By monitor ID</li>
+<li><strong>&lt;monitor_name&gt;</strong>: By name (e.g., HDMI-1)</li>
+</ul>
+<h4 id="monitor-modifiers"><a class="header" href="#monitor-modifiers">Monitor Modifiers</a></h4>
+<ul>
+<li><strong>[!]focused</strong>: Currently/not focused</li>
+<li><strong>[!]occupied</strong>: Has/doesn’t have occupied desktops</li>
+</ul>
+<h2 id="query-domain-state-information-retrieval"><a class="header" href="#query-domain-state-information-retrieval">Query Domain: State Information Retrieval</a></h2>
+<h3 id="query-commands"><a class="header" href="#query-commands">Query Commands</a></h3>
+<p>The <strong>query</strong> domain retrieves metadata and state information. Syntax: <code>bspc query COMMANDS [OPTIONS]</code>.</p>
+<h4 id="node-query--n-and---nodes"><a class="header" href="#node-query--n-and---nodes">Node Query: <code>-N</code> and <code>--nodes</code></a></h4>
+<p>The <strong>-N</strong> or <code>--nodes</code> flag returns node IDs. Syntax: <code>bspc query -N [NODE_SEL]</code>. Without selectors, returns all node IDs. With selectors, returns matching nodes. Example:</p>
+<ul>
+<li><code>bspc query -N -n focused</code> - Get ID of focused node</li>
+<li><code>bspc query -N -n .window</code> - Get IDs of all window nodes</li>
+</ul>
+<h4 id="desktop-query--d-and---desktops"><a class="header" href="#desktop-query--d-and---desktops">Desktop Query: <code>-D</code> and <code>--desktops</code></a></h4>
+<p>The <strong>-D</strong> or <code>--desktops</code> flag returns desktop IDs. Syntax: <code>bspc query -D [DESKTOP_SEL]</code>. Returns all desktop IDs when no selector is given.</p>
+<h4 id="monitor-query--m-and---monitors"><a class="header" href="#monitor-query--m-and---monitors">Monitor Query: <code>-M</code> and <code>--monitors</code></a></h4>
+<p>The <strong>-M</strong> or <code>--monitors</code> flag returns monitor IDs. Syntax: <code>bspc query -M [MONITOR_SEL]</code>. Returns all monitor IDs without selector.</p>
+<h4 id="tree-query--t-and---tree"><a class="header" href="#tree-query--t-and---tree">Tree Query: <code>-T</code> and <code>--tree</code></a></h4>
+<p>The <strong>-T</strong> or <code>--tree</code> flag returns the complete tree structure in JSON or text format. This comprehensive output shows all relationships and states. Example:</p>
+<ul>
+<li><code>bspc query -T</code> - Output complete tree state</li>
+<li><code>bspc query -T -m DP-1</code> - Tree for specific monitor</li>
+</ul>
+<h3 id="query-options"><a class="header" href="#query-options">Query Options</a></h3>
+<p>Query results can be filtered and formatted.</p>
+<h4 id="monitor-specification--m-and---monitor"><a class="header" href="#monitor-specification--m-and---monitor">Monitor Specification: <code>-m</code> and <code>--monitor</code></a></h4>
+<p>The <strong>-m</strong> or <code>--monitor</code> option filters results to a specific monitor. Syntax: <code>bspc query -m MONITOR_SEL</code>.</p>
+<h4 id="desktop-specification--d-and---desktop"><a class="header" href="#desktop-specification--d-and---desktop">Desktop Specification: <code>-d</code> and <code>--desktop</code></a></h4>
+<p>The <strong>-d</strong> or <code>--desktop</code> option filters to a specific desktop. Syntax: <code>bspc query -d DESKTOP_SEL</code>.</p>
+<h4 id="node-specification--n-and---node"><a class="header" href="#node-specification--n-and---node">Node Specification: <code>-n</code> and <code>--node</code></a></h4>
+<p>The <strong>-n</strong> or <code>--node</code> option filters to a specific node. Syntax: <code>bspc query -n NODE_SEL</code>.</p>
+<h4 id="names-output---names"><a class="header" href="#names-output---names">Names Output: <code>--names</code></a></h4>
+<p>The <code>--names</code> flag outputs entity names instead of IDs. This is useful for human-readable output.</p>
+<h2 id="rule-domain-window-matching-and-defaults"><a class="header" href="#rule-domain-window-matching-and-defaults">Rule Domain: Window Matching and Defaults</a></h2>
+<h3 id="rule-management-commands"><a class="header" href="#rule-management-commands">Rule Management Commands</a></h3>
+<p>The <strong>rule</strong> domain defines patterns and default configurations for new windows.</p>
+<h4 id="adding-rules--a-and---add"><a class="header" href="#adding-rules--a-and---add">Adding Rules: <code>-a</code> and <code>--add</code></a></h4>
+<p>The <strong>-a</strong> or <code>--add</code> flag creates a new rule. Syntax: <code>bspc rule -a [CLASS[:INSTANCE[:NAME]]] [options]</code>. The class, instance, and name can be wildcards using <code>*</code>. Fields can be escaped with backslash.</p>
+<p>Rule properties include:</p>
+<ul>
+<li><strong>monitor=MONITOR_SEL</strong>: Target monitor</li>
+<li><strong>desktop=DESKTOP_SEL</strong>: Target desktop</li>
+<li><strong>node=NODE_SEL</strong>: Target node (for insertion)</li>
+<li><strong>state=STATE</strong>: Initial state (tiled|pseudo_tiled|floating|fullscreen)</li>
+<li><strong>layer=LAYER</strong>: Initial layer (below|normal|above)</li>
+<li><strong>honor_size_hints=(true|false|tiled|floating)</strong>: Whether to respect ICCCM size hints</li>
+<li><strong>split_dir=DIR</strong>: Preselection direction</li>
+<li><strong>split_ratio=RATIO</strong>: Preselection ratio</li>
+<li><strong>hidden=(on|off)</strong>: Initially hidden state</li>
+<li><strong>sticky=(on|off)</strong>: Sticky flag state</li>
+<li><strong>private=(on|off)</strong>: Private flag state</li>
+<li><strong>locked=(on|off)</strong>: Locked flag state</li>
+<li><strong>marked=(on|off)</strong>: Marked flag state</li>
+<li><strong>center=(on|off)</strong>: Center floating windows</li>
+<li><strong>follow=(on|off)</strong>: Focus follows window</li>
+<li><strong>manage=(on|off)</strong>: Whether window is managed</li>
+<li><strong>focus=(on|off)</strong>: Initial focus state</li>
+<li><strong>border=(on|off)</strong>: Show window borders</li>
+<li><strong>rectangle=WxH+X+Y</strong>: Initial geometry for floating windows</li>
+</ul>
+<p>The <strong>-o</strong> or <code>--one-shot</code> flag makes the rule apply only once.</p>
+<p>Examples:</p>
+<ul>
+<li><code>bspc rule -a Firefox desktop=^2 follow=on</code></li>
+<li><code>bspc rule -a Gimp state=floating follow=off</code></li>
+</ul>
+<h4 id="removing-rules--r-and---remove"><a class="header" href="#removing-rules--r-and---remove">Removing Rules: <code>-r</code> and <code>--remove</code></a></h4>
+<p>The <strong>-r</strong> or <code>--remove</code> flag deletes rules. Syntax: <code>bspc rule -r PATTERN</code>. Patterns can be <code>head</code>, <code>tail</code>, <code>^&lt; n &gt;</code> for index, or a class/instance/name pattern.</p>
+<h4 id="listing-rules--l-and---list"><a class="header" href="#listing-rules--l-and---list">Listing Rules: <code>-l</code> and <code>--list</code></a></h4>
+<p>The <strong>-l</strong> or <code>--list</code> flag displays all currently active rules.</p>
+<h3 id="external-rules-script"><a class="header" href="#external-rules-script">External Rules Script</a></h3>
+<p>For complex matching logic beyond the built-in rule syntax, BSPWM supports external rule scripts. The <strong>external_rules_command</strong> setting specifies a script path. This script receives window information and outputs rule properties.</p>
+<p>Script invocation: <code>SCRIPT wid class instance name</code></p>
+<p>Example external rules script:</p>
+<pre><code class="language-bash">#!/bin/sh
+case "$2" in
+    Firefox)
+        echo "desktop=^2 follow=on"
+        ;;
+    Gimp)
+        echo "state=floating"
+        ;;
+esac
+</code></pre>
+<h2 id="config-domain-global-configuration"><a class="header" href="#config-domain-global-configuration">Config Domain: Global Configuration</a></h2>
+<h3 id="configuration-settings"><a class="header" href="#configuration-settings">Configuration Settings</a></h3>
+<p>The <strong>config</strong> domain manages global, monitor-specific, desktop-specific, and node-specific settings.</p>
+<h4 id="general-syntax"><a class="header" href="#general-syntax">General Syntax</a></h4>
+<p><code>bspc config [-m MONITOR_SEL|-d DESKTOP_SEL|-n NODE_SEL] &lt;setting&gt; [&lt;value&gt;]</code></p>
+<h3 id="global-settings"><a class="header" href="#global-settings">Global Settings</a></h3>
+<h4 id="color-settings"><a class="header" href="#color-settings">Color Settings</a></h4>
+<p>Colors are specified in hexadecimal format: <code>#RRGGBB</code></p>
+<ul>
+<li><strong>normal_border_color</strong>: Border color for unfocused windows</li>
+<li><strong>active_border_color</strong>: Border color for active (desktop-focused) windows</li>
+<li><strong>focused_border_color</strong>: Border color for focused windows</li>
+<li><strong>presel_feedback_color</strong>: Color of preselection indicator</li>
+</ul>
+<h4 id="layout-and-splitting"><a class="header" href="#layout-and-splitting">Layout and Splitting</a></h4>
+<ul>
+<li><strong>split_ratio</strong>: Default ratio for binary splits (0 &lt; ratio &lt; 1)</li>
+<li><strong>automatic_scheme</strong>: Algorithm for automatic window placement. Valid values:
+<ul>
+<li><strong>longest_side</strong>: Split along longest edge</li>
+<li><strong>alternate</strong>: Alternate between horizontal and vertical</li>
+<li><strong>spiral</strong>: Create spiral patterns</li>
+</ul>
+</li>
+<li><strong>initial_polarity</strong>: Which child receives the new window in automatic mode. Valid values:
+<ul>
+<li><strong>first_child</strong>: New window becomes first child</li>
+<li><strong>second_child</strong>: New window becomes second child</li>
+</ul>
+</li>
+<li><strong>directional_focus_tightness</strong>: Strictness of directional focus algorithm. Valid values:
+<ul>
+<li><strong>high</strong>: Stricter matching</li>
+<li><strong>low</strong>: Looser matching</li>
+</ul>
+</li>
+</ul>
+<h4 id="insertion-and-removal"><a class="header" href="#insertion-and-removal">Insertion and Removal</a></h4>
+<ul>
+<li><strong>removal_adjustment</strong>: Whether to readjust layout after window removal</li>
+<li><strong>presel_feedback</strong>: Whether to show preselection feedback</li>
+</ul>
+<h4 id="monocle-layout"><a class="header" href="#monocle-layout">Monocle Layout</a></h4>
+<ul>
+<li><strong>borderless_monocle</strong>: Remove borders in monocle layout</li>
+<li><strong>gapless_monocle</strong>: Remove gaps in monocle layout</li>
+<li><strong>top_monocle_padding</strong>, <strong>right_monocle_padding</strong>, <strong>bottom_monocle_padding</strong>, <strong>left_monocle_padding</strong>: Padding for monocle layout</li>
+<li><strong>single_monocle</strong>: Switch to monocle if only one window remains</li>
+</ul>
+<h4 id="status-and-behavior"><a class="header" href="#status-and-behavior">Status and Behavior</a></h4>
+<ul>
+<li><strong>borderless_singleton</strong>: Remove borders when only one window exists</li>
+<li><strong>status_prefix</strong>: Prefix for status messages</li>
+<li><strong>pointer_motion_interval</strong>: Minimum milliseconds between pointer motion updates</li>
+<li><strong>pointer_modifier</strong>: Keyboard modifier for pointer actions. Valid values:
+<ul>
+<li><strong>shift</strong>, <strong>control</strong>, <strong>lock</strong></li>
+<li><strong>mod1</strong> (Alt), <strong>mod2</strong>, <strong>mod3</strong></li>
+<li><strong>mod4</strong> (Super), <strong>mod5</strong></li>
+</ul>
+</li>
+<li><strong>pointer_action1</strong>, <strong>pointer_action2</strong>, <strong>pointer_action3</strong>: Mouse button actions. Valid values:
+<ul>
+<li><strong>move</strong>: Move floating windows</li>
+<li><strong>resize_side</strong>: Resize from edge</li>
+<li><strong>resize_corner</strong>: Resize from corner</li>
+<li><strong>focus</strong>: Focus on click</li>
+<li><strong>none</strong>: No action</li>
+</ul>
+</li>
+<li><strong>click_to_focus</strong>: Mouse button for focus-on-click. Valid values: <strong>button1</strong>, <strong>button2</strong>, <strong>button3</strong>, <strong>any</strong>, <strong>none</strong></li>
+<li><strong>swallow_first_click</strong>: Consume first click when focusing</li>
+<li><strong>focus_follows_pointer</strong>: Focus window under pointer</li>
+<li><strong>pointer_follows_focus</strong>: Move pointer to focused window</li>
+<li><strong>pointer_follows_monitor</strong>: Move pointer to focused monitor</li>
+</ul>
+<h4 id="ewmh-compatibility"><a class="header" href="#ewmh-compatibility">EWMH Compatibility</a></h4>
+<ul>
+<li><strong>mapping_events_count</strong>: How many mapping events to process</li>
+<li><strong>ignore_ewmh_focus</strong>: Ignore EWMH focus requests</li>
+<li><strong>ignore_ewmh_fullscreen</strong>: Ignore fullscreen requests. Valid values: <strong>none</strong>, <strong>all</strong>, or comma-separated <strong>enter</strong>, <strong>exit</strong></li>
+<li><strong>ignore_ewmh_struts</strong>: Ignore taskbar/panel space reservations</li>
+<li><strong>center_pseudo_tiled</strong>: Center pseudo_tiled windows</li>
+</ul>
+<h4 id="monitor-management"><a class="header" href="#monitor-management">Monitor Management</a></h4>
+<ul>
+<li><strong>remove_disabled_monitors</strong>: Remove monitors that are disabled</li>
+<li><strong>remove_unplugged_monitors</strong>: Remove unplugged monitors</li>
+<li><strong>merge_overlapping_monitors</strong>: Merge monitors with overlapping geometry</li>
+</ul>
+<h3 id="monitor-and-desktop-settings"><a class="header" href="#monitor-and-desktop-settings">Monitor and Desktop Settings</a></h3>
+<h4 id="padding"><a class="header" href="#padding">Padding</a></h4>
+<p>Applied at monitor and desktop levels:</p>
+<ul>
+<li><strong>top_padding</strong>, <strong>right_padding</strong>, <strong>bottom_padding</strong>, <strong>left_padding</strong>: Space reserved around the desktop edges. Commonly set to bar heights</li>
+</ul>
+<h3 id="desktop-settings"><a class="header" href="#desktop-settings">Desktop Settings</a></h3>
+<h4 id="window-gap"><a class="header" href="#window-gap">Window Gap</a></h4>
+<ul>
+<li><strong>window_gap</strong>: Pixel spacing between windows. Can be set negative to create gapless layouts</li>
+</ul>
+<h3 id="node-settings"><a class="header" href="#node-settings">Node Settings</a></h3>
+<h4 id="borders-and-hints"><a class="header" href="#borders-and-hints">Borders and Hints</a></h4>
+<ul>
+<li><strong>border_width</strong>: Border thickness in pixels</li>
+<li><strong>honor_size_hints</strong>: Respect ICCCM window size hints. Valid values:
+<ul>
+<li><strong>true</strong>: Apply to all windows</li>
+<li><strong>false</strong>: Don’t apply</li>
+<li><strong>tiled</strong>: Apply only to tiled windows</li>
+<li><strong>floating</strong>: Apply only to floating windows</li>
+</ul>
+</li>
+</ul>
+<h2 id="subscribe-domain-event-driven-scripting"><a class="header" href="#subscribe-domain-event-driven-scripting">Subscribe Domain: Event-Driven Scripting</a></h2>
+<h3 id="event-subscription"><a class="header" href="#event-subscription">Event Subscription</a></h3>
+<p>The <strong>subscribe</strong> domain enables reactive scripting based on window manager events. Syntax: <code>bspc subscribe [OPTIONS] (all|report|monitor|desktop|node|...)*</code>.</p>
+<h3 id="subscription-options"><a class="header" href="#subscription-options">Subscription Options</a></h3>
+<h4 id="fifo-output--f-and---fifo"><a class="header" href="#fifo-output--f-and---fifo">FIFO Output: <code>-f</code> and <code>--fifo</code></a></h4>
+<p>The <strong>-f</strong> or <code>--fifo</code> flag outputs events to a named FIFO instead of stdout. This enables long-lived subscriptions.</p>
+<h4 id="event-count--c-and---count"><a class="header" href="#event-count--c-and---count">Event Count: <code>-c</code> and <code>--count</code></a></h4>
+<p>The <strong>-c</strong> or <code>--count</code> flag exits after receiving COUNT events.</p>
+<h3 id="available-events"><a class="header" href="#available-events">Available Events</a></h3>
+<h4 id="monitor-events"><a class="header" href="#monitor-events">Monitor Events</a></h4>
+<ul>
+<li><strong>monitor_add</strong>: New monitor connected</li>
+<li><strong>monitor_rename</strong>: Monitor renamed</li>
+<li><strong>monitor_remove</strong>: Monitor disconnected</li>
+<li><strong>monitor_swap</strong>: Monitors swapped positions</li>
+<li><strong>monitor_focus</strong>: Focus changed to monitor</li>
+<li><strong>monitor_geometry</strong>: Monitor geometry changed</li>
+</ul>
+<h4 id="desktop-events"><a class="header" href="#desktop-events">Desktop Events</a></h4>
+<ul>
+<li><strong>desktop_add</strong>: Desktop created</li>
+<li><strong>desktop_rename</strong>: Desktop renamed</li>
+<li><strong>desktop_remove</strong>: Desktop deleted</li>
+<li><strong>desktop_swap</strong>: Desktops swapped</li>
+<li><strong>desktop_transfer</strong>: Desktop transferred to different monitor</li>
+<li><strong>desktop_focus</strong>: Desktop focus changed</li>
+<li><strong>desktop_activate</strong>: Desktop activated</li>
+<li><strong>desktop_layout</strong>: Layout changed</li>
+</ul>
+<h4 id="node-events"><a class="header" href="#node-events">Node Events</a></h4>
+<ul>
+<li><strong>node_add</strong>: Window added</li>
+<li><strong>node_remove</strong>: Window removed</li>
+<li><strong>node_swap</strong>: Windows swapped</li>
+<li><strong>node_transfer</strong>: Window transferred</li>
+<li><strong>node_focus</strong>: Window focus changed</li>
+<li><strong>node_activate</strong>: Window activated</li>
+<li><strong>node_presel</strong>: Preselection changed</li>
+<li><strong>node_stack</strong>: Stack order changed</li>
+<li><strong>node_geometry</strong>: Window geometry changed</li>
+<li><strong>node_state</strong>: Window state changed</li>
+<li><strong>node_flag</strong>: Window flag changed</li>
+<li><strong>node_layer</strong>: Stacking layer changed</li>
+</ul>
+<h4 id="report-event"><a class="header" href="#report-event">Report Event</a></h4>
+<p>The <strong>report</strong> event outputs the complete current state in a specific format.</p>
+<h3 id="event-processing-example"><a class="header" href="#event-processing-example">Event Processing Example</a></h3>
+<p>Using events to perform actions:</p>
+<pre><code class="language-bash">bspc subscribe node_add | while read -a msg; do
+    desk_id=${msg[^1_2]}
+    wid=${msg[^1_4]}
+    # Make new windows fullscreen
+    bspc node "$wid" -t fullscreen
+done
+</code></pre>
+<h2 id="wm-domain-window-manager-state"><a class="header" href="#wm-domain-window-manager-state">Wm Domain: Window Manager State</a></h2>
+<h3 id="global-window-manager-operations"><a class="header" href="#global-window-manager-operations">Global Window Manager Operations</a></h3>
+<p>The <strong>wm</strong> domain controls global window manager state and operations.</p>
+<h4 id="dump-state--d-and---dump-state"><a class="header" href="#dump-state--d-and---dump-state">Dump State: <code>-d</code> and <code>--dump-state</code></a></h4>
+<p>The <strong>-d</strong> or <code>--dump-state</code> flag outputs the complete window manager state. This is useful for backing up configurations or analysis.</p>
+<h4 id="load-state--l-and---load-state"><a class="header" href="#load-state--l-and---load-state">Load State: <code>-l</code> and <code>--load-state</code></a></h4>
+<p>The <strong>-l</strong> or <code>--load-state** flag restores a previously dumped state. Syntax: </code>bspc wm -l &lt;file_path&gt;`.</p>
+<h4 id="add-monitor--a-and---add-monitor"><a class="header" href="#add-monitor--a-and---add-monitor">Add Monitor: <code>-a</code> and <code>--add-monitor</code></a></h4>
+<p>The <strong>-a</strong> or <code>--add-monitor</code> flag manually adds a monitor to management. Syntax: <code>bspc wm -a &lt;name&gt; WxH+X+Y</code>. Useful for dynamic monitor addition.</p>
+<h4 id="reorder-monitors--o-and---reorder-monitors"><a class="header" href="#reorder-monitors--o-and---reorder-monitors">Reorder Monitors: <code>-O</code> and <code>--reorder-monitors</code></a></h4>
+<p>The <strong>-O</strong> or <code>--reorder-monitors</code> flag changes the global monitor order. Syntax: <code>bspc wm -O &lt;name&gt;...</code>.</p>
+<h4 id="adopt-orphans--o-and---adopt-orphans"><a class="header" href="#adopt-orphans--o-and---adopt-orphans">Adopt Orphans: <code>-o</code> and <code>--adopt-orphans</code></a></h4>
+<p>The <strong>-o</strong> or <code>--adopt-orphans</code> flag brings unmanaged windows under BSPWM control.</p>
+<h4 id="record-history--h-and---record-history"><a class="header" href="#record-history--h-and---record-history">Record History: <code>-h</code> and <code>--record-history</code></a></h4>
+<p>The <strong>-h</strong> or <code>--record-history** flag enables/disables command history logging. Syntax: </code>bspc wm -h on|off`.</p>
+<h4 id="get-status--g-and---get-status"><a class="header" href="#get-status--g-and---get-status">Get Status: <code>-g</code> and <code>--get-status</code></a></h4>
+<p>The <strong>-g</strong> or <code>--get-status</code> flag outputs the current status.</p>
+<h4 id="restart--r-and---restart"><a class="header" href="#restart--r-and---restart">Restart: <code>-r</code> and <code>--restart</code></a></h4>
+<p>The <strong>-r</strong> or `–restart** flag restarts BSPWM while preserving windows. This is useful during configuration updates.</p>
+<h2 id="window-states-and-flags"><a class="header" href="#window-states-and-flags">Window States and Flags</a></h2>
+<h3 id="window-states"><a class="header" href="#window-states">Window States</a></h3>
+<p>Each window maintains exactly one state at any time:</p>
+<h4 id="tiled"><a class="header" href="#tiled">Tiled</a></h4>
+<p><strong>Tiled</strong> state means the window fills its assigned tiling space without overlapping others. Windows are arranged according to the binary tree structure. This is the default state for new windows.</p>
+<h4 id="pseudo-tiled"><a class="header" href="#pseudo-tiled">Pseudo-Tiled</a></h4>
+<p><strong>Pseudo-tiled</strong> windows respect ICCCM size hints while being centered within their tiling space. They can be resized but maintain their centered position.</p>
+<h4 id="floating"><a class="header" href="#floating">Floating</a></h4>
+<p><strong>Floating</strong> windows can be positioned and resized freely anywhere on the desktop. They don’t participate in automatic tiling but remain part of the node tree.</p>
+<h4 id="fullscreen"><a class="header" href="#fullscreen">Fullscreen</a></h4>
+<p><strong>Fullscreen</strong> windows occupy their monitor’s entire rectangle with no borders. They’re placed above other content. When a fullscreen window is present and a new floating window is created, BSPWM must change the fullscreen window to tiled to display the floating window on top, unless the floating window is placed on the above layer.</p>
+<h3 id="window-flags"><a class="header" href="#window-flags">Window Flags</a></h3>
+<p>Flags are independent states that can be combined:</p>
+<h4 id="hidden"><a class="header" href="#hidden">Hidden</a></h4>
+<p><strong>Hidden</strong> windows don’t occupy tiling space and aren’t visible. They’re useful for implementing scratchpads and minimization-like functionality.</p>
+<h4 id="sticky"><a class="header" href="#sticky">Sticky</a></h4>
+<p><strong>Sticky</strong> windows follow the focused desktop on their monitor. When switching desktops, sticky windows appear on the new desktop.</p>
+<h4 id="private"><a class="header" href="#private">Private</a></h4>
+<p><strong>Private</strong> windows resist movement and resizing during automatic insertion. When inserting new windows into automatic mode, private nodes maintain their position and size rather than being split.</p>
+<h4 id="locked"><a class="header" href="#locked">Locked</a></h4>
+<p><strong>Locked</strong> windows ignore the close message sent by <code>bspc node -c</code>. They require forceful termination with <code>bspc node -k</code>.</p>
+<h4 id="marked"><a class="header" href="#marked">Marked</a></h4>
+<p><strong>Marked</strong> is an arbitrary flag useful for custom operations. It’s particularly valuable in conjunction with preselection to implement deferred window movement. Marked nodes automatically become unmarked when sent to a preselected node.</p>
+<h4 id="urgent"><a class="header" href="#urgent">Urgent</a></h4>
+<p><strong>Urgent</strong> indicates a window requiring attention. It’s typically set externally by applications (e.g., when incoming messages arrive). BSPWM uses this flag for window selection.</p>
+<h2 id="stacking-layers"><a class="header" href="#stacking-layers">Stacking Layers</a></h2>
+<p>BSPWM implements three independent stacking layers:</p>
+<ol>
+<li><strong>below</strong>: Lowest layer</li>
+<li><strong>normal</strong>: Middle layer (default)</li>
+<li><strong>above</strong>: Top layer</li>
+</ol>
+<p>Within each layer, the window order follows: tiled &amp; pseudo_tiled &lt; floating &lt; fullscreen. This means a floating window on the “below” layer appears above tiled windows on that layer but below all windows on the “normal” layer.</p>
+<h2 id="advanced-configuration-patterns-and-techniques"><a class="header" href="#advanced-configuration-patterns-and-techniques">Advanced Configuration Patterns and Techniques</a></h2>
+<h3 id="monitor-setup-and-multi-monitor-configuration"><a class="header" href="#monitor-setup-and-multi-monitor-configuration">Monitor Setup and Multi-Monitor Configuration</a></h3>
+<p>Setting up monitors requires careful use of the monitor domain commands:</p>
+<pre><code class="language-bash">#!/bin/bash
+# Example multi-monitor setup
+
+# External monitor setup
+bspc monitor eDP1 -d I II III IV V
+bspc monitor HDMI1 -d VI VII VIII IX X
+
+# Alternative: Conditional setup
+if xrandr | grep -q "HDMI1 connected"; then
+    xrandr --output HDMI1 --right-of eDP1 --auto
+    bspc monitor eDP1 -d I II III IV
+    bspc monitor HDMI1 -d V VI VII VIII
+fi
+</code></pre>
+<h3 id="floating-desktop-configuration"><a class="header" href="#floating-desktop-configuration">Floating Desktop Configuration</a></h3>
+<p>Creating desktops where all windows float by default:</p>
+<pre><code class="language-bash">bspc rule -a "*" -o desktop=floating_desktop state=floating
+bspc desktop floating_desktop -l tiled  # or any layout
+</code></pre>
+<h3 id="scratchpaddropdown-terminal-implementation"><a class="header" href="#scratchpaddropdown-terminal-implementation">Scratchpad/Dropdown Terminal Implementation</a></h3>
+<p>Using hidden sticky windows to create dropdown terminal functionality:</p>
+<pre><code class="language-bash"># Create dropdown terminal rule
+bspc rule -a dropdown -o sticky=on state=floating hidden=on rectangle=800x600+560+240
+
+# Launch dropdown terminal
+alacritty --class dropdown -e zsh &amp;
+
+# Toggle script
+bspc node any.hidden.sticky -g hidden -f
+</code></pre>
+<h3 id="receptacle-based-manual-layouts"><a class="header" href="#receptacle-based-manual-layouts">Receptacle-Based Manual Layouts</a></h3>
+<p>Using receptacles to build predefined layouts:</p>
+<pre><code class="language-bash"># Create three-pane layout with receptacles
+bspc node -i
+bspc node -p west -o 0.5
+bspc node -i
+bspc node -p south
+bspc node -i
+
+# Fill receptacles with windows - they automatically slot into place
+</code></pre>
+<h3 id="external-rules-for-complex-logic"><a class="header" href="#external-rules-for-complex-logic">External Rules for Complex Logic</a></h3>
+<p>When built-in rules aren’t sufficient, external rule scripts provide unlimited flexibility:</p>
+<pre><code class="language-bash">#!/bin/bash
+# /home/user/.config/bspwm/external_rules
+
+wid=$1
+class=$2
+instance=$3
+
+case "$class" in
+    Firefox)
+        if [ "$instance" = "firefox" ]; then
+            echo "desktop=^1 follow=on"
+        else
+            echo "desktop=^2"  # Private browsing to different desktop
+        fi
+        ;;
+    Blender)
+        echo "state=floating rectangle=1920x1080+0+0"
+        ;;
+    *)
+        # Default behavior
+        ;;
+esac
+</code></pre>
+<h3 id="event-driven-automatic-layouts"><a class="header" href="#event-driven-automatic-layouts">Event-Driven Automatic Layouts</a></h3>
+<p>Using subscribe to dynamically adapt behavior:</p>
+<pre><code class="language-bash"># Automatically switch to monocle in fullscreen windows
+bspc subscribe node_state | while read -a msg; do
+    if [ "${msg[^1_8]}" = "fullscreen" ] &amp;&amp; [ "${msg[^1_9]}" = "on" ]; then
+        desk_id=$(echo "${msg[^1_1]}" | cut -d':' -f2)
+        bspc desktop "$desk_id" -l monocle
+    fi
+done &amp;
+</code></pre>
+<h3 id="node-id-tracking-and-manipulation"><a class="header" href="#node-id-tracking-and-manipulation">Node ID Tracking and Manipulation</a></h3>
+<p>Storing and using node IDs for complex operations:</p>
+<pre><code class="language-bash"># Store node ID and move it later
+id=$(bspc query -N -n)
+# ... perform other operations ...
+bspc node "$id" -d '^2'  # Move stored node to desktop 2
+</code></pre>
+<h3 id="custom-layouts-with-master-stack"><a class="header" href="#custom-layouts-with-master-stack">Custom Layouts with Master Stack</a></h3>
+<p>While BSPWM provides only tiled and monocle, external scripts enable layouts like master-stack:</p>
+<pre><code class="language-bash"># Balance 3-pane layout
+bspc node @/ -B
+bspc node @/1 -r 0.66  # Make left side 66% of space
+</code></pre>
+<h3 id="pointer-action-configuration"><a class="header" href="#pointer-action-configuration">Pointer Action Configuration</a></h3>
+<p>Setting up mouse controls for floating window manipulation:</p>
+<pre><code class="language-bash"># Configure pointer modifier and actions
+bspc config pointer_modifier mod1          # Use Alt key
+bspc config pointer_action1 move           # Alt+Button1 moves
+bspc config pointer_action2 resize_side    # Alt+Button2 resizes edge
+bspc config pointer_action3 resize_corner  # Alt+Button3 resizes corner
+</code></pre>
+<h3 id="query-based-window-selection"><a class="header" href="#query-based-window-selection">Query-Based Window Selection</a></h3>
+<p>Complex window selection using query syntax:</p>
+<pre><code class="language-bash"># Find biggest window on current desktop and close it
+biggest=$(bspc query -N -n biggest.local.!fullscreen.window)
+bspc node "$biggest" -c
+
+# Focus all windows of same class
+class=$(bspc query -N -n | xargs -I {} xprop -id {} WM_CLASS | cut -d'"' -f2 | head -1)
+bspc node ".same_class" -f
+</code></pre>
+<h3 id="tree-manipulation-example"><a class="header" href="#tree-manipulation-example">Tree Manipulation Example</a></h3>
+<p>Using rotate, flip, and balance for dynamic layouts:</p>
+<pre><code class="language-bash"># Rotate current desktop tree 90 degrees
+bspc node @/ -R 90
+
+# Flip tree horizontally
+bspc node @/ -F horizontal
+
+# Balance all split ratios for equal window sizes
+bspc node @/ -B
+
+# Equal spacing (reset all ratios)
+bspc node @/ -E
+</code></pre>
+<h3 id="comprehensive-configuration-template"><a class="header" href="#comprehensive-configuration-template">Comprehensive Configuration Template</a></h3>
+<p>A sophisticated bspwmrc demonstrating multiple techniques:</p>
+<pre><code class="language-bash">#!/bin/bash
+# ~/.config/bspwm/bspwmrc
+
+# Start sxhkd for keybindings
+sxhkd &amp;
+
+# Monitor setup
+if xrandr | grep -q "HDMI1 connected"; then
+    xrandr --output HDMI1 --right-of eDP1 --auto
+    bspc monitor eDP1 -d 1 2 3 4 5
+    bspc monitor HDMI1 -d 6 7 8 9 10
+else
+    bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+fi
+
+# Global settings
+bspc config window_gap 12
+bspc config border_width 2
+bspc config top_padding 0
+bspc config bottom_padding 0
+bspc config left_padding 0
+bspc config right_padding 0
+
+# Colors
+bspc config normal_border_color "#3c3836"
+bspc config focused_border_color "#b8bb26"
+bspc config active_border_color "#a89984"
+
+# Layout and splitting
+bspc config split_ratio 0.5
+bspc config automatic_scheme longest_side
+bspc config initial_polarity second_child
+
+# Pointer
+bspc config pointer_modifier mod1
+bspc config pointer_action1 move
+bspc config pointer_action2 resize_side
+bspc config pointer_action3 resize_corner
+
+# EWMH
+bspc config ignore_ewmh_focus true
+bspc config ignore_ewmh_struts true
+
+# Focus behavior
+bspc config focus_follows_pointer false
+
+# Rules
+bspc rule -r '*'  # Clear existing rules
+
+bspc rule -a Firefox desktop='^1'
+bspc rule -a Thunderbird desktop='^2'
+bspc rule -a Slack desktop='^9'
+bspc rule -a feh state=floating
+bspc rule -a Gimp state=floating follow=on
+bspc rule -a St state=floating rectangle=800x600+560+240
+
+# External rules script
+bspc config external_rules_command ~/.config/bspwm/external_rules
+
+# Start status bar
+polybar main &amp;
+
+# Launch background apps
+nm-applet &amp;
+</code></pre>
+<h2 id="so-far"><a class="header" href="#so-far">So Far</a></h2>
+<ul>
+<li>
+<p>BSPWM represents a paradigm shift in window manager configuration philosophy. Rather than implementing every feature directly within the window manager, BSPWM provides a powerful, scriptable interface through <strong>bspc</strong> that enables users to build sophisticated configurations entirely from shell scripts. This approach offers unprecedented flexibility and transparency—users can see exactly what commands are being executed and modify them without learning specialized syntax.</p>
+</li>
+<li>
+<p>The comprehensive command set across six domains (node, desktop, monitor, query, rule, wm) combined with powerful selector syntax enables precise control over every aspect of window management. Advanced features like event subscription, external rule scripts, and tree manipulation operations provide the foundation for highly customized window management workflows.</p>
+</li>
+<li>
+<p>Mastering BSPWM configuration requires understanding the hierarchical structure of selectors, the binary tree model of window arrangement, and how to combine simple commands into complex behaviors. The sophisticated user can leverage all documented flags and options to create configurations that adapt dynamically to their workflow, automating complex window management scenarios through scripting and event handling.</p>
+</li>
+<li>
+<p>This documentation provides the authoritative reference for every flag, option, and configuration technique available in BSPWM, extracted from official sources and community expertise, enabling users to build the most sophisticated window management configurations possible.</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../ch3/Interface.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../ch5/Extended-Docs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../ch3/Interface.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../ch5/Extended-Docs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
