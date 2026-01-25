@@ -8,4 +8,6 @@
 - [Interface](./ch3/Interface.md)
 - [Writing Configs](./ch4/Writing-Configs.md)
 - [Extended Docs](./ch5/Extended-Docs.md)
+- [Config References](./refs/Refs.md)
+- [Contributing](./Contributing.md)
 

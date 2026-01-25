@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction : Basics - The Doc741</title>
+        <title>Config References - The Doc741</title>
 
 
         <!-- Custom HTML head -->
@@ -143,7 +143,7 @@
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
-                        <a href="https://github.com/rdbhvr-001/doc741/edit/main/src/ch1/Introduction.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/rdbhvr-001/doc741/edit/main/src/refs/Refs.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -177,329 +177,35 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <p>bspwm is a minimal tiling window manager: you mainly configure the WM via a shell script (<code>bspwmrc</code>) and handle keybindings via <code>sxhkd</code> (<code>sxhkdrc</code>).
-A good “getting started” path is: install <code>bspwm</code> + <code>sxhkd</code>, copy the example configs into <code>~/.config/…</code>, make <code>bspwmrc</code> executable, then start <code>sxhkd</code> and <code>bspwm</code> from your X session.</p>
-<h2 id="install-and-start"><a class="header" href="#install-and-start">Install and start</a></h2>
-<ul>
-<li>Install <code>bspwm</code> (the WM) and <code>sxhkd</code> (hotkey daemon).</li>
-<li>Start <code>bspwm</code> via Xinit (or a display manager session), since bspwm is an X11 window manager.</li>
-</ul>
-<h2 id="create-initial-config"><a class="header" href="#create-initial-config">Create initial config</a></h2>
-<ul>
-<li>Copy the example configs from <code>/usr/share/doc/bspwm/examples/</code> into:
-<ul>
-<li><code>~/.config/bspwm/bspwmrc</code></li>
-<li><code>~/.config/sxhkd/sxhkdrc</code></li>
-</ul>
-</li>
-<li>Make sure <code>bspwmrc</code> is executable, because it’s a shell script that configures bspwm by running <code>bspc</code> commands.</li>
-<li>ArchWiki’s example uses these commands (adjust if your distro differs):
-<ul>
-<li><code>install -Dm755 /usr/share/doc/bspwm/examples/bspwmrc ~/.config/bspwm/bspwmrc</code></li>
-<li><code>install -Dm644 /usr/share/doc/bspwm/examples/sxhkdrc ~/.config/sxhkd/sxhkdrc</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="learn-the-core-concepts"><a class="header" href="#learn-the-core-concepts">Learn the core concepts</a></h2>
-<ul>
-<li><code>bspwmrc</code> is where you set window manager behavior (desktops, gaps, rules, etc.) by sending messages with <code>bspc</code>.</li>
-<li><code>sxhkdrc</code> is where you define keybindings that typically call <code>bspc</code> (focus/move windows, switch desktops, launch apps).</li>
-<li>bspwm doesn’t handle keyboard input directly, so a hotkey daemon like <code>sxhkd</code> is required for shortcuts.</li>
-</ul>
-<h2 id="first-troubleshooting-checklist"><a class="header" href="#first-troubleshooting-checklist">First troubleshooting checklist</a></h2>
-<p>If you boot into a blank screen and keys don’t work, check these first:</p>
-<ul>
-<li><code>sxhkd</code> is installed and actually started (and started in the background, since it blocks).</li>
-<li><code>~/.config/bspwm/bspwmrc</code> is executable.</li>
-<li>Your <code>sxhkdrc</code> terminal command matches a terminal you have installed (the example config may reference <code>urxvt</code>).</li>
-</ul>
-<h2 id="1-core-architecture-the-binary-tree-philosophy"><a class="header" href="#1-core-architecture-the-binary-tree-philosophy">1. Core Architecture: The Binary Tree Philosophy</a></h2>
-<p>Unlike dynamic tilers (like DWM or Xmonad) that use predefined layout lists (master/stack, grid, spiral), bspwm is a <strong>manual</strong> tiler based on a data structure known as a <strong>full binary tree</strong>.</p>
-<h3 id="11-the-data-structure"><a class="header" href="#11-the-data-structure">1.1 The Data Structure</a></h3>
-<p>Every monitor contains at least one desktop. Every desktop is the root of a binary tree.</p>
-<ul>
-<li><strong>Nodes</strong>: The fundamental unit. A node is either a <em>leaf</em> (holding a window) or an <em>internal node</em> (holding two children).</li>
-<li><strong>Leaves</strong>: The actual application windows (e.g., Firefox, Terminal).</li>
-<li><strong>Internal Nodes</strong>: Containers that define the split direction (Horizontal/Vertical) and the split ratio (e.g., 0.5 for equal halves) between their two children.<br>
-<img src="../assets/binary-tree-structure.png" alt="BSPWM Binary Tree Structure">
+                        <h2 id="the-config-ref"><a class="header" href="#the-config-ref">The Config-Ref</a></h2>
+<p>Below given is a curated list of awesome bspwm configs for ready reference, cloning and experimentation. <strong>We do not advice you to blindly copy configs</strong>, instead read them and try writing them by your own. But it is up to you whether to <strong>use bspwm</strong> or <strong>build upon bspwm</strong>.</p>
+<p>These are some nice configurations that beginners should try learning and configuring.</p>
+<blockquote>
+<p><strong>Note :</strong> These configs are configured by various people as per their system requirements. You may run into issues if some scripts are not compactible or optimised for your system, or if you are missing some dependencies. Doc741 does not rank based on popularity, it is alphabetical order. No offense.</p>
+</blockquote>
+<h2 id="best-configurations"><a class="header" href="#best-configurations">Best Configurations</a></h2>
+<h3 id="1-archcraft-bspwm"><a class="header" href="#1-archcraft-bspwm">1) <a href="https://github.com/archcraft-os/archcraft-bspwm.git">Archcraft-Bspwm</a></a></h3>
+<p><strong>Desc :</strong> This is a very asthetic and beautiful bspwm configuration hand crafted personally for Archcraft OS by <a href="https://github.com/adi1090x">adi1090x</a>. Has rich polybar and rofi ecosystem.</p>
+<p><strong>Gallery :</strong></p>
+<p><img src="../assets/archcraft/01.png" alt="Preview"></p>
 <br>
-BSPWM Binary Tree Structure</li>
-</ul>
-<h3 id="12-the-implication-of-manual-tiling"><a class="header" href="#12-the-implication-of-manual-tiling">1.2 The Implication of “Manual” Tiling</a></h3>
-<p>In standard tilers, you “switch layouts.” In bspwm, you manipulate the tree directly.</p>
-<ul>
-<li><strong>Automatic Mode</strong>: Bspwm decides where the next window goes based on the <code>automatic_scheme</code> (usually “spiral” or “longest_side”).</li>
-<li><strong>Manual Mode</strong>: You explicitly “preselect” a region (North, South, East, West) on an existing node. The next window splits <em>that specific node</em> in the chosen direction.
-This architecture makes bspwm strictly <strong>deterministic</strong>. The layout is exactly what you build, nothing more, nothing less.</li>
-</ul>
-<h2 id="2-installation--environment"><a class="header" href="#2-installation--environment">2. Installation &amp; Environment</a></h2>
-<p>Bspwm adheres strictly to the Unix philosophy: “Do one thing and do it well.” It only manages windows. It does <strong>not</strong> handle:</p>
-<ul>
-<li>Keyboard input (handled by <code>sxhkd</code>)</li>
-<li>Compositing (handled by <code>picom</code>)</li>
-<li>Bars/Panels (handled by <code>polybar</code> or <code>lemonbar</code>)</li>
-<li>Wallpaper (handled by <code>feh</code> or <code>nitrogen</code>)</li>
-</ul>
-<h3 id="21-dependencies-arch-linux--general"><a class="header" href="#21-dependencies-arch-linux--general">2.1 Dependencies (Arch Linux / General)</a></h3>
-<p>You must install both the window manager and the hotkey daemon.</p>
-<pre><code class="language-bash"># Arch Linux
-sudo pacman -S bspwm sxhkd
-
-# Debian/Ubuntu
-sudo apt install bspwm sxhkd
-</code></pre>
-<h3 id="22-x11-session-entry"><a class="header" href="#22-x11-session-entry">2.2 X11 Session Entry</a></h3>
-<p>Because bspwm is just a binary, it must be launched via <code>.xinitrc</code> or a Display Manager (LightDM/GDM).
-<strong>File</strong>: <code>~/.xinitrc</code></p>
-<pre><code class="language-bash"># Load resources
-xrdb -merge ~/.Xresources &amp;
-
-# Start the hotkey daemon in the background (CRITICAL)
-sxhkd &amp;
-
-# Start the compositor (optional but recommended)
-picom &amp;
-
-# Set wallpaper
-feh --bg-fill ~/Pictures/wall.jpg &amp;
-
-# Set cursor shape (fixes "X" cursor bug)
-xsetroot -cursor_name left_ptr &amp;
-
-# Launch bspwm (must be the last line, no '&amp;')
-exec bspwm
-</code></pre>
-<h2 id="3-the-nervous-system-sxhkd"><a class="header" href="#3-the-nervous-system-sxhkd">3. The Nervous System: <code>sxhkd</code></a></h2>
-<p><code>sxhkd</code> is an X daemon that reacts to input events and executes commands. It is independent of bspwm but essential for it.
-<strong>Config Location</strong>: <code>~/.config/sxhkd/sxhkdrc</code></p>
-<h3 id="31-syntax--chords"><a class="header" href="#31-syntax--chords">3.1 Syntax &amp; Chords</a></h3>
-<p><code>sxhkd</code> uses a unique syntax that allows for “chord chains” (pressing keys in sequence) and “brace expansion” (compacting similar commands).</p>
-<h4 id="brace-expansion-the-power-feature"><a class="header" href="#brace-expansion-the-power-feature">Brace Expansion (The Power Feature)</a></h4>
-<p>Instead of writing 4 separate lines for moving windows, you write one:</p>
-<pre><code class="language-bash"># Move window node (super + shift + {h,j,k,l})
-super + shift + {h,j,k,l}
-    bspc node -v {-20 0, 0 20, 0 -20, 20 0}
-</code></pre>
-<ul>
-<li>When you press <code>Super + Shift + h</code>, it executes <code>bspc node -v -20 0</code>.</li>
-<li>When you press <code>Super + Shift + j</code>, it executes <code>bspc node -v 0 20</code>.</li>
-</ul>
-<h4 id="chord-chains"><a class="header" href="#chord-chains">Chord Chains</a></h4>
-<p>You can create “modes” without actual modes.</p>
-<pre><code class="language-bash"># Press Super + o, release, then press 'r' to reload config
-super + o ; r
-    bspc wm -r
-</code></pre>
-<h3 id="32-essential-keybindings-table"><a class="header" href="#32-essential-keybindings-table">3.2 Essential Keybindings Table</a></h3>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th style="text-align: left">Key Chord</th><th style="text-align: left">Command</th><th style="text-align: left">Description</th></tr>
-</thead>
-<tbody>
-<tr><td style="text-align: left"><code>super + Return</code></td><td style="text-align: left"><code>$TERMINAL</code></td><td style="text-align: left">Launch terminal</td></tr>
-<tr><td style="text-align: left"><code>super + w</code></td><td style="text-align: left"><code>bspc node -c</code></td><td style="text-align: left">Close focused window</td></tr>
-<tr><td style="text-align: left"><code>super + {h,j,k,l}</code></td><td style="text-align: left"><code>bspc node -f {west,south,north,east}</code></td><td style="text-align: left">Focus window directionally</td></tr>
-<tr><td style="text-align: left"><code>super + {1-9}</code></td><td style="text-align: left"><code>bspc desktop -f ^{1-9}</code></td><td style="text-align: left">Switch to desktop 1-9</td></tr>
-<tr><td style="text-align: left"><code>super + shift + {1-9}</code></td><td style="text-align: left"><code>bspc node -d ^{1-9}</code></td><td style="text-align: left">Send window to desktop 1-9</td></tr>
-</tbody>
-</table>
-</div>
-<h2 id="4-the-brain-bspwmrc"><a class="header" href="#4-the-brain-bspwmrc">4. The Brain: <code>bspwmrc</code></a></h2>
-<p><strong>File</strong>: <code>~/.config/bspwm/bspwmrc</code>
-<strong>Requirement</strong>: Must be executable (<code>chmod +x bspwmrc</code>).
-This file is simply a shell script. It runs once at startup. If you change it, you must reload bspwm (<code>bspc wm -r</code>) to re-run it.</p>
-<h3 id="41-monitor-configuration"><a class="header" href="#41-monitor-configuration">4.1 Monitor Configuration</a></h3>
-<p>You must explicitly map desktops to monitors. If you plug in a second monitor, bspwm won’t use it until you tell it to.</p>
-<pre><code class="language-bash">#!/bin/sh
-
-# Clean setup for one or two monitors
-if [[ $(xrandr -q | grep "HDMI-0 connected") ]]; then
-    # Dual monitor setup
-    bspc monitor DP-0 -d I II III IV V
-    bspc monitor HDMI-0 -d VI VII VIII IX X
-else
-    # Single monitor setup
-    bspc monitor DP-0 -d I II III IV V VI VII VIII IX X
-fi
-</code></pre>
-<h3 id="42-global-aesthetics"><a class="header" href="#42-global-aesthetics">4.2 Global Aesthetics</a></h3>
-<pre><code class="language-bash"># Border width (pixels)
-bspc config border_width         2
-
-# Window gap (space between windows)
-bspc config window_gap          12
-
-# Split ratio (0.5 = 50/50 split)
-bspc config split_ratio          0.50
-
-# Border colors
-bspc config normal_border_color "#4c566a"
-bspc config focused_border_color "#88c0d0"
-
-# Focus follows mouse (true/false)
-bspc config focus_follows_pointer true
-</code></pre>
-<h2 id="5-control-plane-mastering-bspc"><a class="header" href="#5-control-plane-mastering-bspc">5. Control Plane: Mastering <code>bspc</code></a></h2>
-<p><code>bspc</code> (Binary Space Partitioning Control) is the command-line client. You use it in <code>bspwmrc</code>, <code>sxhkdrc</code>, and your own scripts. Understanding <code>bspc</code> is understanding bspwm.</p>
-<h3 id="51-selectors-the-query-language"><a class="header" href="#51-selectors-the-query-language">5.1 Selectors: The Query Language</a></h3>
-<p>Almost every <code>bspc</code> command requires you to select a target.</p>
-<ul>
-<li><strong>Nodes</strong>: <code>-n</code> (Target a window)</li>
-<li><strong>Desktops</strong>: <code>-d</code> (Target a workspace)</li>
-<li><strong>Monitors</strong>: <code>-m</code> (Target a screen)</li>
-</ul>
-<h4 id="advanced-node-selectors"><a class="header" href="#advanced-node-selectors">Advanced Node Selectors</a></h4>
-<p>You can target nodes based on relationships, flags, or history.</p>
-<ul>
-<li><code>focused</code>: The currently active window.</li>
-<li><code>east</code>, <code>west</code>, <code>north</code>, <code>south</code>: Directional neighbors.</li>
-<li><code>last</code>: The previously focused node.</li>
-<li><code>biggest</code>: The largest node on the desktop.</li>
-<li><code>@parent</code>: The internal node holding the current window and its sibling.
-<strong>Example</strong>: Swap the current window with the biggest window on the desktop:</li>
-</ul>
-<pre><code class="language-bash">bspc node -s biggest.local
-</code></pre>
-<h3 id="52-node-modifications"><a class="header" href="#52-node-modifications">5.2 Node Modifications</a></h3>
-<ul>
-<li><strong>Flags</strong>: Nodes can be <code>hidden</code>, <code>sticky</code> (follows you across desktops), <code>private</code> (ignored by some queries), or <code>locked</code> (cannot be closed).</li>
-</ul>
-<pre><code class="language-bash">bspc node -g sticky  # Toggle sticky
-bspc node -t floating # Float the window
-</code></pre>
-<ul>
-<li><strong>Preselection</strong>: The killer feature. Define where the <em>next</em> window opens.</li>
-</ul>
-<pre><code class="language-bash">bspc node -p south   # Preselect the bottom half
-bspc node -p cancel  # Cancel preselection
-</code></pre>
-<h2 id="6-window-management-dynamics"><a class="header" href="#6-window-management-dynamics">6. Window Management Dynamics</a></h2>
-<h3 id="61-manual-vs-automatic"><a class="header" href="#61-manual-vs-automatic">6.1 Manual vs. Automatic</a></h3>
-<p>By default, bspwm splits windows automatically (spiraling inward).
-To take control, you use <strong>Preselection</strong>.</p>
-<ol>
-<li><strong>Input</strong>: User presses <code>Super + Ctrl + L</code> (East).</li>
-<li><strong>Visual Feedback</strong>: Bspwm highlights the right half of the current node in a distinct color (configurable via <code>presel_feedback_color</code>).</li>
-<li><strong>Action</strong>: User opens a terminal.</li>
-<li><strong>Result</strong>: The terminal spawns exactly in that highlighted area.</li>
-</ol>
-<h3 id="62-receptacles"><a class="header" href="#62-receptacles">6.2 Receptacles</a></h3>
-<p>A <strong>Receptacle</strong> is a “placeholder” node—a leaf that contains no window. It reserves space in the tree layout.</p>
-<ul>
-<li><strong>Use case</strong>: You want to build a complex layout (e.g., 3 small windows on the left, one big on the right) <em>before</em> you open the applications.</li>
-<li><strong>Command</strong>: <code>bspc node -i</code> (Insert receptacle).</li>
-</ul>
-<h3 id="63-swallowing-terminal-suppression"><a class="header" href="#63-swallowing-terminal-suppression">6.3 Swallowing (Terminal Suppression)</a></h3>
-<p>“Swallowing” is when you launch a GUI app (like MPV or Sxiv) from a terminal, and the terminal disappears, being “swallowed” by the new app. When the app closes, the terminal returns.</p>
-<ul>
-<li>Bspwm does not do this natively.</li>
-<li><strong>Solution</strong>: Use an external listener script or a wrapper tool like <code>devour</code> in your sxhkd config.</li>
-</ul>
-<h2 id="7-advanced-logic-external-rules"><a class="header" href="#7-advanced-logic-external-rules">7. Advanced Logic: External Rules</a></h2>
-<p>This is bspwm’s most powerful configuration feature. Instead of a simple “If app is Firefox -&gt; move to desktop 2” list, you can point bspwm to a script.
-<strong>Config</strong>: <code>bspc config external_rules_command ~/.config/bspwm/external_rules</code></p>
-<h3 id="71-the-external-rules-script"><a class="header" href="#71-the-external-rules-script">7.1 The External Rules Script</a></h3>
-<p>Bspwm passes the Window ID, Class, Instance, and Title to this script as arguments. The script prints commands to <code>stdout</code> that bspwm executes for that specific window.</p>
-<p><strong>Example: <code>~/.config/bspwm/external_rules</code></strong></p>
-<pre><code class="language-bash">#!/bin/sh
-
-wid=$1
-class=$2
-instance=$3
-title=$(xtitle "$wid")
-
-# If it's a Picture-in-Picture window (Firefox/Chrome)
-if [ "$title" = "Picture-in-Picture" ]; then
-    echo "state=floating"
-    echo "sticky=on"
-    echo "border=off"
-    exit 0
-fi
-
-# If it's GIMP, move to desktop 8 and follow it
-if [ "$class" = "Gimp" ]; then
-    echo "desktop=^8"
-    echo "follow=on"
-    exit 0
-fi
-
-# Complex logic: If 2 nodes already exist on desktop 1, send next one to desktop 2
-count=$(bspc query -N -d ^1 | wc -l)
-if [ "$count" -ge 2 ]; then
-    echo "desktop=^2"
-fi
-</code></pre>
-<p>This allows for logic impossible in other window managers (e.g., “Float this window only if it’s Tuesday and I’m on Monitor 2”).</p>
-<h2 id="8-the-ecosystem"><a class="header" href="#8-the-ecosystem">8. The Ecosystem</a></h2>
-<p>A “naked” bspwm is just black screens. You need the ecosystem to make it a workstation.</p>
-<h3 id="81-polybar-status-bar"><a class="header" href="#81-polybar-status-bar">8.1 Polybar (Status Bar)</a></h3>
-<p>Polybar has a built-in <code>bspwm</code> module. It can display the focused desktop, occupied desktops, and urgent alerts.
-<strong>Module Config</strong>:</p>
-<pre><code class="language-ini">[module/bspwm]
-type = internal/bspwm
-label-focused = %name%
-label-focused-background = #3b4252
-label-focused-underline= #88c0d0
-label-occupied = %name%
-label-urgent = %name%!
-label-empty =
-</code></pre>
-<h3 id="82-rofi-application-launcher"><a class="header" href="#82-rofi-application-launcher">8.2 Rofi (Application Launcher)</a></h3>
-<p>Rofi works perfectly as a menu. Bind it in <code>sxhkd</code>:</p>
-<pre><code class="language-bash">super + space
-    rofi -show drun -show-icons
-</code></pre>
-<h3 id="83-scratchpads-hidden-windows"><a class="header" href="#83-scratchpads-hidden-windows">8.3 Scratchpads (Hidden Windows)</a></h3>
-<p>Bspwm creates scratchpads easily using node flags.</p>
-<ol>
-<li><strong>Hide</strong>: <code>bspc node -g hidden -f</code></li>
-<li><strong>Show</strong>: <code>bspc node &lt;selector&gt; -g hidden=off -f</code>
-<strong>Scripted Toggle (Sticky Scratchpad)</strong>:</li>
-</ol>
-<pre><code class="language-bash">#!/bin/sh
-id=$(xdotool search --class "scratchpad_term" | tail -1)
-
-if [ -z "$id" ]; then
-    # Launch if not running
-    alacritty --class scratchpad_term &amp;
-else
-    # Toggle visibility
-    if bspc query -N -n "$id.hidden"; then
-        bspc node "$id" -g hidden=off -d focused -f
-    else
-        bspc node "$id" -g hidden=on
-    fi
-fi
-</code></pre>
-<h2 id="9-troubleshooting--debugging"><a class="header" href="#9-troubleshooting--debugging">9. Troubleshooting &amp; Debugging</a></h2>
-<h3 id="91-the-blank-screen-of-death"><a class="header" href="#91-the-blank-screen-of-death">9.1 The Blank Screen of Death</a></h3>
-<p>If you log in and see nothing:</p>
-<ol>
-<li><strong>Check Executable</strong>: Did you <code>chmod +x ~/.config/bspwm/bspwmrc</code>?</li>
-<li><strong>Check sxhkd</strong>: Is <code>sxhkd</code> running? Switch to TTY (<code>Ctrl+Alt+F2</code>), login, and run <code>pidof sxhkd</code>.</li>
-<li><strong>Check Terminal</strong>: Does your <code>sxhkdrc</code> launch a terminal you actually have installed? (Default is often <code>urxvt</code>, you might have <code>alacritty</code> or <code>kitty</code>).</li>
-</ol>
-<h3 id="92-tree-visualization"><a class="header" href="#92-tree-visualization">9.2 Tree Visualization</a></h3>
-<p>To understand why your windows are splitting weirdly, dump the tree state:</p>
-<pre><code class="language-bash">bspc query -T -d | jq .
-</code></pre>
-<p>This outputs the JSON representation of the current desktop’s binary tree.</p>
-<h3 id="93-orphaned-nodes"><a class="header" href="#93-orphaned-nodes">9.3 Orphaned Nodes</a></h3>
-<p>Sometimes a “ghost” node remains. Cleanup:</p>
-<pre><code class="language-bash"># Remove the node explicitly
-bspc node &lt;node_id&gt; -k
-</code></pre>
+<h3 id="2-gh0stzk-dotfiles"><a class="header" href="#2-gh0stzk-dotfiles">2) <a href="https://github.com/gh0stzk/dotfiles.git">Gh0stzk-Dotfiles</a></a></h3>
+<p><strong>Desc :</strong> These dotfiles are designed with the goal of providing a bspwm environment that is lightweight, efficient, and functional, tailored for any use. Has rich theming system, about 18 prebuilt themes. [This is original text] from <a href="https://github.com/gh0stzk">gh0stzk</a>.</p>
+<p><strong>Gallery :</strong></p>
+<p><img src="../assets/gh0stzk/01.webp" alt="Preview"></p>
+<br>
+<h2 id="how-to-get-yours-here"><a class="header" href="#how-to-get-yours-here">How to get yours here</a></h2>
+<p>Make a pull request to the repository linking your bspwm dotfile repository with description. If you have a very good documentation and configuration for bspwm with a nice asthetic, your bspwm configuration can mean a lot to others. It will be added to the list.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../Mastering-Bspwm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../ch5/Extended-Docs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../ch1/Architechture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../Contributing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -509,11 +215,11 @@ bspc node &lt;node_id&gt; -k
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../Mastering-Bspwm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../ch5/Extended-Docs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../ch1/Architechture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../Contributing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

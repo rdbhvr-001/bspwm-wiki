@@ -32,20 +32,20 @@ This documentation aims in providing short scripts, cool tips for speeding up wo
 
 Everything you want to know about the bspwm window manager, you will get it here...
 
-## Contributing to Doc741
+## Help People Discover Doc741
 
-1) Help others find about such an extensive documentation for bspwm by contributing to this project. You can open up pull requests, do corrections and error analysis for the code blocks in this documentation and expand it by adding specific case examples and linking other bspwm related projects.
+1) Help others find about such an extensive documentation for bspwm by [contributing](./Contributing.md) to this project. You can open up pull requests, do corrections and error analysis for the code blocks in this documentation and expand it by adding specific case examples and linking other bspwm related projects.
 
-2) If you find this documentation really useful to you, you can star this repository which will increase the ease with which this project is found.
+2) If you find this documentation really useful to you, you can star this [repository](https://github.com/rdbhvr-001/doc741.git) which will increase the ease with which this documentation is found and make it easier for people to reach out to this.
 
-3) If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository
+3) If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository.
 
 ## Github repositories
 
 1) [Official BSPWM Binary : baskerville/bspwm](https://github.com/baskerville/bspwm.git)
-2) [https://github.com/rdbhvr-001/doc741.git](https://github.com/rdbhvr-001/doc741.git)
+2) [Official Documentation Repository : rdbhvr-001/doc741](https://github.com/rdbhvr-001/doc741.git)
 
 ## Pages
 
 1) [Documentation : This Page](https://rdbhvr-001.github.io/doc741)
-
+ 

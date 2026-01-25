@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ff53851b.js";
+            window.path_to_searchindex_js = "../searchindex-049df115.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-0fa95834.js"></script>
+        <script src="../toc-456c2d2b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -143,6 +143,9 @@
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
+                        <a href="https://github.com/rdbhvr-001/doc741/edit/main/src/ch2/Basics.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
 
                     </div>
                 </div>
@@ -174,8 +177,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="binary-tree-structure-and-partitioning-in-bspwm-a-comprehensive-explanation"><a class="header" href="#binary-tree-structure-and-partitioning-in-bspwm-a-comprehensive-explanation">Binary Tree Structure and Partitioning in BSPWM: A Comprehensive Explanation</a></h1>
-<h2 id="overview-and-core-concepts"><a class="header" href="#overview-and-core-concepts">Overview and Core Concepts</a></h2>
+                        <h2 id="overview-and-core-concepts"><a class="header" href="#overview-and-core-concepts">Overview and Core Concepts</a></h2>
 <p>BSPWM (Binary Space Partitioning Window Manager) is a <strong>tiling window manager that represents windows as the leaves of a full binary tree</strong>. The fundamental innovation of bspwm is its use of binary space partitioning—a recursive subdivision algorithm that divides two-dimensional screen space into increasingly smaller rectangular regions—to manage window layout and positioning. Unlike traditional stacking window managers or even other tiling managers like i3 that use arbitrary tree structures, bspwm constrains itself to strictly binary trees, meaning <strong>each internal node can have exactly zero or two children</strong>. This architectural decision provides both elegance and flexibility, allowing users to manipulate the window hierarchy with sophisticated tree-based operations while maintaining simplicity in the core data structure.</p>
 <p>The genius of bspwm lies in how it translates the abstract concept of binary space partitioning into practical window management. When you open windows in bspwm, each new window becomes a leaf node in the binary tree. Every time a second window is added as a sibling to an existing window, the window manager automatically creates an <strong>internal node (also called a parent node)</strong> that serves as a container for both windows. This internal node represents the split between the two windows—it stores information about whether the split is horizontal or vertical and what ratio the rectangle is divided by. The recursive nature of this process means that adding a third window creates a new internal node with its own children, and this pattern continues indefinitely, building increasingly complex tree structures.</p>
 <p>Understanding the binary tree structure in bspwm requires grasping several fundamental concepts from data structures and computer science. <strong>Nodes</strong> are the fundamental units of the tree; each node contains data and pointers to its children. In bspwm’s case, leaf nodes hold window references, while internal nodes store splitting information. <strong>Leaf nodes</strong> are nodes with no children and represent actual windows currently open on your screen. <strong>Internal nodes</strong> are nodes with at least one child; in bspwm, internal nodes always have exactly two children due to the binary tree constraint. <strong>Parent nodes</strong> have child nodes branching from them, <strong>sibling nodes</strong> share the same parent, and <strong>root nodes</strong> are the topmost nodes from which all other nodes descend.</p>
@@ -385,6 +387,22 @@ struct node_t {
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

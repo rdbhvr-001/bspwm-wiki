@@ -1,6 +1,3 @@
-
-# Comprehensive Guide to bspwm's Core Interface: bspc Command and Its Internals
-
 ## Overview and Architecture
 
 **bspc** (bspwm socket client) is the foundational command-line interface that enables all user interaction with the **bspwm** window manager. Rather than implementing complex, built-in keyboard handling or graphical menus, bspwm delegates this responsibility entirely to external tools, with bspc acting as the primary bridge between user scripts (commonly managed by sxhkd—the simple X hotkey daemon) and the bspwm daemon itself.

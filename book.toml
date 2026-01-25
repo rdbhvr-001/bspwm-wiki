@@ -2,3 +2,7 @@
 title = "The Doc741"
 authors = ["rdbhvr"]
 language = "en"
+
+[output.html]
+edit-url-template = "https://github.com/rdbhvr-001/doc741/edit/main/{path}"
+

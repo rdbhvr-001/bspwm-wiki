@@ -1,6 +1,3 @@
-
-# Comprehensive Guide to BSPWM Configuration
-
 ## Executive Summary
 
 This documentation provides an in-depth exploration of **bspwm** (Binary Space Partitioning Window Manager) configuration, derived entirely from authoritative web sources. BSPWM is a sophisticated tiling window manager that represents windows as leaves of a full binary tree, controlled entirely through the **bspc** command-line client. This guide comprehensively covers every flag, command-line option, configuration setting, and advanced technique required to create a highly sophisticated and customized BSPWM environment. The documentation is organized to progress from foundational concepts through complex configuration scenarios, with detailed explanations of each component extracted directly from official documentation and community resources.

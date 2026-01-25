@@ -1,6 +1,3 @@
-
-# Binary Tree Structure and Partitioning in BSPWM: A Comprehensive Explanation
-
 ## Overview and Core Concepts
 
 BSPWM (Binary Space Partitioning Window Manager) is a **tiling window manager that represents windows as the leaves of a full binary tree**. The fundamental innovation of bspwm is its use of binary space partitioning—a recursive subdivision algorithm that divides two-dimensional screen space into increasingly smaller rectangular regions—to manage window layout and positioning. Unlike traditional stacking window managers or even other tiling managers like i3 that use arbitrary tree structures, bspwm constrains itself to strictly binary trees, meaning **each internal node can have exactly zero or two children**. This architectural decision provides both elegance and flexibility, allowing users to manipulate the window hierarchy with sophisticated tree-based operations while maintaining simplicity in the core data structure.
@@ -277,4 +274,3 @@ This extensibility is perhaps bspwm's greatest strength: it's not trying to be e
 * Understanding bspwm requires moving beyond thinking of it as merely a window manager and appreciating it as a direct implementation of computer science data structures and algorithms. The binary tree isn't just an implementation detail—it's the defining characteristic that makes bspwm flexible, powerful, and philosophically different from other tiling managers. Whether you use bspwm with its default automatic schemes or extend it with custom scripts, you're working with a professionally designed data structure that has proven optimal across multiple domains of computer science.
 
 * For users who take time to understand the tree structure, bspwm unlocks capabilities that are difficult or impossible in other window managers: subtree rotations, surgical tree restructuring, mathematically defined layouts, and scriptable tree manipulation. This depth of capability, grounded in solid theory and elegant implementation, is why bspwm continues to appeal to advanced users and why learning its tree structure and partitioning mechanisms is well worth the effort.
-

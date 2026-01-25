@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ff53851b.js";
+            window.path_to_searchindex_js = "searchindex-049df115.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-0fa95834.js"></script>
+        <script src="toc-456c2d2b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -195,22 +195,22 @@ done
 <p>Another powerful feature is the <code>selector magic : @</code>, which looks like : <code>bspc node -f @parent</code>, which lets you targe relative nodes - parent, first child, brother, etc…</p>
 <p>This documentation aims in providing short scripts, cool tips for speeding up workflows, links to several popular bspwm configurations for quick references, a detailed explanation for the working logic behind bspwm, complete manipulation of the windows, advanced configurations and complex logic structures like : <strong>Open alacritty in the second workspace on every sunday nights in horizontally tiled mode along with ncmpcpp in a seperate alacritty window with so and so split ratio</strong>, when you have the habit of listening to music on sunday nights while working!</p>
 <p>Everything you want to know about the bspwm window manager, you will get it here…</p>
-<h2 id="contributing-to-doc741"><a class="header" href="#contributing-to-doc741">Contributing to Doc741</a></h2>
+<h2 id="help-people-discover-doc741"><a class="header" href="#help-people-discover-doc741">Help People Discover Doc741</a></h2>
 <ol>
 <li>
-<p>Help others find about such an extensive documentation for bspwm by contributing to this project. You can open up pull requests, do corrections and error analysis for the code blocks in this documentation and expand it by adding specific case examples and linking other bspwm related projects.</p>
+<p>Help others find about such an extensive documentation for bspwm by <a href="#how-to-contribute-to-doc741">contributing</a> to this project. You can open up pull requests, do corrections and error analysis for the code blocks in this documentation and expand it by adding specific case examples and linking other bspwm related projects.</p>
 </li>
 <li>
-<p>If you find this documentation really useful to you, you can star this repository which will increase the ease with which this project is found.</p>
+<p>If you find this documentation really useful to you, you can star this <a href="https://github.com/rdbhvr-001/doc741.git">repository</a> which will increase the ease with which this documentation is found and make it easier for people to reach out to this.</p>
 </li>
 <li>
-<p>If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository</p>
+<p>If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository.</p>
 </li>
 </ol>
 <h2 id="github-repositories"><a class="header" href="#github-repositories">Github repositories</a></h2>
 <ol>
 <li><a href="https://github.com/baskerville/bspwm.git">Official BSPWM Binary : baskerville/bspwm</a></li>
-<li><a href="https://github.com/rdbhvr-001/doc741.git">https://github.com/rdbhvr-001/doc741.git</a></li>
+<li><a href="https://github.com/rdbhvr-001/doc741.git">Official Documentation Repository : rdbhvr-001/doc741</a></li>
 </ol>
 <h2 id="pages"><a class="header" href="#pages">Pages</a></h2>
 <ol>
@@ -374,7 +374,7 @@ done
 <li><strong>Visual Debugging</strong>: Using <code>bspc query -T</code> piped to <code>jq</code> to visualize why a window is stuck in a specific split.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="getting-started-with-bspwm-window-manager"><a class="header" href="#getting-started-with-bspwm-window-manager">Getting started with bspwm window manager</a></h1>
+<h1 id="introduction--basics"><a href="#introduction--basics" class="header">Introduction : Basics</a></h1>
 <p>bspwm is a minimal tiling window manager: you mainly configure the WM via a shell script (<code>bspwmrc</code>) and handle keybindings via <code>sxhkd</code> (<code>sxhkdrc</code>).
 A good “getting started” path is: install <code>bspwm</code> + <code>sxhkd</code>, copy the example configs into <code>~/.config/…</code>, make <code>bspwmrc</code> executable, then start <code>sxhkd</code> and <code>bspwm</code> from your X session.</p>
 <h2 id="install-and-start"><a class="header" href="#install-and-start">Install and start</a></h2>
@@ -689,7 +689,7 @@ fi
 bspc node &lt;node_id&gt; -k
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="the-bspwm-architecture"><a class="header" href="#the-bspwm-architecture">The Bspwm Architecture</a></h1>
+<h1 id="introduction--architecture"><a href="#introduction--architecture" class="header">Introduction : Architecture</a></h1>
 <h2 id="1-architectural-internals"><a class="header" href="#1-architectural-internals">1. Architectural Internals</a></h2>
 <h3 id="11-the-binary-space-partitioning-bsp-model"><a class="header" href="#11-the-binary-space-partitioning-bsp-model">1.1 The Binary Space Partitioning (BSP) Model</a></h3>
 <p>At its core, <strong>bspwm</strong> differs fundamentally from dynamic tilers (like i3, dwm, or xmonad) because it maps windows directly to the leaves of a <strong>full binary tree</strong>. There are no “lists” or “stacks” of windows; there is only the tree.</p>
@@ -862,7 +862,7 @@ This allows bars to update instantly without polling.</li>
 </ol>
 <p>This entire chain happens in milliseconds, driven by the binary tree logic that ensures no two windows ever overlap (unless floating).</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="binary-tree-structure-and-partitioning-in-bspwm-a-comprehensive-explanation"><a class="header" href="#binary-tree-structure-and-partitioning-in-bspwm-a-comprehensive-explanation">Binary Tree Structure and Partitioning in BSPWM: A Comprehensive Explanation</a></h1>
+<h1 id="basics"><a href="#basics" class="header">Basics</a></h1>
 <h2 id="overview-and-core-concepts"><a class="header" href="#overview-and-core-concepts">Overview and Core Concepts</a></h2>
 <p>BSPWM (Binary Space Partitioning Window Manager) is a <strong>tiling window manager that represents windows as the leaves of a full binary tree</strong>. The fundamental innovation of bspwm is its use of binary space partitioning—a recursive subdivision algorithm that divides two-dimensional screen space into increasingly smaller rectangular regions—to manage window layout and positioning. Unlike traditional stacking window managers or even other tiling managers like i3 that use arbitrary tree structures, bspwm constrains itself to strictly binary trees, meaning <strong>each internal node can have exactly zero or two children</strong>. This architectural decision provides both elegance and flexibility, allowing users to manipulate the window hierarchy with sophisticated tree-based operations while maintaining simplicity in the core data structure.</p>
 <p>The genius of bspwm lies in how it translates the abstract concept of binary space partitioning into practical window management. When you open windows in bspwm, each new window becomes a leaf node in the binary tree. Every time a second window is added as a sibling to an existing window, the window manager automatically creates an <strong>internal node (also called a parent node)</strong> that serves as a container for both windows. This internal node represents the split between the two windows—it stores information about whether the split is horizontal or vertical and what ratio the rectangle is divided by. The recursive nature of this process means that adding a third window creates a new internal node with its own children, and this pattern continues indefinitely, building increasingly complex tree structures.</p>
@@ -1038,7 +1038,7 @@ struct node_t {
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="comprehensive-guide-to-bspwms-core-interface-bspc-command-and-its-internals"><a class="header" href="#comprehensive-guide-to-bspwms-core-interface-bspc-command-and-its-internals">Comprehensive Guide to bspwm’s Core Interface: bspc Command and Its Internals</a></h1>
+<h1 id="interface"><a href="#interface" class="header">Interface</a></h1>
 <h2 id="overview-and-architecture"><a class="header" href="#overview-and-architecture">Overview and Architecture</a></h2>
 <p><strong>bspc</strong> (bspwm socket client) is the foundational command-line interface that enables all user interaction with the <strong>bspwm</strong> window manager. Rather than implementing complex, built-in keyboard handling or graphical menus, bspwm delegates this responsibility entirely to external tools, with bspc acting as the primary bridge between user scripts (commonly managed by sxhkd—the simple X hotkey daemon) and the bspwm daemon itself.</p>
 <p>The architectural elegance of this design cannot be overstated. By separating concerns, bspwm maintains a lean, focused responsibility: managing the window tree structure and responding to X11 events. Meanwhile, bspc becomes the universal command-line API through which virtually all administrative and operational commands flow. This philosophy—described as “do one thing and do it well”—has enabled bspwm to become highly scriptable and customizable.</p>
@@ -2486,7 +2486,7 @@ bspc query -N -n .marked | xargs -I {} bspc node {} --flag marked off
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="comprehensive-guide-to-bspwm-configuration"><a class="header" href="#comprehensive-guide-to-bspwm-configuration">Comprehensive Guide to BSPWM Configuration</a></h1>
+<h1 id="writing-configs"><a href="#writing-configs" class="header">Writing Configs</a></h1>
 <h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
 <p>This documentation provides an in-depth exploration of <strong>bspwm</strong> (Binary Space Partitioning Window Manager) configuration, derived entirely from authoritative web sources. BSPWM is a sophisticated tiling window manager that represents windows as leaves of a full binary tree, controlled entirely through the <strong>bspc</strong> command-line client. This guide comprehensively covers every flag, command-line option, configuration setting, and advanced technique required to create a highly sophisticated and customized BSPWM environment. The documentation is organized to progress from foundational concepts through complex configuration scenarios, with detailed explanations of each component extracted directly from official documentation and community resources.</p>
 <h2 id="understanding-the-architecture-and-fundamental-concepts"><a class="header" href="#understanding-the-architecture-and-fundamental-concepts">Understanding the Architecture and Fundamental Concepts</a></h2>
@@ -6290,6 +6290,85 @@ super + alt + f
 <p>Whether you’re a developer seeking efficient workspace management, a power user who wants complete control over your desktop environment, or someone simply tired of mouse-driven window management, BSPWM provides the tools and flexibility to create a window management system tailored exactly to your needs. The learning curve is steep, but the rewards in productivity and customization justify the investment.</p>
 </li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="config-references"><a href="#config-references" class="header">Config References</a></h1>
+<h2 id="the-config-ref"><a class="header" href="#the-config-ref">The Config-Ref</a></h2>
+<p>Below given is a curated list of awesome bspwm configs for ready reference, cloning and experimentation. <strong>We do not advice you to blindly copy configs</strong>, instead read them and try writing them by your own. But it is up to you whether to <strong>use bspwm</strong> or <strong>build upon bspwm</strong>.</p>
+<p>These are some nice configurations that beginners should try learning and configuring.</p>
+<blockquote>
+<p><strong>Note :</strong> These configs are configured by various people as per their system requirements. You may run into issues if some scripts are not compactible or optimised for your system, or if you are missing some dependencies. Doc741 does not rank based on popularity, it is alphabetical order. No offense.</p>
+</blockquote>
+<h2 id="best-configurations"><a class="header" href="#best-configurations">Best Configurations</a></h2>
+<h3 id="1-archcraft-bspwm"><a class="header" href="#1-archcraft-bspwm">1) <a href="https://github.com/archcraft-os/archcraft-bspwm.git">Archcraft-Bspwm</a></a></h3>
+<p><strong>Desc :</strong> This is a very asthetic and beautiful bspwm configuration hand crafted personally for Archcraft OS by <a href="https://github.com/adi1090x">adi1090x</a>. Has rich polybar and rofi ecosystem.</p>
+<p><strong>Gallery :</strong></p>
+<p><img src="assets/archcraft/01.png" alt="Preview"></p>
+<br>
+<h3 id="2-gh0stzk-dotfiles"><a class="header" href="#2-gh0stzk-dotfiles">2) <a href="https://github.com/gh0stzk/dotfiles.git">Gh0stzk-Dotfiles</a></a></h3>
+<p><strong>Desc :</strong> These dotfiles are designed with the goal of providing a bspwm environment that is lightweight, efficient, and functional, tailored for any use. Has rich theming system, about 18 prebuilt themes. [This is original text] from <a href="https://github.com/gh0stzk">gh0stzk</a>.</p>
+<p><strong>Gallery :</strong></p>
+<p><img src="assets/gh0stzk/01.webp" alt="Preview"></p>
+<br>
+<h2 id="how-to-get-yours-here"><a class="header" href="#how-to-get-yours-here">How to get yours here</a></h2>
+<p>Make a pull request to the repository linking your bspwm dotfile repository with description. If you have a very good documentation and configuration for bspwm with a nice asthetic, your bspwm configuration can mean a lot to others. It will be added to the list.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="how-to-contribute-to-doc741"><a class="header" href="#how-to-contribute-to-doc741">How to Contribute to Doc741</a></h1>
+<p>Doc741 exists to make <strong>bspwm understandable</strong>, not just configurable. Contributions that improve clarity, correctness, and learning are always welcome.
+You <strong>don’t need to be an expert</strong> to contribute - even small improvements help.</p>
+<h2 id="what-you-can-contribute"><a class="header" href="#what-you-can-contribute">What You Can Contribute</a></h2>
+<p>You can help Doc741 in many ways:</p>
+<ul>
+<li>Fix typeos or unclear explanations</li>
+<li>Improve wording for beginners</li>
+<li>Add examples that explain <em>why</em>, not just <em>how</em></li>
+<li>Expand existing sections with missing details</li>
+<li>Suggest new sections or topics</li>
+<li>Share debugging tips or common pitfalls
+If something confused you while learning bspwm, that’s probably worth documenting.</li>
+</ul>
+<h3 id="what-doc741-values"><a class="header" href="#what-doc741-values">What Doc741 Values</a></h3>
+<p>Before contributing, keep these principles in mind:</p>
+<ol>
+<li>Explain concepts, not just commands</li>
+<li>Prefer reasoning over copy-paste solutions</li>
+<li>Assume the reader is curious, not careless</li>
+<li>Keep a neutral, respectful tone</li>
+<li>Make sure that your content has clarity</li>
+</ol>
+<p>Doc741 aims to reduce blind config copying, not encourage it. But this documentation shall include some configuration files and references purely for learning purposes.</p>
+<h3 id="how-to-contribute"><a class="header" href="#how-to-contribute">How to contribute</a></h3>
+<ol>
+<li>Fork the repository from github : <a href="https://github.com/rdbhvr-001/doc741.git">rdbhvr-001/doc741</a></li>
+<li>Create a new branch for your change in that forked repository</li>
+<li>Install <code>rust mdbook</code> for documentation by the following commands</li>
+</ol>
+<pre><code># Make sure that you have cargo and rust installed. A simple surf in web can help you install them.
+# Install mdbook via cargo
+
+cargo install mdbook
+
+# Make sure to add cargo to your PATH
+
+</code></pre>
+<ol start="4">
+<li>Learn how to use <a href="https://rust-lang.github.io/mdBook/">mdbook</a>.</li>
+<li>In the forked repository, you will find <code>SUMMARY.md</code> file and other md files inside src directory, which is basically the index and source for Doc741, follow the instructions given in step 4.</li>
+<li>After editting the markdown files or adding new ones, you can use the following command to generate the book from the project root dir.</li>
+</ol>
+<pre><code># To test it in your friendly local browser test with
+mdbook serve
+
+# To build the book, in the terminal typeos
+mdbook build
+
+# The book is compiled to html and is in `./book` directory.
+</code></pre>
+<ol start="7">
+<li>Rename the <code>./book</code> to <code>./docs</code></li>
+<li>Open up a pull request after testing the book locally in browser</li>
+</ol>
+<h3 id="more-easy-way-to-contribute"><a class="header" href="#more-easy-way-to-contribute">More easy way to contribute</a></h3>
+<p>You can click that edit source button on the navbar near print button to directly edit the source, make a pull request and make changes.</p>
 
                     </main>
 
@@ -6314,6 +6393,22 @@ super + alt + f
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

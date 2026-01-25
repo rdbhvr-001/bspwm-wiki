@@ -1,5 +1,3 @@
-# Getting started with bspwm window manager
-
 bspwm is a minimal tiling window manager: you mainly configure the WM via a shell script (`bspwmrc`) and handle keybindings via `sxhkd` (`sxhkdrc`).
 A good “getting started” path is: install `bspwm` + `sxhkd`, copy the example configs into `~/.config/…`, make `bspwmrc` executable, then start `sxhkd` and `bspwm` from your X session.
 

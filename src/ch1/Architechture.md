@@ -1,5 +1,3 @@
-# The Bspwm Architecture
-
 ## 1. Architectural Internals
 
 ### 1.1 The Binary Space Partitioning (BSP) Model
