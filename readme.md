@@ -10,10 +10,4 @@ BSPWM (I will use lowercase from hereon..)  is a tiling window manager which use
 **Reason 2 :** I want to create an ideal bspwm working environment using all the commands that ever existed in bspwm to create a sophisticated working environment that I like.
 **Reason 3** : As a part of open source contribution, which can be used by my friends.
 
-# Docs
-Without wasting further time, you can start reading the documentations.
-1) [Introduction to BSPWM](docs/Introduction.md)
-2) [Theory : BSPWM and the Binary Space Partitioning](docs/The_Binary_Space_Partitioning_Theory.md)
-3) [BSPWM Core Interface](docs/Bspwm_Core_Interface.md)
-4) [Writing Nice Configurations](docs/Writing_Nice_Configs.md)
-5) [Official Manpage Expanded](docs/manpage.md)
+
