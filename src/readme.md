@@ -25,4 +25,17 @@ done
 * The above code matters because it unhides or hides all windows dynamically, no tiling rules or scratchpads, reproducible, scriptable UI hacks...
 * Another powerful feature is the `selector magic : @`, which looks like : `bspc node -f @parent`, which lets you targe relative nodes - parent, first child, brother, etc...
 * This documentation aims in providing short scripts, cool tips for speeding up workflows, links to several popular bspwm configurations for quick references, a detailed explanation for the working logic behind bspwm, complete manipulation of the windows, advanced configurations and complex logic structures like : **Open alacritty in the second workspace on every sunday nights in horizontally tiled mode along with ncmpcpp in a seperate alacritty window with so and so split ratio**, when you have the habit of listening to music on sunday nights while working!
-* Everything you want to know about the bspwm window manager, you will get in this...
+* Everything you want to know about the bspwm window manager, you will get it here...
+
+## Contributing to Doc741
+
+1) Help others find about such an extensive documentation for bspwm by contributing to this project. You can open up pull requests, do corrections and error analysis for the code blocks in this documentation and expand it by adding specific case examples and linking other bspwm related projects.
+
+2) If you find this documentation really useful to you, you can star this repository which will increase the ease with which this project is found.
+
+3) If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository
+
+### Github repository
+[https://github.com/rdbhvr-001/doc741.git](https://github.com/rdbhvr-001/doc741.git)
+[This page : https://rdbhvr-001.github.io/doc741](https://rdbhvr-001.github.io/doc741)
+
