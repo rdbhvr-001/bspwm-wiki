@@ -42,7 +42,7 @@ Everything you want to know about the bspwm window manager, you will get it here
 
 ## Github repositories
 
-1) [Official BSPWM Binary : baskerville/bspwm](https://github.com/basperville/bspwm.git)
+1) [Official BSPWM Binary : baskerville/bspwm](https://github.com/baskerville/bspwm.git)
 2) [https://github.com/rdbhvr-001/doc741.git](https://github.com/rdbhvr-001/doc741.git)
 
 ## Pages
