@@ -40,8 +40,12 @@ Everything you want to know about the bspwm window manager, you will get it here
 
 3) If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository
 
-## Github repository
-[Official BSPWM Binary : baskerville/bspwm](https://github.com/basperville/bspwm.git)<br>
-[https://github.com/rdbhvr-001/doc741.git](https://github.com/rdbhvr-001/doc741.git) <br>
-[This page : https://rdbhvr-001.github.io/doc741](https://rdbhvr-001.github.io/doc741) <br>
+## Github repositories
+
+1) [Official BSPWM Binary : baskerville/bspwm](https://github.com/basperville/bspwm.git)
+2) [https://github.com/rdbhvr-001/doc741.git](https://github.com/rdbhvr-001/doc741.git)
+
+## Pages
+
+1) [Documentation : This Page](https://rdbhvr-001.github.io/doc741)
 
