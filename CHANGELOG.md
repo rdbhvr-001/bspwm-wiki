@@ -1,0 +1,34 @@
+# Changelog
+
+All notable changes to **Doc741** will be documented in this file.
+
+This project follows a documentation-first workflow; updates may include new topics, clarifications, restructuring, or references.
+
+---
+
+## [Unreleased]
+
+### Added
+- Community-maintained bspwm documentation structure
+- Concept-focused explanations beyond configuration examples
+- References to real-world bspwm configurations
+- Contribution guidelines and roadmap
+- Code of Conduct
+- Security policy
+- Governance document aligned with the bspwm community
+
+### Changed
+- Improved navigation and topic organization
+- Refined explanations for clarity and accuracy
+
+### Fixed
+- Broken links and minor documentation errors
+
+---
+
+## [0.1.0] – Initial Release
+
+### Added
+- Initial Doc741 documentation site
+- Core bspwm concepts and usage explanations
+- Live deployment using mdBook
