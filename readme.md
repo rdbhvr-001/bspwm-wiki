@@ -67,3 +67,7 @@ By participating, you agree to uphold it.
 
 ## License
 This project is licensed under the MIT License — see [LICENSE](./LICENSE).
+
+## Security
+Please see [SECURITY.md](SECURITY.md) for reporting security issues.
+
