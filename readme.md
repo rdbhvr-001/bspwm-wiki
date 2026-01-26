@@ -61,6 +61,9 @@ Give this repository a star and help us hack the github algorithm.
 Improvements and issues are welcome.
 See [Contributing.md](./Contributing.md) for details.
 
-## License
+## Community
+This project follows a [Code of Conduct](CODE_OF_CONDUCT.md).  
+By participating, you agree to uphold it.
 
+## License
 This project is licensed under the MIT License — see [LICENSE](./LICENSE).
