@@ -3,7 +3,9 @@ Below given is a curated list of awesome bspwm configs for ready reference, clon
 
 These are some nice configurations that beginners should try learning and configuring.
 
-> **Note :** These configs are configured by various people as per their system requirements. You may run into issues if some scripts are not compactible or optimised for your system, or if you are missing some dependencies. Doc741 does not rank based on popularity, it is alphabetical order. No offense.
+<div class="admonish warn">
+<p>These configs are configured by various people as per their system requirements. You may run into issues if some scripts are not compactible or optimised for your system, or if you are missing some dependencies. Doc741 does not rank based on popularity, it is alphabetical order. No offense.</p>
+</div>
 
 ## Best Configurations
 ### 1) [Archcraft-Bspwm](https://github.com/archcraft-os/archcraft-bspwm.git)
