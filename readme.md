@@ -59,7 +59,7 @@ Think that this documentation should reach more people?
 Give this repository a star and help us hack the github algorithm.
 
 Improvements and issues are welcome.
-See [Contributing.md](./src/Contributing.md) for details.
+See [Contributing.md](./Contributing.md) for details.
 
 ## License
 
