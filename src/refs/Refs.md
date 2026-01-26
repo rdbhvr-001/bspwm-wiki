@@ -8,7 +8,9 @@ These are some nice configurations that beginners should try learning and config
 </div>
 
 ## Best Configurations
-### 1) [Archcraft-Bspwm](https://github.com/archcraft-os/archcraft-bspwm.git)
+### 1) Archcraft-Bspwm 
+
+[visit](https://github.com/archcraft-os/archcraft-bspwm.git)
 
 **Desc :** This is a very asthetic and beautiful bspwm configuration hand crafted personally for Archcraft OS by [adi1090x](https://github.com/adi1090x). Has rich polybar and rofi ecosystem.
 
@@ -18,7 +20,10 @@ These are some nice configurations that beginners should try learning and config
 
 <br>
 
-### 2) [Gh0stzk-Dotfiles](https://github.com/gh0stzk/dotfiles.git)
+### 2) Gh0stzk-Dotfiles
+
+[visit](https://github.com/gh0stzk/dotfiles.git)
+
 **Desc :** These dotfiles are designed with the goal of providing a bspwm environment that is lightweight, efficient, and functional, tailored for any use. Has rich theming system, about 18 prebuilt themes. [This is original text] from [gh0stzk](https://github.com/gh0stzk).
 
 **Gallery :**
