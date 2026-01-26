@@ -19,10 +19,11 @@ This project follows a documentation-first workflow; updates may include new top
 
 ### Changed
 - Improved navigation and topic organization
-- Refined explanations for clarity and accuracy
+- Added admonishment support for documentation
 
 ### Fixed
 - Broken links and minor documentation errors
+- External css files will be loaded from ./assets/css/ directory
 
 ---
 
