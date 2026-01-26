@@ -1,28 +1,66 @@
-# Preface
+# Doc741 — bspwm Documentation for Humans
 
-## What exactly is Doc741?
+Doc741 is a community-maintained, beginner-friendly documentation project for **bspwm**.
+It focuses on explaining concepts, configuration, and practical workflows in a clear and approachable way — beyond minimal manpages.
 
-* It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).
-* Bspwm is a tiling window manager which uses binary space partition system. (C students must have known what it means). Unlike other dynamic window managers like dwm and awesomewm, bspwm is what you configure and use. It is possible to do anything with correct integration of configs : bspwm + sxhkd + eww or polybar, you will get a perfectly aligned environment that obeys your thoughts. I named this documentation as doc741 because it is short and aligns with documentation policy of my interest.
-* If you do not know what exactly is binary space partitioning, don't worry, the documentation will teach you.
+## Why Doc741?
 
-## What exactly is the purpose of The Doc741?
+bspwm is powerful, but its official documentation is intentionally minimal.
+Doc741 aims to bridge the gap between sparse references and real-world usage.
 
-* There has not been a very good documentation about the bspwm window manager in the web. Many beginners in linux stumble upon understanding the workflow and the exact process behind bspwm and struggle by copying someone else's configuration blindly hoping that it works on their system too. Real power users do not copy, they build upon an already existing config or build something entirely from the scratch.
-* Linux punishes weak fundamentals, not because it is cruel towards you, but because it wants to make you stronger. Understanding about The Binary Space Partitioning Window Manager and Binary Space Partitioning before writing your first bspwm configuration will make you write optimised and good configs better than your copycat versions.
-* Most of the configurations are using bspwm in an underrated way. For example, people rerely use the `query selectors with flags` to batch-manipulate windows. Here's an on-liner that toggles hidden states across all windows...
+- Clear explanations of bspwm concepts
+- Beginner-friendly structure
+- Practical configuration examples and snippets
+- Community knowledge collected in one place
 
-**bash**
+## Who is this for?
 
-```
-if [ -n "$(bspc query -N -n .hidden)" ]; then flag=off; else flag=on; fi
-for i in $(bspc query -N); do 
-    bspc node $i --flag hidden=$flag
-done
+- New bspwm users getting started for the first time
+- Users migrating from i3, dwm, or other tiling window managers
+- People who want to **understand bspwm**, not just copy configs
+- Anyone who prefers structured explanations and examples
 
-```
+## Start here
 
-* The above code matters because it unhides or hides all windows dynamically, no tiling rules or scratchpads, reproducible, scriptable UI hacks...
-* Another powerful feature is the `selector magic : @`, which looks like : `bspc node -f @parent`, which lets you targe relative nodes - parent, first child, brother, etc...
-* This documentation aims in providing short scripts, cool tips for speeding up workflows, links to several popular bspwm configurations for quick references, a detailed explanation for the working logic behind bspwm, complete manipulation of the windows, advanced configurations and complex logic structures like : **Open alacritty in the second workspace on every sunday nights in horizontally tiled mode along with ncmpcpp in a seperate alacritty window with so and so split ratio**, when you have the habit of listening to music on sunday nights while working!
-* Everything you want to know about the bspwm window manager, you will get in this...
+If you’re new, this path works well:
+
+1. **Introduction**
+2. **bspwm concepts & tree structure**
+3. **Basic configuration**
+4. **Common recipes and snippets**
+5. **Popular configurations for references**
+## Additional learning resources
+
+The following official and community resources complement Doc741:
+
+- [Official bspwm documentation](https://github.com/baskerville/bspwm)
+- [Arch Wiki: bspwm](https://wiki.archlinux.org/title/Bspwm)
+- [Doc741 (community-maintained bspwm documentation)](https://rdbhvr-001.github.io/doc741)
+
+> Doc741 is referenced by community bspwm configuration and documentation projects. Other popular bspwm configurations are also referenced in this documentation for gathering more ideas and knowledge about know-hows.
+
+## 🛠 TODO
+
+Planned additions to Doc741 include:
+
+- [ ] References and explanations for community bspwm configurations
+- [ ] Short tips and tricks for common bspwm workflows
+- [ ] A dedicated query/reference page for `bspc` usage
+- [ ] Example configurations for various use cases and setups
+
+This list will evolve as the documentation grows.
+
+## Contributing
+
+Spotted something unclear?  
+Have a better explanation, fix, or example?
+
+Think that this documentation should reach more people?
+Give this repository a star and help us hack the github algorithm.
+
+Improvements and issues are welcome.
+See [Contributing.md](./src/Contributing.md) for details.
+
+## License
+
+This project is licensed under the MIT License — see [LICENSE](./LICENSE).
