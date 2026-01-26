@@ -23,7 +23,9 @@ Before contributing, keep these principles in mind:
 4) Keep a neutral, respectful tone
 5) Make sure that your content has clarity
 
-Doc741 aims to reduce blind config copying, not encourage it. But this documentation shall include some configuration files and references purely for learning purposes.
+<div class="admonish warn">
+<p>Doc741 aims to <b>reduce blind config copying</b>, not encourage it. But this documentation shall include some configuration files and references purely for learning purposes.</p>
+</div>
 
 ### How to contribute
 1) Fork the repository from github : [rdbhvr-001/doc741](https://github.com/rdbhvr-001/doc741.git)
@@ -56,6 +58,6 @@ mdbook build
 7) Rename the `./book` to `./docs`
 8) Open up a pull request after testing the book locally in browser
 
-### More easy way to contribute
-You can click that edit source button on the navbar near print button to directly edit the source, make a pull request and make changes.
-
+<div class="admonish tip">
+<p><b>An Easier Way to Contribute :</b><br>You can click that edit source button on the navbar near print button to directly edit the source, make a pull request and make changes.</p>
+</div>

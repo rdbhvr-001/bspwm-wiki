@@ -1,0 +1,34 @@
+/* Base container */
+.admonish {
+  border-left: 4px solid currentColor;
+  padding: 0.8rem 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  color: #888; /* fallback */
+}
+
+/* Pseudo icon prefix */
+.admonish::before {
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Types with icons */
+.admonish.note   { --prefix: "📝"; color: #4da3ff; }
+.admonish.info   { --prefix: "ℹ️"; color: #5bc0de; }
+.admonish.tip    { --prefix: "💡"; color: #4caf50; }
+.admonish.warn   { --prefix: "⚠️"; color: #ff9800; }
+.admonish.danger { --prefix: "❌"; color: #f44336; }
+
+/* Inject icon */
+.admonish.note::before,
+.admonish.info::before,
+.admonish.tip::before,
+.admonish.warn::before,
+.admonish.danger::before {
+  content: var(--prefix);
+  margin-right: 0.5rem;
+}

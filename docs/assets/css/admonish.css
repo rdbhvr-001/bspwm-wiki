@@ -1,0 +1,70 @@
+/* ==================================================
+   Base container
+   ================================================== */
+.admonish {
+  --accent: #888;
+  --bg: rgba(127,127,127,0.08);
+  --prefix: "";
+
+  border-left: 4px solid var(--accent);
+  background: var(--bg);
+  padding: 0.8rem 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+
+  color: var(--accent);
+}
+
+/* ==================================================
+   Prefix (icon + label)
+   ================================================== */
+.admonish::before {
+  content: var(--prefix);
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ==================================================
+   Variants — Material palette inspired
+   ================================================== */
+
+/* NOTE */
+.admonish.note {
+  --accent: #448aff;
+  --bg: rgba(68,138,255,0.12);
+  --prefix: "📝 ";
+}
+
+/* INFO */
+.admonish.info {
+  --accent: #00bcd4;
+  --bg: rgba(0,188,212,0.12);
+  --prefix: "ℹ️";
+}
+
+/* TIP */
+.admonish.tip {
+  --accent: #4caf50;
+  --bg: rgba(76,175,80,0.14);
+  --prefix: "💡";
+}
+
+/* WARNING */
+.admonish.warn {
+  --accent: #ff9800;
+  --bg: rgba(255,152,0,0.16);
+  --prefix: "⚠️";
+}
+
+/* DANGER */
+.admonish.danger {
+  --accent: #f44336;
+  --bg: rgba(244,67,54,0.16);
+  --prefix: "❌";
+}
+

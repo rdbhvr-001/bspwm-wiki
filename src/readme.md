@@ -1,10 +1,12 @@
-## What is Doc741?
+## What is Doc739?
 
 It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).
 
 Bspwm is a tiling window manager which uses binary space partition system. (C students must have known what it means). Unlike other dynamic window managers like dwm and awesomewm, bspwm is what you configure and use. It is possible to do anything with correct integration of configs : bspwm + sxhkd + eww or polybar, you will get a perfectly aligned environment that obeys your thoughts. I named this documentation as doc741 because it is short and aligns with documentation policy of my interest.
 
-If you do not know what exactly is binary space partitioning, don't worry, the documentation will teach you.
+<div class="admonish tip">
+<p>If you do not know what exactly is binary space partitioning, don't worry, the documentation will teach you.</p>
+</div>
 
 ## What exactly is the purpose of The Doc741?
 
@@ -48,4 +50,3 @@ Everything you want to know about the bspwm window manager, you will get it here
 ## Pages
 
 1) [Documentation : This Page](https://rdbhvr-001.github.io/doc741)
- 

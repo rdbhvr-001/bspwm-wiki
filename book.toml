@@ -5,4 +5,6 @@ language = "en"
 
 [output.html]
 edit-url-template = "https://github.com/rdbhvr-001/doc741/edit/main/{path}"
+additional-css = ["./assets/css/admonish.css"]
+
 
