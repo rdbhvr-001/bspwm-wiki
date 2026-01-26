@@ -24,10 +24,11 @@ This project follows a documentation-first workflow; updates may include new top
 ### Fixed
 - Broken links and minor documentation errors
 - External css files will be loaded from ./assets/css/ directory
+- Optimised readme.md
 
 ---
 
-## [0.1.0] – Initial Release
+## [0.1.1] – Initial Release
 
 ### Added
 - Initial Doc741 documentation site

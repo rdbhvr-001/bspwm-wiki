@@ -71,3 +71,5 @@ This project is licensed under the MIT License — see [LICENSE](./LICENSE).
 ## Security
 Please see [SECURITY.md](./SECURITY.md) for reporting security issues.
 
+## Changelog
+Need to get in touch with latest documentation updates? See [CHANGELOG.md](./CHANGELOG.md) for recent changes.
