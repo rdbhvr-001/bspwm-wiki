@@ -27,11 +27,20 @@ This project follows a documentation-first workflow; updates may include new top
 - External css files will be loaded from ./assets/css/ directory
 - Optimised readme.md
 
----
 
-## [0.1.1] – Initial Release
+## [0.1.1] – Sub Initial Release
 
 ### Added
 - Initial bspwm-wiki documentation site
 - Core bspwm concepts and usage explanations
 - Live deployment using mdBook
+
+## [0.1.2] - Initial Release
+
+### Added
+- Martian dotfiles for references
+- Gitignore support for author only directories
+
+### Changed
+- Optimised naming for navigation and SEO searches
+- Aligned bullets in `How to master bspwm`
