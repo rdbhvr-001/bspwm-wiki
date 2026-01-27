@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Mastering Bspwm - The bspwm-wiki</title>
+        <title>How to master bspwm - The bspwm-wiki</title>
 
 
         <!-- Custom HTML head -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-9c389bee.js";
+            window.path_to_searchindex_js = "searchindex-4d7dad8f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-63d0b32d.js"></script>
+        <script src="toc-b59e5799.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,11 +178,12 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <p>To master <strong>bspwm</strong> (Binary Space Partitioning Window Manager), you must move beyond simple configuration and understand it as a programmable environment. Because <code>bspwm</code> is merely a C program controlled by a socket client (<code>bspc</code>), mastery is equivalent to mastering the <code>bspc</code> command and the logic of binary trees.</p>
+                        <h3 id="how-to-master-the-bspwm"><a class="header" href="#how-to-master-the-bspwm">How to master the bspwm?</a></h3>
+<p>To master <strong>bspwm</strong> (Binary Space Partitioning Window Manager), you must move beyond simple configuration and understand it as a programmable environment. Because <code>bspwm</code> is merely a C program controlled by a socket client (<code>bspc</code>), mastery is equivalent to mastering the <code>bspc</code> command and the logic of binary trees.</p>
 <p>Here is the exhaustive curriculum for total bspwm mastery, structured from architectural concepts to advanced kernel-level scripting.</p>
-<h3 id="1-the-theoretical-foundation-the-binary-in-bspwm"><a class="header" href="#1-the-theoretical-foundation-the-binary-in-bspwm">1. The Theoretical Foundation (The “Binary” in BSPWM)</a></h3>
+<h3 id="the-theoretical-foundation"><a class="header" href="#the-theoretical-foundation">The Theoretical Foundation</a></h3>
 <p>You cannot predict window behavior without understanding the data structure.</p>
-<ul>
+<ol>
 <li><strong>The Full Binary Tree</strong>: Understand how every desktop is a root node that splits recursively.</li>
 <li><strong>Internal Nodes vs. Leaves</strong>:
 <ul>
@@ -192,10 +193,10 @@
 </li>
 <li><strong>Traversal Paths</strong>: Understanding how <code>next</code>/<code>prev</code> cycles through the tree (pre-order, in-order, post-order traversal logic).</li>
 <li><strong>Tree Rotation</strong>: How “circulate” commands (<code>bspc node -C</code>) physically rotate the tree structure.</li>
-</ul>
-<h3 id="2-the-control-interface-bspc"><a class="header" href="#2-the-control-interface-bspc">2. The Control Interface (<code>bspc</code>)</a></h3>
+</ol>
+<h3 id="the-control-interface"><a class="header" href="#the-control-interface">The Control Interface</a></h3>
 <p>Mastering every subcommand of the binary space partitioning controller.</p>
-<ul>
+<ol>
 <li><strong>Node Selection (The Query Language)</strong>:
 <ul>
 <li><strong>Directional</strong>: <code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>.</li>
@@ -226,8 +227,8 @@
 <li>Dumping windows into receptacles.</li>
 </ul>
 </li>
-</ul>
-<h3 id="3-the-input-daemon-sxhkd"><a class="header" href="#3-the-input-daemon-sxhkd">3. The Input Daemon (<code>sxhkd</code>)</a></h3>
+</ol>
+<h3 id="the-input-daemon"><a class="header" href="#the-input-daemon">The Input Daemon</a></h3>
 <p><code>bspwm</code> handles zero keyboard input. You must master <code>sxhkd</code> to drive it.</p>
 <ul>
 <li><strong>Chord Chains</strong>: Binding sequences (<code>super + a ; b</code>).</li>
@@ -236,8 +237,8 @@
 <li><strong>Sync vs. Async</strong>: Understanding when a command blocks <code>sxhkd</code> and when it doesn’t.</li>
 <li><strong>Mode Simulation</strong>: Creating “modal” editing (like Vim) using chord chains or dynamic config reloading.</li>
 </ul>
-<h3 id="4-logic--automation-the-programmable-layer"><a class="header" href="#4-logic--automation-the-programmable-layer">4. Logic &amp; Automation (The “Programmable” Layer)</a></h3>
-<ul>
+<h3 id="logic--automation"><a class="header" href="#logic--automation">Logic &amp; Automation</a></h3>
+<ol>
 <li><strong>Standard Rules (<code>bspc rule</code>)</strong>:
 <ul>
 <li>Static assignment: <code>bspc rule -a Firefox desktop='^2' follow=on</code>.</li>
@@ -262,9 +263,9 @@
 <li>Writing scripts to save/load layouts (parsing JSON to reconstruct trees using receptacles).</li>
 </ul>
 </li>
-</ul>
-<h3 id="5-layout-management"><a class="header" href="#5-layout-management">5. Layout Management</a></h3>
-<ul>
+</ol>
+<h3 id="layout-management"><a class="header" href="#layout-management">Layout Management</a></h3>
+<ol>
 <li><strong>Automatic Schemes</strong>:
 <ul>
 <li><code>spiral</code>: Windows split the largest node, spiraling inward.</li>
@@ -280,9 +281,9 @@
 <li>Configuring per-monitor or per-desktop padding (e.g., Mono-monitor setup needs different padding than Dual).</li>
 </ul>
 </li>
-</ul>
-<h3 id="6-the-ecosystem-integration"><a class="header" href="#6-the-ecosystem-integration">6. The Ecosystem (Integration)</a></h3>
-<ul>
+</ol>
+<h3 id="the-ecosystem"><a class="header" href="#the-ecosystem">The Ecosystem</a></h3>
+<ol>
 <li><strong>Polybar / Lemonbar</strong>:
 <ul>
 <li>Parsing the <code>bspwm</code> internal report (<code>bspc subscribe report</code>) to display workspace tags (Occupied, Free, Urgent, Focused).</li>
@@ -302,9 +303,9 @@
 <li>Managing opacity rules for focused vs. unfocused nodes.</li>
 </ul>
 </li>
-</ul>
-<h3 id="7-advanced-hacks--workflows"><a class="header" href="#7-advanced-hacks--workflows">7. Advanced “Hacks” &amp; Workflows</a></h3>
-<ul>
+</ol>
+<h3 id="advanced-hacks--workflows"><a class="header" href="#advanced-hacks--workflows">Advanced Hacks &amp; Workflows</a></h3>
+<ol>
 <li><strong>Scratchpads</strong>:
 <ul>
 <li>Using the <code>hidden</code> flag and unique IDs to create “drop-down” terminals that toggle visibility.</li>
@@ -326,13 +327,13 @@
 <li>Handling <code>WM_HINTS</code> (flashing red borders) when a background window needs attention.</li>
 </ul>
 </li>
-</ul>
-<h3 id="8-troubleshooting--debugging"><a class="header" href="#8-troubleshooting--debugging">8. Troubleshooting &amp; Debugging</a></h3>
-<ul>
+</ol>
+<h3 id="troubleshooting--debugging"><a class="header" href="#troubleshooting--debugging">Troubleshooting &amp; Debugging</a></h3>
+<ol>
 <li><strong>The Socket</strong>: Understanding <code>/tmp/bspwm_...socket</code>.</li>
 <li><strong>Logs</strong>: Checking <code>~/.xsession-errors</code>.</li>
 <li><strong>Visual Debugging</strong>: Using <code>bspc query -T</code> piped to <code>jq</code> to visualize why a window is stuck in a specific split.</li>
-</ul>
+</ol>
 
                     </main>
 
@@ -369,6 +370,22 @@
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

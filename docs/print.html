@@ -37,10 +37,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-9c389bee.js";
+            window.path_to_searchindex_js = "searchindex-4d7dad8f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-63d0b32d.js"></script>
+        <script src="toc-b59e5799.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,7 +176,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="objective"><a href="#objective" class="header">Objective</a></h1>
+                        <h1 id="introduction-to-wiki"><a href="#introduction-to-wiki" class="header">Introduction to wiki</a></h1>
 <h2 id="what-is-bspwm-wiki"><a class="header" href="#what-is-bspwm-wiki">What is bspwm-wiki?</a></h2>
 <p>It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).</p>
 <p>Bspwm is a tiling window manager which uses binary space partition system. (C students must have known what it means). Unlike other dynamic window managers like dwm and awesomewm, bspwm is what you configure and use. It is possible to do anything with correct integration of configs : bspwm + sxhkd + eww or polybar, you will get a perfectly aligned environment that obeys your thoughts. I named this documentation as bspwm-wiki because it is short and aligns with documentation policy of my interest.</p>
@@ -222,12 +222,13 @@ done
 <li><a href="https://rdbhvr-001.github.io/bspwm-wiki">Documentation : This Page</a></li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="mastering-bspwm"><a href="#mastering-bspwm" class="header">Mastering Bspwm</a></h1>
+<h1 id="how-to-master-bspwm"><a href="#how-to-master-bspwm" class="header">How to master bspwm</a></h1>
+<h3 id="how-to-master-the-bspwm"><a class="header" href="#how-to-master-the-bspwm">How to master the bspwm?</a></h3>
 <p>To master <strong>bspwm</strong> (Binary Space Partitioning Window Manager), you must move beyond simple configuration and understand it as a programmable environment. Because <code>bspwm</code> is merely a C program controlled by a socket client (<code>bspc</code>), mastery is equivalent to mastering the <code>bspc</code> command and the logic of binary trees.</p>
 <p>Here is the exhaustive curriculum for total bspwm mastery, structured from architectural concepts to advanced kernel-level scripting.</p>
-<h3 id="1-the-theoretical-foundation-the-binary-in-bspwm"><a class="header" href="#1-the-theoretical-foundation-the-binary-in-bspwm">1. The Theoretical Foundation (The “Binary” in BSPWM)</a></h3>
+<h3 id="the-theoretical-foundation"><a class="header" href="#the-theoretical-foundation">The Theoretical Foundation</a></h3>
 <p>You cannot predict window behavior without understanding the data structure.</p>
-<ul>
+<ol>
 <li><strong>The Full Binary Tree</strong>: Understand how every desktop is a root node that splits recursively.</li>
 <li><strong>Internal Nodes vs. Leaves</strong>:
 <ul>
@@ -237,10 +238,10 @@ done
 </li>
 <li><strong>Traversal Paths</strong>: Understanding how <code>next</code>/<code>prev</code> cycles through the tree (pre-order, in-order, post-order traversal logic).</li>
 <li><strong>Tree Rotation</strong>: How “circulate” commands (<code>bspc node -C</code>) physically rotate the tree structure.</li>
-</ul>
-<h3 id="2-the-control-interface-bspc"><a class="header" href="#2-the-control-interface-bspc">2. The Control Interface (<code>bspc</code>)</a></h3>
+</ol>
+<h3 id="the-control-interface"><a class="header" href="#the-control-interface">The Control Interface</a></h3>
 <p>Mastering every subcommand of the binary space partitioning controller.</p>
-<ul>
+<ol>
 <li><strong>Node Selection (The Query Language)</strong>:
 <ul>
 <li><strong>Directional</strong>: <code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>.</li>
@@ -271,8 +272,8 @@ done
 <li>Dumping windows into receptacles.</li>
 </ul>
 </li>
-</ul>
-<h3 id="3-the-input-daemon-sxhkd"><a class="header" href="#3-the-input-daemon-sxhkd">3. The Input Daemon (<code>sxhkd</code>)</a></h3>
+</ol>
+<h3 id="the-input-daemon"><a class="header" href="#the-input-daemon">The Input Daemon</a></h3>
 <p><code>bspwm</code> handles zero keyboard input. You must master <code>sxhkd</code> to drive it.</p>
 <ul>
 <li><strong>Chord Chains</strong>: Binding sequences (<code>super + a ; b</code>).</li>
@@ -281,8 +282,8 @@ done
 <li><strong>Sync vs. Async</strong>: Understanding when a command blocks <code>sxhkd</code> and when it doesn’t.</li>
 <li><strong>Mode Simulation</strong>: Creating “modal” editing (like Vim) using chord chains or dynamic config reloading.</li>
 </ul>
-<h3 id="4-logic--automation-the-programmable-layer"><a class="header" href="#4-logic--automation-the-programmable-layer">4. Logic &amp; Automation (The “Programmable” Layer)</a></h3>
-<ul>
+<h3 id="logic--automation"><a class="header" href="#logic--automation">Logic &amp; Automation</a></h3>
+<ol>
 <li><strong>Standard Rules (<code>bspc rule</code>)</strong>:
 <ul>
 <li>Static assignment: <code>bspc rule -a Firefox desktop='^2' follow=on</code>.</li>
@@ -307,9 +308,9 @@ done
 <li>Writing scripts to save/load layouts (parsing JSON to reconstruct trees using receptacles).</li>
 </ul>
 </li>
-</ul>
-<h3 id="5-layout-management"><a class="header" href="#5-layout-management">5. Layout Management</a></h3>
-<ul>
+</ol>
+<h3 id="layout-management"><a class="header" href="#layout-management">Layout Management</a></h3>
+<ol>
 <li><strong>Automatic Schemes</strong>:
 <ul>
 <li><code>spiral</code>: Windows split the largest node, spiraling inward.</li>
@@ -325,9 +326,9 @@ done
 <li>Configuring per-monitor or per-desktop padding (e.g., Mono-monitor setup needs different padding than Dual).</li>
 </ul>
 </li>
-</ul>
-<h3 id="6-the-ecosystem-integration"><a class="header" href="#6-the-ecosystem-integration">6. The Ecosystem (Integration)</a></h3>
-<ul>
+</ol>
+<h3 id="the-ecosystem"><a class="header" href="#the-ecosystem">The Ecosystem</a></h3>
+<ol>
 <li><strong>Polybar / Lemonbar</strong>:
 <ul>
 <li>Parsing the <code>bspwm</code> internal report (<code>bspc subscribe report</code>) to display workspace tags (Occupied, Free, Urgent, Focused).</li>
@@ -347,9 +348,9 @@ done
 <li>Managing opacity rules for focused vs. unfocused nodes.</li>
 </ul>
 </li>
-</ul>
-<h3 id="7-advanced-hacks--workflows"><a class="header" href="#7-advanced-hacks--workflows">7. Advanced “Hacks” &amp; Workflows</a></h3>
-<ul>
+</ol>
+<h3 id="advanced-hacks--workflows"><a class="header" href="#advanced-hacks--workflows">Advanced Hacks &amp; Workflows</a></h3>
+<ol>
 <li><strong>Scratchpads</strong>:
 <ul>
 <li>Using the <code>hidden</code> flag and unique IDs to create “drop-down” terminals that toggle visibility.</li>
@@ -371,15 +372,15 @@ done
 <li>Handling <code>WM_HINTS</code> (flashing red borders) when a background window needs attention.</li>
 </ul>
 </li>
-</ul>
-<h3 id="8-troubleshooting--debugging"><a class="header" href="#8-troubleshooting--debugging">8. Troubleshooting &amp; Debugging</a></h3>
-<ul>
+</ol>
+<h3 id="troubleshooting--debugging"><a class="header" href="#troubleshooting--debugging">Troubleshooting &amp; Debugging</a></h3>
+<ol>
 <li><strong>The Socket</strong>: Understanding <code>/tmp/bspwm_...socket</code>.</li>
 <li><strong>Logs</strong>: Checking <code>~/.xsession-errors</code>.</li>
 <li><strong>Visual Debugging</strong>: Using <code>bspc query -T</code> piped to <code>jq</code> to visualize why a window is stuck in a specific split.</li>
-</ul>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="introduction--basics"><a href="#introduction--basics" class="header">Introduction : Basics</a></h1>
+<h1 id="introduction-to-bspwm"><a href="#introduction-to-bspwm" class="header">Introduction to bspwm</a></h1>
 <p>bspwm is a minimal tiling window manager: you mainly configure the WM via a shell script (<code>bspwmrc</code>) and handle keybindings via <code>sxhkd</code> (<code>sxhkdrc</code>).
 A good “getting started” path is: install <code>bspwm</code> + <code>sxhkd</code>, copy the example configs into <code>~/.config/…</code>, make <code>bspwmrc</code> executable, then start <code>sxhkd</code> and <code>bspwm</code> from your X session.</p>
 <h2 id="install-and-start"><a class="header" href="#install-and-start">Install and start</a></h2>
@@ -694,7 +695,7 @@ fi
 bspc node &lt;node_id&gt; -k
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="introduction--architecture"><a href="#introduction--architecture" class="header">Introduction : Architecture</a></h1>
+<h1 id="architecture-of-bspwm"><a href="#architecture-of-bspwm" class="header">Architecture of bspwm</a></h1>
 <h2 id="1-architectural-internals"><a class="header" href="#1-architectural-internals">1. Architectural Internals</a></h2>
 <h3 id="11-the-binary-space-partitioning-bsp-model"><a class="header" href="#11-the-binary-space-partitioning-bsp-model">1.1 The Binary Space Partitioning (BSP) Model</a></h3>
 <p>At its core, <strong>bspwm</strong> differs fundamentally from dynamic tilers (like i3, dwm, or xmonad) because it maps windows directly to the leaves of a <strong>full binary tree</strong>. There are no “lists” or “stacks” of windows; there is only the tree.</p>
@@ -867,7 +868,7 @@ This allows bars to update instantly without polling.</li>
 </ol>
 <p>This entire chain happens in milliseconds, driven by the binary tree logic that ensures no two windows ever overlap (unless floating).</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="basics"><a href="#basics" class="header">Basics</a></h1>
+<h1 id="basics-of-bspwm"><a href="#basics-of-bspwm" class="header">Basics of bspwm</a></h1>
 <h2 id="overview-and-core-concepts"><a class="header" href="#overview-and-core-concepts">Overview and Core Concepts</a></h2>
 <p>BSPWM (Binary Space Partitioning Window Manager) is a <strong>tiling window manager that represents windows as the leaves of a full binary tree</strong>. The fundamental innovation of bspwm is its use of binary space partitioning—a recursive subdivision algorithm that divides two-dimensional screen space into increasingly smaller rectangular regions—to manage window layout and positioning. Unlike traditional stacking window managers or even other tiling managers like i3 that use arbitrary tree structures, bspwm constrains itself to strictly binary trees, meaning <strong>each internal node can have exactly zero or two children</strong>. This architectural decision provides both elegance and flexibility, allowing users to manipulate the window hierarchy with sophisticated tree-based operations while maintaining simplicity in the core data structure.</p>
 <p>The genius of bspwm lies in how it translates the abstract concept of binary space partitioning into practical window management. When you open windows in bspwm, each new window becomes a leaf node in the binary tree. Every time a second window is added as a sibling to an existing window, the window manager automatically creates an <strong>internal node (also called a parent node)</strong> that serves as a container for both windows. This internal node represents the split between the two windows—it stores information about whether the split is horizontal or vertical and what ratio the rectangle is divided by. The recursive nature of this process means that adding a third window creates a new internal node with its own children, and this pattern continues indefinitely, building increasingly complex tree structures.</p>
@@ -1043,7 +1044,7 @@ struct node_t {
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="interface"><a href="#interface" class="header">Interface</a></h1>
+<h1 id="bspwm-interfaces-and-usage"><a href="#bspwm-interfaces-and-usage" class="header">Bspwm interfaces and Usage</a></h1>
 <h2 id="overview-and-architecture"><a class="header" href="#overview-and-architecture">Overview and Architecture</a></h2>
 <p><strong>bspc</strong> (bspwm socket client) is the foundational command-line interface that enables all user interaction with the <strong>bspwm</strong> window manager. Rather than implementing complex, built-in keyboard handling or graphical menus, bspwm delegates this responsibility entirely to external tools, with bspc acting as the primary bridge between user scripts (commonly managed by sxhkd—the simple X hotkey daemon) and the bspwm daemon itself.</p>
 <p>The architectural elegance of this design cannot be overstated. By separating concerns, bspwm maintains a lean, focused responsibility: managing the window tree structure and responding to X11 events. Meanwhile, bspc becomes the universal command-line API through which virtually all administrative and operational commands flow. This philosophy—described as “do one thing and do it well”—has enabled bspwm to become highly scriptable and customizable.</p>
@@ -2491,7 +2492,7 @@ bspc query -N -n .marked | xargs -I {} bspc node {} --flag marked off
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="writing-configs"><a href="#writing-configs" class="header">Writing Configs</a></h1>
+<h1 id="writing-configs-using-bspc"><a href="#writing-configs-using-bspc" class="header">Writing configs using bspc</a></h1>
 <h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
 <p>This documentation provides an in-depth exploration of <strong>bspwm</strong> (Binary Space Partitioning Window Manager) configuration, derived entirely from authoritative web sources. BSPWM is a sophisticated tiling window manager that represents windows as leaves of a full binary tree, controlled entirely through the <strong>bspc</strong> command-line client. This guide comprehensively covers every flag, command-line option, configuration setting, and advanced technique required to create a highly sophisticated and customized BSPWM environment. The documentation is organized to progress from foundational concepts through complex configuration scenarios, with detailed explanations of each component extracted directly from official documentation and community resources.</p>
 <h2 id="understanding-the-architecture-and-fundamental-concepts"><a class="header" href="#understanding-the-architecture-and-fundamental-concepts">Understanding the Architecture and Fundamental Concepts</a></h2>
@@ -6296,7 +6297,7 @@ super + alt + f
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="config-references"><a href="#config-references" class="header">Config References</a></h1>
+<h1 id="configuration-gallery"><a href="#configuration-gallery" class="header">Configuration gallery</a></h1>
 <h2 id="the-config-ref"><a class="header" href="#the-config-ref">The Config-Ref</a></h2>
 <p>Below given is a curated list of awesome bspwm configs for ready reference, cloning and experimentation. <strong>We do not advice you to blindly copy configs</strong>, instead read them and try writing them by your own. But it is up to you whether to <strong>use bspwm</strong> or <strong>build upon bspwm</strong>.</p>
 <p>These are some nice configurations that beginners should try learning and configuring.</p>
@@ -6305,18 +6306,24 @@ super + alt + f
 
 </div>
 
-<h2 id="best-configurations"><a class="header" href="#best-configurations">Best Configurations</a></h2>
+<h2 id="recommended-configurations-for-reference"><a class="header" href="#recommended-configurations-for-reference">Recommended Configurations for Reference</a></h2>
 <h3 id="1-archcraft-bspwm"><a class="header" href="#1-archcraft-bspwm">1) Archcraft-Bspwm</a></h3>
-<p><a href="https://github.com/archcraft-os/archcraft-bspwm.git">visit</a></p>
+<p><a href="https://github.com/archcraft-os/archcraft-bspwm.git"><strong>Visit</strong></a></p>
 <p><strong>Desc :</strong> This is a very asthetic and beautiful bspwm configuration hand crafted personally for Archcraft OS by <a href="https://github.com/adi1090x">adi1090x</a>. Has rich polybar and rofi ecosystem.</p>
 <p><strong>Gallery :</strong></p>
 <p><img src="assets/archcraft/01.png" alt="Preview"></p>
 <br>
 <h3 id="2-gh0stzk-dotfiles"><a class="header" href="#2-gh0stzk-dotfiles">2) Gh0stzk-Dotfiles</a></h3>
-<p><a href="https://github.com/gh0stzk/dotfiles.git">visit</a></p>
+<p><a href="https://github.com/gh0stzk/dotfiles.git"><strong>Visit</strong></a></p>
 <p><strong>Desc :</strong> These dotfiles are designed with the goal of providing a bspwm environment that is lightweight, efficient, and functional, tailored for any use. Has rich theming system, about 18 prebuilt themes. [This is original text] from <a href="https://github.com/gh0stzk">gh0stzk</a>.</p>
 <p><strong>Gallery :</strong></p>
 <p><img src="assets/gh0stzk/01.webp" alt="Preview"></p>
+<br>
+<h3 id="3-martian-dotfiles"><a class="header" href="#3-martian-dotfiles">3) Martian Dotfiles</a></h3>
+<p><a href="https://github.com/zalosspace/martian_dotfiles.git"><strong>Visit</strong></a></p>
+<p><strong>Desc :</strong> An asthetically refined arch linux bspwm rice. It has a well documented installation guide and explanations for it’s configs. If you are just beginning, this could be a good starting place for you. Uses a forked version of picom which gives you nice blur effects. Specifically tailored for bspwm by <a href="https://github.com/zalosspace">zalosspace</a>.</p>
+<p><strong>Gallery :</strong></p>
+<p><img src="assets/martian/01.png" alt="Preview"></p>
 <br>
 <h2 id="how-to-get-yours-here"><a class="header" href="#how-to-get-yours-here">How to get yours here</a></h2>
 <p>Make a pull request to the repository linking your bspwm dotfile repository with description. If you have a very good documentation and configuration for bspwm with a nice asthetic, your bspwm configuration can mean a lot to others. It will be added to the list.</p>
@@ -6445,6 +6452,22 @@ mdbook build
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

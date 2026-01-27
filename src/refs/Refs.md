@@ -7,7 +7,7 @@ These are some nice configurations that beginners should try learning and config
 <p>These configs are configured by various people as per their system requirements. You may run into issues if some scripts are not compactible or optimised for your system, or if you are missing some dependencies. bspwm-wiki does not rank based on popularity, it is alphabetical order. No offense.</p>
 </div>
 
-## Best Configurations
+## Recommended Configurations for Reference
 ### 1) Archcraft-Bspwm 
 
 [**Visit**](https://github.com/archcraft-os/archcraft-bspwm.git)
