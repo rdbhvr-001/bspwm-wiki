@@ -2,7 +2,7 @@
 
 ## Our Pledge
 
-We as contributors and maintainers of **Doc741** pledge to make participation in our project a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+We as contributors and maintainers of **bspwm-wiki** pledge to make participation in our project a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
 We are committed to creating a welcoming, respectful, and inclusive environment for all contributors and users.
 

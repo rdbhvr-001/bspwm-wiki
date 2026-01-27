@@ -10,4 +10,4 @@
 - [Extended Docs](./ch5/Extended-Docs.md)
 - [Config References](./refs/Refs.md)
 - [Contributing](./Contributing.md)
-
+- [Changelog](./Changelog.md)

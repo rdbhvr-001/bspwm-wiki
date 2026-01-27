@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Doc741 is a documentation project.  
+bspwm-wiki is a documentation project.  
 Security updates apply to the **latest version of the documentation** published on the main branch and the live site.
 
 Older snapshots or forks may not receive security-related updates.

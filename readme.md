@@ -1,12 +1,12 @@
-# Doc741 — bspwm Documentation for Humans
+# bspwm-wiki — bspwm Documentation for Humans
 
-Doc741 is a community-maintained, beginner-friendly documentation project for **bspwm**.
+bspwm-wiki is a community-maintained, beginner-friendly documentation project for **bspwm**.
 It focuses on explaining concepts, configuration, and practical workflows in a clear and approachable way — beyond minimal manpages.
 
-## Why Doc741?
+## Why bspwm-wiki?
 
 bspwm is powerful, but its official documentation is intentionally minimal.
-Doc741 aims to bridge the gap between sparse references and real-world usage.
+bspwm-wiki aims to bridge the gap between sparse references and real-world usage.
 
 - Clear explanations of bspwm concepts
 - Beginner-friendly structure
@@ -31,17 +31,17 @@ If you’re new, this path works well:
 5. **Popular configurations for references**
 ## Additional learning resources
 
-The following official and community resources complement Doc741:
+The following official and community resources complement bspwm-wiki:
 
 - [Official bspwm documentation](https://github.com/baskerville/bspwm)
 - [Arch Wiki: bspwm](https://wiki.archlinux.org/title/Bspwm)
-- [Doc741 (community-maintained bspwm documentation)](https://rdbhvr-001.github.io/doc741)
+- [bspwm-wiki (community-maintained bspwm documentation)](https://rdbhvr-001.github.io/bspwm-wiki)
 
-> Doc741 is referenced by community bspwm configuration and documentation projects. Other popular bspwm configurations are also referenced in this documentation for gathering more ideas and knowledge about know-hows.
+> bspwm-wiki is referenced by community bspwm configuration and documentation projects. Other popular bspwm configurations are also referenced in this documentation for gathering more ideas and knowledge about know-hows.
 
 ## 🛠 TODO
 
-Planned additions to Doc741 include:
+Planned additions to bspwm-wiki include:
 
 - [ ] References and explanations for community bspwm configurations
 - [ ] Short tips and tricks for common bspwm workflows

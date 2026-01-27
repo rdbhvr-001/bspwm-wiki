@@ -2,18 +2,18 @@
 
 ## Project Overview
 
-Doc741 is a **community-maintained documentation project** for the bspwm window manager.
+bspwm-wiki is a **community-maintained documentation project** for the bspwm window manager.
 
 The goal of the project is to explain bspwm concepts, behavior, and workflows in a clear and structured way, while respecting bspwm’s philosophy of simplicity, flexibility, and user control.
 
-Doc741 is **not an official bspwm project** and does not aim to replace official documentation.  
+bspwm-wiki is **not an official bspwm project** and does not aim to replace official documentation.  
 It exists to complement it.
 
 ---
 
 ## Guiding Principles
 
-The governance of Doc741 follows these principles:
+The governance of bspwm-wiki follows these principles:
 
 - **Community-driven**: Contributions and ideas come from the bspwm community.
 - **Minimal hierarchy**: Decisions are made collaboratively whenever possible.
@@ -70,13 +70,13 @@ There is no fixed timeline or quota.
 
 ## Scope of the Project
 
-Doc741 focuses on:
+bspwm-wiki focuses on:
 - Explaining bspwm concepts and internals
 - Practical usage patterns
 - Common pitfalls and debugging strategies
 - Referencing real-world configurations (with attribution)
 
-Doc741 does **not**:
+bspwm-wiki does **not**:
 - Dictate how users should configure bspwm
 - Promote a single workflow or aesthetic
 - Replace official bspwm documentation or the Arch Wiki
@@ -85,7 +85,7 @@ Doc741 does **not**:
 
 ## Relationship with the bspwm Community
 
-Doc741 aims to:
+bspwm-wiki aims to:
 - Be a helpful learning resource for bspwm users
 - Credit original authors and sources
 - Encourage exploration and experimentation
