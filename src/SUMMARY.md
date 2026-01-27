@@ -1,7 +1,7 @@
 # Summary
 
-- [Objective](./readme.md)
-- [Mastering Bspwm](./Mastering-Bspwm.md)
+- [Introduction to Wiki](./readme.md)
+- [How to Master BSPWM](./Mastering-Bspwm.md)
 - [Introduction : Basics](./ch1/Introduction.md)
 - [Introduction : Architecture](./ch1/Architechture.md)
 - [Basics](./ch2/Basics.md)
