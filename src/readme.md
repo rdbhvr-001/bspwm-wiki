@@ -1,4 +1,4 @@
-## What is Doc739?
+## What is bspwm-wiki?
 
 It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).
 
