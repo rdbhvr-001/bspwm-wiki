@@ -114,3 +114,9 @@ Mastering every subcommand of the binary space partitioning controller.
 2) **Logs**: Checking `~/.xsession-errors`.
 3) **Visual Debugging**: Using `bspc query -T` piped to `jq` to visualize why a window is stuck in a specific split.
 
+## Roadmap for Learning
+
+> [!NOTE] 
+> We recommend you to visit the **Advanced** section of the wiki only after learing the basic chapters since those bulk chapters are a cummulative of all the basics.
+
+It is best to learn bspwm step by step. Introduction, Basics, Advanced, and then finally writing configurations.

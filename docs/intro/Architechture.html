@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>How to master bspwm - The bspwm-wiki</title>
+        <title>Architecture of bspwm - The bspwm-wiki</title>
 
 
         <!-- Custom HTML head -->
@@ -12,34 +12,34 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="favicon-8114d1fc.png">
-        <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
-        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="./assets/css/admonish.css">
+        <link rel="stylesheet" href=".././assets/css/admonish.css">
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fd703830.js";
+            window.path_to_searchindex_js = "../searchindex-fd703830.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a26a57cb.js"></script>
+        <script src="../toc-a26a57cb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -106,7 +106,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -141,10 +141,10 @@
                     <h1 class="menu-title">The bspwm-wiki</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
-                        <a href="https://github.com/rdbhvr-001/bspwm-wiki/edit/main/src/Mastering-Bspwm.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/rdbhvr-001/bspwm-wiki/edit/main/src/intro/Architechture.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -178,181 +178,187 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h3 id="how-to-master-the-bspwm"><a class="header" href="#how-to-master-the-bspwm">How to master the bspwm?</a></h3>
-<p>To master <strong>bspwm</strong> (Binary Space Partitioning Window Manager), you must move beyond simple configuration and understand it as a programmable environment. Because <code>bspwm</code> is merely a C program controlled by a socket client (<code>bspc</code>), mastery is equivalent to mastering the <code>bspc</code> command and the logic of binary trees.</p>
-<p>Here is the exhaustive curriculum for total bspwm mastery, structured from architectural concepts to advanced kernel-level scripting.</p>
-<h3 id="the-theoretical-foundation"><a class="header" href="#the-theoretical-foundation">The Theoretical Foundation</a></h3>
-<blockquote class="blockquote-tag blockquote-tag-important">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
-<p>You cannot predict window behavior without understanding the data structure.</p>
-</blockquote>
-<ol>
-<li><strong>The Full Binary Tree</strong>: Understand how every desktop is a root node that splits recursively.</li>
-<li><strong>Internal Nodes vs. Leaves</strong>:
+                        <h2 id="1-architectural-internals"><a class="header" href="#1-architectural-internals">1. Architectural Internals</a></h2>
+<h3 id="11-the-binary-space-partitioning-bsp-model"><a class="header" href="#11-the-binary-space-partitioning-bsp-model">1.1 The Binary Space Partitioning (BSP) Model</a></h3>
+<p>At its core, <strong>bspwm</strong> differs fundamentally from dynamic tilers (like i3, dwm, or xmonad) because it maps windows directly to the leaves of a <strong>full binary tree</strong>. There are no “lists” or “stacks” of windows; there is only the tree.</p>
+<h4 id="the-node_t-structure"><a class="header" href="#the-node_t-structure">The <code>node_t</code> Structure</a></h4>
+<p>Understanding bspwm requires understanding the C structure that represents every node. A <code>node</code> is the atomic unit of the window manager.</p>
 <ul>
-<li><em>Leaves</em> hold windows (<code>client</code>).</li>
-<li><em>Internal Nodes</em> hold structure (Split type: Horizontal/Vertical + Split Ratio).</li>
+<li><strong>Internal Nodes</strong>: These are purely structural. They do not hold windows. Their sole purpose is to define a region of space and how it is split.
+<ul>
+<li><em>Properties</em>: <code>split_type</code> (Horizontal or Vertical), <code>split_ratio</code> (0.0 to 1.0, default 0.5), <code>first_child</code> (pointer), <code>second_child</code> (pointer).</li>
 </ul>
 </li>
-<li><strong>Traversal Paths</strong>: Understanding how <code>next</code>/<code>prev</code> cycles through the tree (pre-order, in-order, post-order traversal logic).</li>
-<li><strong>Tree Rotation</strong>: How “circulate” commands (<code>bspc node -C</code>) physically rotate the tree structure.</li>
-</ol>
-<h3 id="the-control-interface"><a class="header" href="#the-control-interface">The Control Interface</a></h3>
-<p>Mastering every subcommand of the binary space partitioning controller.</p>
+<li><strong>Leaf Nodes</strong>: These are the containers for actual X11 windows.
+<ul>
+<li><em>Properties</em>: <code>client</code> (Window ID), <code>vacuity</code> (Occupied or Empty/Receptacle).
+<br>
+<img src="../assets/binary-tree-structure-2.png" alt="BSPWM Binary Tree Structure">
+<br>
+BSPWM Binary Tree Structure
+When you “move” a window in bspwm, you are actually performing tree rotation or swapping pointers in this linked structure.</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-the-ipc-architecture-inter-process-communication"><a class="header" href="#12-the-ipc-architecture-inter-process-communication">1.2 The IPC Architecture (Inter-Process Communication)</a></h3>
+<p><code>bspwm</code> itself is a daemon that does not read a configuration file at runtime. It opens a Unix domain socket and waits for byte-stream commands.</p>
+<ul>
+<li><strong>The Daemon (<code>bspwm</code>)</strong>: Sits in an event loop (using <code>select</code> or <code>epoll</code>), listening for two things simultaneously:</li>
+</ul>
 <ol>
-<li><strong>Node Selection (The Query Language)</strong>:
+<li><strong>X11 Events</strong>: <code>MapRequest</code>, <code>DestroyNotify</code>, <code>EnterNotify</code> (from the X server).</li>
+<li><strong>Socket Messages</strong>: Commands from <code>bspc</code>.</li>
+</ol>
+<ul>
+<li><strong>The Client (<code>bspc</code>)</strong>: A lightweight binary that connects to the socket, sends a null-terminated string (e.g., <code>node\0-f\0west\0</code>), waits for a response, and prints it to stdout.
+<strong>Implication</strong>: Your <code>bspwmrc</code> is just a shell script that spams <code>bspc</code> commands to the socket. If <code>bspc</code> fails, <code>bspwm</code> remains completely unconfigured (black screen).</li>
+</ul>
+<h2 id="2-the-bspc-command-language"><a class="header" href="#2-the-bspc-command-language">2. The <code>bspc</code> Command language</a></h2>
+<p><code>bspc</code> is not just a controller; it is a query language. Almost every command follows the pattern: <code>bspc &lt;DOMAIN&gt; &lt;ACTION&gt; &lt;SELECTOR&gt;</code>.</p>
+<h3 id="21-selectors-and-descriptors"><a class="header" href="#21-selectors-and-descriptors">2.1 Selectors and Descriptors</a></h3>
+<p>A selector uniquely identifies a node, desktop, or monitor.
+<strong>Syntax</strong>: <code>[REFERENCE#]DESCRIPTOR(.MODIFIER)*</code></p>
+<ul>
+<li><strong>Reference</strong>: The starting point. Defaults to <code>focused</code>. You can set it arbitrarily: <code>0x00200005#...</code> starts the search from window <code>0x00200005</code>.</li>
+<li><strong>Descriptors</strong>:
 <ul>
 <li><strong>Directional</strong>: <code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>.</li>
-<li><strong>History</strong>: <code>last</code>, <code>older</code>, <code>newer</code>.</li>
-<li><strong>Family</strong>: <code>parent</code>, <code>brother</code>, <code>ancestor</code>, <code>descendant</code>.</li>
-<li><strong>Path Notations</strong>: <code>@/</code> (root), <code>@/1</code> (left child), <code>@/2</code> (right child).</li>
-<li><strong>Modifiers</strong>: <code>.floating</code>, <code>.tiled</code>, <code>.pseudo_tiled</code>, <code>.locked</code>, <code>.sticky</code>, <code>.private</code>, <code>.hidden</code>.</li>
+<li><strong>Cyclic</strong>: <code>next</code>, <code>prev</code> (follows the tree traversal order).</li>
+<li><strong>Genealogical</strong>: <code>parent</code>, <code>brother</code>, <code>first_child</code>, <code>second_child</code>, <code>ancestor</code>, <code>descendant</code>.</li>
+<li><strong>History</strong>: <code>last</code> (last focused), <code>older</code>, <code>newer</code>.</li>
 </ul>
 </li>
-<li><strong>Node Manipulation</strong>:
+<li><strong>Modifiers</strong>: Filters that refine the selection.
 <ul>
-<li><strong>Movement</strong>: Moving nodes within a desktop, across desktops, or across monitors (<code>bspc node -m</code>, <code>-d</code>, <code>-n</code>).</li>
-<li><strong>Resizing</strong>: Differential resizing (<code>-z top -20 0</code>) vs. Ratio resizing.</li>
-<li><strong>Swapping</strong>: Exchanging the position of two nodes (<code>bspc node -s</code>).</li>
-<li><strong>Flags</strong>: Toggling <code>hidden</code> (minimized), <code>sticky</code> (global), <code>private</code> (ignored by automatic splitting), <code>locked</code> (immune to closing).</li>
+<li><code>.local</code> (same desktop), <code>.leaf</code> (ignore internal nodes), <code>.floating</code>, <code>.tiled</code>.</li>
+<li><code>!</code>: Negation. <code>.!hidden</code> means “not hidden”.
+<strong>Example</strong>: “Focus the first non-hidden floating window on the current desktop.”</li>
 </ul>
 </li>
-<li><strong>Preselection (<code>-p</code>)</strong>:
+</ul>
+<pre><code class="language-bash">bspc node -f .floating.!hidden.local.first
+</code></pre>
+<h3 id="22-path-selectors-"><a class="header" href="#22-path-selectors-">2.2 Path Selectors (<code>@</code>)</a></h3>
+<p>You can address nodes by their path from the root of the tree.</p>
 <ul>
-<li>Manually defining the <em>split direction</em> and <em>ratio</em> for the <em>next</em> window.</li>
-<li>Visualizing preselection feedback colors.</li>
-<li>Canceling preselection (<code>bspc node -p cancel</code>).</li>
+<li><code>@/</code>: The root of the current desktop.</li>
+<li><code>@/1</code>: The first child (left/top) of the root.</li>
+<li><code>@/2</code>: The second child (right/bottom) of the root.</li>
+<li><code>@/2/1</code>: The first child of the second child of the root.
+This is useful for scripts that need to traverse the tree deterministically.</li>
+</ul>
+<h2 id="3-command-reference"><a class="header" href="#3-command-reference">3. Command Reference</a></h2>
+<h3 id="31-node-operations-bspc-node"><a class="header" href="#31-node-operations-bspc-node">3.1 Node Operations (<code>bspc node</code>)</a></h3>
+<ul>
+<li><strong>Insertion (<code>-i</code>)</strong>: Inserts a “receptacle” (empty leaf) at the given split.
+<ul>
+<li><code>bspc node -i</code> creates a blank space where you can later dump a window.</li>
 </ul>
 </li>
-<li><strong>Receptacles (<code>-i</code>)</strong>:
+<li><strong>Preselection (<code>-p</code>)</strong>: Marks a node to be split in a specific way for the <em>next</em> window.
 <ul>
-<li>Inserting empty nodes (leaves without windows) to reserve layout space.</li>
-<li>Dumping windows into receptacles.</li>
+<li><code>bspc node -p south -o 0.75</code>: “The next window will open in the bottom 25% of this node.”</li>
 </ul>
 </li>
-</ol>
-<h3 id="the-input-daemon"><a class="header" href="#the-input-daemon">The Input Daemon</a></h3>
-<p><code>bspwm</code> handles zero keyboard input. You must master <code>sxhkd</code> to drive it.</p>
+<li><strong>Flags (<code>-g</code>)</strong>:
 <ul>
-<li><strong>Chord Chains</strong>: Binding sequences (<code>super + a ; b</code>).</li>
-<li><strong>Brace Expansion</strong>: Creating compact matrices of commands (<code>super + {h,j,k,l}</code> mapped to <code>{west,south,north,east}</code>).</li>
-<li><strong>Command Replay</strong>: Using <code>@</code> to run commands on key release vs. press.</li>
-<li><strong>Sync vs. Async</strong>: Understanding when a command blocks <code>sxhkd</code> and when it doesn’t.</li>
-<li><strong>Mode Simulation</strong>: Creating “modal” editing (like Vim) using chord chains or dynamic config reloading.</li>
+<li><code>hidden</code>: Removes the window from the tree layout but keeps it in memory (minimized).</li>
+<li><code>sticky</code>: Keeps the window visible across all desktop switches on that monitor.</li>
+<li><code>private</code>: Bspwm will try not to split this node.</li>
+<li><code>marked</code>: Tags a node for batch operations.</li>
 </ul>
-<h3 id="logic--automation"><a class="header" href="#logic--automation">Logic &amp; Automation</a></h3>
+</li>
+</ul>
+<h3 id="32-desktop--monitor-operations"><a class="header" href="#32-desktop--monitor-operations">3.2 Desktop &amp; Monitor Operations</a></h3>
+<ul>
+<li><strong>Reordering</strong>: <code>bspc monitor -o I II III IV</code> reorders desktops.</li>
+<li><strong>Swapping</strong>: <code>bspc desktop -s prev</code> swaps the current desktop with the previous one.</li>
+<li><strong>Bubbling</strong>: <code>bspc desktop -b next</code> “bubbles” the desktop (moves it one slot over in the list).</li>
+</ul>
+<h3 id="33-the-query-system-bspc-query"><a class="header" href="#33-the-query-system-bspc-query">3.3 The Query System (<code>bspc query</code>)</a></h3>
+<p>This is the most powerful tool for scripting.</p>
+<ul>
+<li><code>bspc query -T</code>: Dumps the <strong>entire world state</strong> (monitors -&gt; desktops -&gt; nodes) as a JSON object.</li>
+<li><code>bspc query -N</code>: Lists node IDs.
+<ul>
+<li><strong>Use Case</strong>: Count windows on current desktop:</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-bash">bspc query -N -d focused -n .leaf.!hidden | wc -l
+</code></pre>
+<h2 id="4-advanced-logic--scripting"><a class="header" href="#4-advanced-logic--scripting">4. Advanced Logic &amp; Scripting</a></h2>
+<h3 id="41-external-rules"><a class="header" href="#41-external-rules">4.1 External Rules</a></h3>
+<p>Bspwm allows you to offload window placement logic to an external script. This is defined by <code>external_rules_command</code>.
+<strong>How it works</strong>:</p>
 <ol>
-<li><strong>Standard Rules (<code>bspc rule</code>)</strong>:
-<ul>
-<li>Static assignment: <code>bspc rule -a Firefox desktop='^2' follow=on</code>.</li>
-<li>One-shot rules (<code>-o</code>): Rules that apply only to the very next window spawned.</li>
-</ul>
-</li>
-<li><strong>External Rules Command</strong>:
-<ul>
-<li>Writing shell scripts that intercept <code>Window ID</code>, <code>Class</code>, and <code>Instance</code> before the window is mapped.</li>
-<li>Implementing complex logic (e.g., “If GIMP opens and I am on Monitor 1, float it; if Monitor 2, tile it”).</li>
-</ul>
-</li>
-<li><strong>Event Subscription (<code>bspc subscribe</code>)</strong>:
-<ul>
-<li>Listening to the event stream: <code>node_add</code>, <code>node_remove</code>, <code>desktop_focus</code>, <code>monitor_add</code>.</li>
-<li>Building daemon scripts that react to changes (e.g., “When I switch to Desktop 5, automatically change the wallpaper”).</li>
-</ul>
-</li>
-<li><strong>State Dumping (<code>bspc query -T</code>)</strong>:
-<ul>
-<li>Reading the JSON state of the entire window manager.</li>
-<li>Writing scripts to save/load layouts (parsing JSON to reconstruct trees using receptacles).</li>
-</ul>
-</li>
+<li>A new window appears.</li>
+<li>Bspwm pauses.</li>
+<li>It calls your script with arguments: <code>WindowID</code>, <code>Class</code>, <code>Instance</code>.</li>
+<li>Your script prints key-value pairs to stdout (e.g., <code>state=floating</code>, <code>desktop=^3</code>).</li>
+<li>Bspwm applies these settings <em>before</em> mapping the window.
+<strong>Example Script</strong>:</li>
 </ol>
-<h3 id="layout-management"><a class="header" href="#layout-management">Layout Management</a></h3>
+<pre><code class="language-bash">#!/bin/sh
+wid=$1
+class=$2
+instance=$3
+
+# Float all "Save As" dialogs
+if [ "$class" = "Gtkwave" ] &amp;&amp; [ "$instance" = "file_chooser" ]; then
+    echo "state=floating"
+    echo "center=on"
+fi
+</code></pre>
+<h3 id="42-state-restoration-layouts"><a class="header" href="#42-state-restoration-layouts">4.2 State Restoration (Layouts)</a></h3>
+<p>Because the state is purely data (JSON), you can save and restore layouts.</p>
+<ul>
+<li><strong>Save</strong>: <code>bspc query -T -d &gt; layout.json</code>.</li>
+<li><strong>Restore</strong>: A script is needed to parse this JSON. It would iterate through the tree, using <code>bspc node -i</code> to create receptacles in the exact structure of the saved tree, and then launch applications to fill those receptacles.</li>
+</ul>
+<h3 id="43-the-subscriber-bspc-subscribe"><a class="header" href="#43-the-subscriber-bspc-subscribe">4.3 The Subscriber (<code>bspc subscribe</code>)</a></h3>
+<p>For status bars (like Polybar) or event-driven scripts.
+<code>bspc subscribe report</code> streams a continuous string describing the state:
+<code>W:m:DP-0:O:I:f:II:o:III:m:HDMI-0:o:IV:o:V</code></p>
+<ul>
+<li><code>W</code>: Start of report.</li>
+<li><code>m:DP-0</code>: Monitor DP-0.</li>
+<li><code>O:I</code>: Desktop I is Occupied.</li>
+<li><code>f:II</code>: Desktop II is Free (empty).</li>
+<li><code>F:III</code>: Desktop III is Focused.
+This allows bars to update instantly without polling.</li>
+</ul>
+<h2 id="5-event-flow-a-step-by-step"><a class="header" href="#5-event-flow-a-step-by-step">5. Event Flow: A Step-by-Step</a></h2>
+<p>When you press <code>Super + Enter</code> (Terminal):</p>
 <ol>
-<li><strong>Automatic Schemes</strong>:
+<li><strong>X Server</strong> receives KeyPress.</li>
+<li><strong>sxhkd</strong> (listening for keys) matches <code>super + Return</code>.</li>
+<li><strong>sxhkd</strong> executes <code>$TERMINAL</code> (e.g., Alacritty).</li>
+<li><strong>Alacritty</strong> starts and asks X11 for a window (<code>CreateWindow</code>).</li>
+<li><strong>X Server</strong> sends <code>MapRequest</code> to bspwm.</li>
+<li><strong>bspwm</strong> intercepts:
 <ul>
-<li><code>spiral</code>: Windows split the largest node, spiraling inward.</li>
-<li><code>longest_side</code>: Windows always split the longest edge (standard tiling).</li>
-<li><code>alternate</code>: Windows alternate H/V splits.</li>
+<li>Runs <code>external_rules_command</code>.</li>
+<li>Consults the <code>bspwmrc</code> rules (<code>bspc rule -a ...</code>).</li>
+<li>Finds the “insertion point” (focused node or preselection).</li>
+<li>Splits the tree node.</li>
+<li>Resizes existing windows.</li>
 </ul>
 </li>
-<li><strong>Manual Layouts</strong>: Building custom grids on the fly using preselection.</li>
-<li><strong>Padding &amp; Gaps</strong>:
-<ul>
-<li><code>window_gap</code>: Space between nodes.</li>
-<li><code>top_padding</code>, <code>left_padding</code>, etc.: Reserving space for bars/panels.</li>
-<li>Configuring per-monitor or per-desktop padding (e.g., Mono-monitor setup needs different padding than Dual).</li>
-</ul>
-</li>
+<li><strong>bspwm</strong> grants the MapRequest.</li>
+<li><strong>X Server</strong> draws the window.</li>
 </ol>
-<h3 id="the-ecosystem"><a class="header" href="#the-ecosystem">The Ecosystem</a></h3>
-<ol>
-<li><strong>Polybar / Lemonbar</strong>:
-<ul>
-<li>Parsing the <code>bspwm</code> internal report (<code>bspc subscribe report</code>) to display workspace tags (Occupied, Free, Urgent, Focused).</li>
-</ul>
-</li>
-<li><strong>X11 Tools</strong>:
-<ul>
-<li><code>xprop</code>: Finding <code>WM_CLASS</code> and <code>WM_NAME</code> for rules.</li>
-<li><code>xwininfo</code>: Debugging geometry.</li>
-<li><code>xtitle</code>: Getting dynamic window titles for scripting.</li>
-<li><code>xdo</code> / <code>xdotool</code>: Sending fake input or managing windows that <code>bspc</code> cannot touch.</li>
-</ul>
-</li>
-<li><strong>Compositors (Picom)</strong>:
-<ul>
-<li>Handling transparency, shadows, and blur.</li>
-<li>Managing opacity rules for focused vs. unfocused nodes.</li>
-</ul>
-</li>
-</ol>
-<h3 id="advanced-hacks--workflows"><a class="header" href="#advanced-hacks--workflows">Advanced Hacks &amp; Workflows</a></h3>
-<ol>
-<li><strong>Scratchpads</strong>:
-<ul>
-<li>Using the <code>hidden</code> flag and unique IDs to create “drop-down” terminals that toggle visibility.</li>
-<li>Managing a “Scratchpad Desktop” (e.g., Desktop 10) vs. Hidden Nodes.</li>
-</ul>
-</li>
-<li><strong>Swallowing</strong>:
-<ul>
-<li>implementing terminal swallowing (launching an image viewer “eats” the terminal window until the viewer closes) via generic scripts or tools like <code>devour</code>.</li>
-</ul>
-</li>
-<li><strong>Dynamic Gaps</strong>:
-<ul>
-<li>Scripting gaps to disappear when only one window is present (<code>smart_gaps</code>).</li>
-</ul>
-</li>
-<li><strong>Urgency Hints</strong>:
-<ul>
-<li>Handling <code>WM_HINTS</code> (flashing red borders) when a background window needs attention.</li>
-</ul>
-</li>
-</ol>
-<h3 id="troubleshooting--debugging"><a class="header" href="#troubleshooting--debugging">Troubleshooting &amp; Debugging</a></h3>
-<ol>
-<li><strong>The Socket</strong>: Understanding <code>/tmp/bspwm_...socket</code>.</li>
-<li><strong>Logs</strong>: Checking <code>~/.xsession-errors</code>.</li>
-<li><strong>Visual Debugging</strong>: Using <code>bspc query -T</code> piped to <code>jq</code> to visualize why a window is stuck in a specific split.</li>
-</ol>
-<h2 id="roadmap-for-learning"><a class="header" href="#roadmap-for-learning">Roadmap for Learning</a></h2>
-<blockquote class="blockquote-tag blockquote-tag-note">
-<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
-<p>We recommend you to visit the <strong>Advanced</strong> section of the wiki only after learing the basic chapters since those bulk chapters are a cummulative of all the basics.</p>
-</blockquote>
-<p>It is best to learn bspwm step by step. Introduction, Basics, Advanced, and then finally writing configurations.</p>
+<p>This entire chain happens in milliseconds, driven by the binary tree logic that ensures no two windows ever overlap (unless floating).</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../intro/Introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="intro/Introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../basics/Bspwm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -362,11 +368,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../intro/Introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="intro/Introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../basics/Bspwm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
@@ -402,13 +408,13 @@
         </script>
 
 
-        <script src="elasticlunr-ef4e11c1.min.js"></script>
-        <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 

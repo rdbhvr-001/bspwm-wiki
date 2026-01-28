@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Architecture of bspwm - The bspwm-wiki</title>
+        <title>The bspc config command - The bspwm-wiki</title>
 
 
         <!-- Custom HTML head -->
@@ -36,10 +36,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d9cceb3e.js";
+            window.path_to_searchindex_js = "../searchindex-fd703830.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-b59e5799.js"></script>
+        <script src="../toc-a26a57cb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -144,7 +144,7 @@
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
-                        <a href="https://github.com/rdbhvr-001/bspwm-wiki/edit/main/src/ch1/Architechture.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/rdbhvr-001/bspwm-wiki/edit/main/src/basics/Bspc-Config.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -178,187 +178,163 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="1-architectural-internals"><a class="header" href="#1-architectural-internals">1. Architectural Internals</a></h2>
-<h3 id="11-the-binary-space-partitioning-bsp-model"><a class="header" href="#11-the-binary-space-partitioning-bsp-model">1.1 The Binary Space Partitioning (BSP) Model</a></h3>
-<p>At its core, <strong>bspwm</strong> differs fundamentally from dynamic tilers (like i3, dwm, or xmonad) because it maps windows directly to the leaves of a <strong>full binary tree</strong>. There are no “lists” or “stacks” of windows; there is only the tree.</p>
-<h4 id="the-node_t-structure"><a class="header" href="#the-node_t-structure">The <code>node_t</code> Structure</a></h4>
-<p>Understanding bspwm requires understanding the C structure that represents every node. A <code>node</code> is the atomic unit of the window manager.</p>
-<ul>
-<li><strong>Internal Nodes</strong>: These are purely structural. They do not hold windows. Their sole purpose is to define a region of space and how it is split.
-<ul>
-<li><em>Properties</em>: <code>split_type</code> (Horizontal or Vertical), <code>split_ratio</code> (0.0 to 1.0, default 0.5), <code>first_child</code> (pointer), <code>second_child</code> (pointer).</li>
-</ul>
-</li>
-<li><strong>Leaf Nodes</strong>: These are the containers for actual X11 windows.
-<ul>
-<li><em>Properties</em>: <code>client</code> (Window ID), <code>vacuity</code> (Occupied or Empty/Receptacle).
-<br>
-<img src="../assets/binary-tree-structure-2.png" alt="BSPWM Binary Tree Structure">
-<br>
-BSPWM Binary Tree Structure
-When you “move” a window in bspwm, you are actually performing tree rotation or swapping pointers in this linked structure.</li>
-</ul>
-</li>
-</ul>
-<h3 id="12-the-ipc-architecture-inter-process-communication"><a class="header" href="#12-the-ipc-architecture-inter-process-communication">1.2 The IPC Architecture (Inter-Process Communication)</a></h3>
-<p><code>bspwm</code> itself is a daemon that does not read a configuration file at runtime. It opens a Unix domain socket and waits for byte-stream commands.</p>
-<ul>
-<li><strong>The Daemon (<code>bspwm</code>)</strong>: Sits in an event loop (using <code>select</code> or <code>epoll</code>), listening for two things simultaneously:</li>
-</ul>
-<ol>
-<li><strong>X11 Events</strong>: <code>MapRequest</code>, <code>DestroyNotify</code>, <code>EnterNotify</code> (from the X server).</li>
-<li><strong>Socket Messages</strong>: Commands from <code>bspc</code>.</li>
-</ol>
-<ul>
-<li><strong>The Client (<code>bspc</code>)</strong>: A lightweight binary that connects to the socket, sends a null-terminated string (e.g., <code>node\0-f\0west\0</code>), waits for a response, and prints it to stdout.
-<strong>Implication</strong>: Your <code>bspwmrc</code> is just a shell script that spams <code>bspc</code> commands to the socket. If <code>bspc</code> fails, <code>bspwm</code> remains completely unconfigured (black screen).</li>
-</ul>
-<h2 id="2-the-bspc-command-language"><a class="header" href="#2-the-bspc-command-language">2. The <code>bspc</code> Command language</a></h2>
-<p><code>bspc</code> is not just a controller; it is a query language. Almost every command follows the pattern: <code>bspc &lt;DOMAIN&gt; &lt;ACTION&gt; &lt;SELECTOR&gt;</code>.</p>
-<h3 id="21-selectors-and-descriptors"><a class="header" href="#21-selectors-and-descriptors">2.1 Selectors and Descriptors</a></h3>
-<p>A selector uniquely identifies a node, desktop, or monitor.
-<strong>Syntax</strong>: <code>[REFERENCE#]DESCRIPTOR(.MODIFIER)*</code></p>
-<ul>
-<li><strong>Reference</strong>: The starting point. Defaults to <code>focused</code>. You can set it arbitrarily: <code>0x00200005#...</code> starts the search from window <code>0x00200005</code>.</li>
-<li><strong>Descriptors</strong>:
-<ul>
-<li><strong>Directional</strong>: <code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>.</li>
-<li><strong>Cyclic</strong>: <code>next</code>, <code>prev</code> (follows the tree traversal order).</li>
-<li><strong>Genealogical</strong>: <code>parent</code>, <code>brother</code>, <code>first_child</code>, <code>second_child</code>, <code>ancestor</code>, <code>descendant</code>.</li>
-<li><strong>History</strong>: <code>last</code> (last focused), <code>older</code>, <code>newer</code>.</li>
-</ul>
-</li>
-<li><strong>Modifiers</strong>: Filters that refine the selection.
-<ul>
-<li><code>.local</code> (same desktop), <code>.leaf</code> (ignore internal nodes), <code>.floating</code>, <code>.tiled</code>.</li>
-<li><code>!</code>: Negation. <code>.!hidden</code> means “not hidden”.
-<strong>Example</strong>: “Focus the first non-hidden floating window on the current desktop.”</li>
-</ul>
-</li>
-</ul>
-<pre><code class="language-bash">bspc node -f .floating.!hidden.local.first
+                        <h2 id="introduction-to-bspc-command"><a class="header" href="#introduction-to-bspc-command">Introduction to <code>bspc</code> command</a></h2>
+<p>Bspwm is controlled and configured via the <code>bspc</code> command.  In practice one writes a shell script (typically $XDG_CONFIG_HOME/bspwm/bspwmrc) that calls bspc config to set various options.  The general syntax is:</p>
+<pre><code class="language-bash">bspc config [ -m MONITOR | -d DESKTOP | -n NODE ] &lt; setting &gt; [&lt; value &gt;]
 </code></pre>
-<h3 id="22-path-selectors-"><a class="header" href="#22-path-selectors-">2.2 Path Selectors (<code>@</code>)</a></h3>
-<p>You can address nodes by their path from the root of the tree.</p>
-<ul>
-<li><code>@/</code>: The root of the current desktop.</li>
-<li><code>@/1</code>: The first child (left/top) of the root.</li>
-<li><code>@/2</code>: The second child (right/bottom) of the root.</li>
-<li><code>@/2/1</code>: The first child of the second child of the root.
-This is useful for scripts that need to traverse the tree deterministically.</li>
-</ul>
-<h2 id="3-command-reference"><a class="header" href="#3-command-reference">3. Command Reference</a></h2>
-<h3 id="31-node-operations-bspc-node"><a class="header" href="#31-node-operations-bspc-node">3.1 Node Operations (<code>bspc node</code>)</a></h3>
-<ul>
-<li><strong>Insertion (<code>-i</code>)</strong>: Inserts a “receptacle” (empty leaf) at the given split.
-<ul>
-<li><code>bspc node -i</code> creates a blank space where you can later dump a window.</li>
-</ul>
-</li>
-<li><strong>Preselection (<code>-p</code>)</strong>: Marks a node to be split in a specific way for the <em>next</em> window.
-<ul>
-<li><code>bspc node -p south -o 0.75</code>: “The next window will open in the bottom 25% of this node.”</li>
-</ul>
-</li>
-<li><strong>Flags (<code>-g</code>)</strong>:
-<ul>
-<li><code>hidden</code>: Removes the window from the tree layout but keeps it in memory (minimized).</li>
-<li><code>sticky</code>: Keeps the window visible across all desktop switches on that monitor.</li>
-<li><code>private</code>: Bspwm will try not to split this node.</li>
-<li><code>marked</code>: Tags a node for batch operations.</li>
-</ul>
-</li>
-</ul>
-<h3 id="32-desktop--monitor-operations"><a class="header" href="#32-desktop--monitor-operations">3.2 Desktop &amp; Monitor Operations</a></h3>
-<ul>
-<li><strong>Reordering</strong>: <code>bspc monitor -o I II III IV</code> reorders desktops.</li>
-<li><strong>Swapping</strong>: <code>bspc desktop -s prev</code> swaps the current desktop with the previous one.</li>
-<li><strong>Bubbling</strong>: <code>bspc desktop -b next</code> “bubbles” the desktop (moves it one slot over in the list).</li>
-</ul>
-<h3 id="33-the-query-system-bspc-query"><a class="header" href="#33-the-query-system-bspc-query">3.3 The Query System (<code>bspc query</code>)</a></h3>
-<p>This is the most powerful tool for scripting.</p>
-<ul>
-<li><code>bspc query -T</code>: Dumps the <strong>entire world state</strong> (monitors -&gt; desktops -&gt; nodes) as a JSON object.</li>
-<li><code>bspc query -N</code>: Lists node IDs.
-<ul>
-<li><strong>Use Case</strong>: Count windows on current desktop:</li>
-</ul>
-</li>
-</ul>
-<pre><code class="language-bash">bspc query -N -d focused -n .leaf.!hidden | wc -l
+<p>This gets or sets the value of <code>&lt; setting &gt;</code>. Without selectors, the setting applies globally; with -m, -d, or -n it targets a specific monitor, desktop or node.  Each option affects bspwm’s behavior: for example, bspc config border_width 3 sets the width of window borders to 3 pixels.  The settings below comprise every configurable parameter (as of the latest stable bspwm) and include the option’s role, valid values, default behavior, and examples.</p>
+<h2 id="window-borders-and-colors"><a class="header" href="#window-borders-and-colors">Window Borders and Colors</a></h2>
+<p>Bspwm uses window borders to indicate focus and state.  The global border color settings are:</p>
+<p><strong><code>normal_border_color:</code></strong> color for an unfocused window’s border.</p>
+<p><strong><code>active_border_color:</code></strong> color for a focused window on an unfocused monitor.</p>
+<p><strong><code>focused_border_color</code>:</strong> color for a focused window on the active monitor.
+Each of these accepts any color string #RRGGBB or named X color.  For example, to make the focused window’s border red:</p>
+<pre><code class="language-bash">bspc config focused_border_color "#FF0000"
 </code></pre>
-<h2 id="4-advanced-logic--scripting"><a class="header" href="#4-advanced-logic--scripting">4. Advanced Logic &amp; Scripting</a></h2>
-<h3 id="41-external-rules"><a class="header" href="#41-external-rules">4.1 External Rules</a></h3>
-<p>Bspwm allows you to offload window placement logic to an external script. This is defined by <code>external_rules_command</code>.
-<strong>How it works</strong>:</p>
-<ol>
-<li>A new window appears.</li>
-<li>Bspwm pauses.</li>
-<li>It calls your script with arguments: <code>WindowID</code>, <code>Class</code>, <code>Instance</code>.</li>
-<li>Your script prints key-value pairs to stdout (e.g., <code>state=floating</code>, <code>desktop=^3</code>).</li>
-<li>Bspwm applies these settings <em>before</em> mapping the window.
-<strong>Example Script</strong>:</li>
-</ol>
-<pre><code class="language-bash">#!/bin/sh
-wid=$1
-class=$2
-instance=$3
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>You can query the current color with bspc config focused_border_color</p>
+</blockquote>
+<p>A special feedback color, <code>presel_feedback_color</code>, governs the border drawn during manual split-preselection (preselection feedback).  For instance, setting</p>
+<pre><code class="language-bash">bspc config presel_feedback_color "#00FF00"
+</code></pre>
+<p>will draw a green highlight where a split will occur.</p>
+<p>The <code>border_width</code> option (a node setting) sets the thickness in pixels of the window border. Its default is 1 pixel; to make borders thicker, e.g.:</p>
+<pre><code class="language-bash">bspc config border_width 2
+</code></pre>
+<p>These parameters control the visual frame around windows.  In the <strong>monocle layout</strong> (one-window fullscreen mode), two special flags exist: <strong>borderless_monocle</strong> (boolean) removes borders when in monocle mode, and <strong>gapless_monocle</strong> removes any window gaps in monocle layout.  Finally, <strong>single_monocle</strong> (boolean) forces the layout to switch to monocle when only one window is present. For example:</p>
+<pre><code class="language-bash">bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config single_monocle true
+</code></pre>
+<p>These would eliminate borders and gaps in monocle layout and make that layout automatic for lone windows.</p>
+<h2 id="splitting-and-layout"><a class="header" href="#splitting-and-layout">Splitting and Layout</a></h2>
+<p>The <code>split_ratio</code> setting defines how a window is partitioned when a new window is inserted in automatic mode. It is a fraction between 0 and 1. For example,</p>
+<pre><code class="language-bash">bspc config split_ratio 0.60
+</code></pre>
+<p>makes new splits 60/40 by default (i.e. the first child gets 60% of the space).  The default is 0.5 (even split) unless changed in your config.</p>
+<p><strong>Window spacing is controlled by <code>window_gap</code></strong> (desktop setting), which is the number of pixels of space between tiled windows.  To add a 10px gap everywhere, use:</p>
+<pre><code class="language-bash">bspc config window_gap 10
+</code></pre>
+<p><strong>Monocle-layout</strong> padding can also be set. The options top_monocle_padding, right_monocle_padding, bottom_monocle_padding, and left_monocle_padding (all in pixels) add blank space at the screen edges when in monocle mode. For example, to center a monocle window with a 20px top margin:</p>
+<pre><code class="language-bash">bspc config top_monocle_padding 20
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>In summary, <code>split_ratio</code> and <code>window_gap</code> affect tiling splits and inter-window gaps, while the monocle flags/padding fine-tune fullscreen behavior.</p>
+</blockquote>
+<h3 id="automatic-tiling-and-preselection"><a class="header" href="#automatic-tiling-and-preselection">Automatic Tiling and Preselection</a></h3>
+<p>Bspwm can tile windows automatically or under manual preselection. The automatic_scheme option chooses the insertion algorithm: it accepts longest_side, alternate, or spiral.  This determines how the binary partitioning tree expands. For example:</p>
+<pre><code class="language-bash">bspc config automatic_scheme spiral
+</code></pre>
+<p>switches to the <strong>“spiral”</strong> insertion pattern.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>By default bspwm uses <code>alternate</code> automatic scheme which alternates between vertical and horizontal splits.</p>
+</blockquote>
+<p>The <code>initial_polarity</code> option determines on which side a new window is attached in an automatic split when a node has only one child. It can be first_child or second_child. For instance:</p>
+<pre><code class="language-bash">bspc config initial_polarity first_child
+</code></pre>
+<p>makes new windows attach on the first (left or top) side of the split by default. (By default this is usually second_child.)</p>
+<p><strong>Other related options:</strong> <code>directional_focus_tightness</code> (high or low) tweaks how strictly bspwm decides whether a window is “in the DIR side” of another for focus commands. <code>removal_adjustment</code> (boolean) controls whether bspwm adjusts (re-splits) the sibling when a node is removed from the tree; turning it off can leave odd splits if windows are closed.</p>
+<p><strong>Preselection (manual tiling)</strong> can be toggled with pointer commands or key bindings. The presel_feedback setting (boolean, defaults to true) enables the visible overlay that shows where a manual split will occur. If you disable it (bspc config presel_feedback false), bspwm will still respect manual split commands but won’t draw the highlighted region.</p>
+<p>In short, these settings define how bspwm splits windows: the scheme, where new windows attach, and how strictly the tiling is adjusted or visualized.</p>
+<h3 id="pointer-and-focus-behavior"><a class="header" href="#pointer-and-focus-behavior">Pointer and Focus Behavior</a></h3>
+<p>Bspwm lets you use the mouse (with a modifier key) to move/resize windows and to control focus. The pointer_modifier setting specifies which keyboard modifier (e.g. mod4 for the Super/Windows key) enables pointer actions. For example:</p>
+<pre><code class="language-bash">bspc config pointer_modifier mod4
+</code></pre>
+<p>Means holding Super while clicking/draggings acts on windows.</p>
+<p>By default, <code>pointer_modifier+Button1</code> moves a window, <code>Button2</code> resizes by dragging a side, and <code>Button3</code> resizes by dragging a corner. These defaults correspond to <code>pointer_action1=move</code>, <code>pointer_action2=resize_side</code>, <code>pointer_action3=resize_corner</code>. You can reassign them; e.g.:</p>
+<pre><code class="language-bash">bspc config pointer_action1 resize_side
+bspc config pointer_action2 move
+</code></pre>
+<p>swaps the actions for button1 and button2. Setting pointer_action&lt; n &gt; to none disables that action.</p>
+<p>Focus via mouse clicking is controlled by click_to_focus. It takes button1, button2, button3, any, or none. The default is button1 (left click focuses). For example, to focus windows with a middle-click:</p>
+<pre><code class="language-bash">bspc config click_to_focus button2
+</code></pre>
+<p>The <code>swallow_first_click</code> flag (boolean) prevents the click event that focuses a window from being passed to the application. If true, clicking to focus will not (for example) click buttons in the newly focused window; this is useful if you want a click to only change focus.</p>
+<p><strong>Pointer and focus warping:</strong> <code>focus_follows_pointer</code> (boolean) makes focus follow the mouse pointer; if enabled, simply moving the mouse over a window will focus it. Conversely, <code>pointer_follows_focus</code> (boolean) warps the pointer to the center of the newly focused window, and <code>pointer_follows_monitor</code> does the same for the newly focused monitor. These are all off by default, but can be turned on with e.g.:</p>
+<pre><code class="language-bash">bspc config focus_follows_pointer true
+bspc config pointer_follows_focus true
+</code></pre>
+<p><strong>In summary, the pointer settings let you pick a modifier key and mouse button actions to move/resize windows, and to configure click-to-focus and pointer warping behaviors.</strong></p>
+<h3 id="ewmh-hints-and-miscellaneous"><a class="header" href="#ewmh-hints-and-miscellaneous">EWMH Hints and Miscellaneous</a></h3>
+<p>Bspwm can ignore or honor certain EWMH hints (state requests from other applications) via these settings.</p>
+<p><code>ignore_ewmh_focus</code> (boolean) ignores focus requests from EWMH-compliant clients. If true, external programs cannot change window focus.</p>
+<p><code>ignore_ewmh_fullscreen</code> can be none, all, or a comma-separated list enter,exit. It blocks clients that try to put windows into fullscreen (setting the _NET_WM_STATE_FULLSCREEN hint). For example, bspc config ignore_ewmh_fullscreen all will prevent all EWMH fullscreen changes.</p>
+<p><code>ignore_ewmh_struts</code> (boolean) ignores the EWMH strut hints that panels and docks use to reserve screen space. If you have an always-on-top panel, setting this to true makes bspwm ignore its struts (useful if your panel is external and you don’t want bspwm to avoid it).</p>
+<p><code>center_pseudo_tiled</code> (boolean, defaults to true) determines whether pseudo-tiled windows (tiled windows that respect size hints) are centered in their area. For example, floating dialogs can be treated as pseudo-tiled; if true, bspwm will center them in their split. You can turn it off with bspc config center_pseudo_tiled false.</p>
+<p><code>honor_size_hints</code> (boolean) tells bspwm to apply ICCCM size hints from applications. Enabling this makes bspwm honor the minimum/maximum size hints that some X programs request.</p>
+<p><code>mapping_events_count</code> (integer) sets how many mapping notify events bspwm should process. By default it only handles one (focusing windows, etc.), but a negative value means “handle all.” This is a rare, low-level option usually left at 0 or 1.</p>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>These options govern how bspwm reacts to external hints or special windows. Use them to integrate bspwm with other desktop components (EWMH panels, fullscreen requests) or to tweak size-hint behavior.</p>
+</blockquote>
+<h3 id="monitor-and-desktop-settings"><a class="header" href="#monitor-and-desktop-settings">Monitor and Desktop Settings</a></h3>
+<p>Padding at screen edges is controlled by the <code>top_padding</code>, <code>right_padding</code>, <code>bottom_padding</code>, and <code>left_padding</code> settings (monitor/desktop settings). These are pixel values added as empty space on each side of the screen or desktop. This is commonly used to leave room for panels or docks. For example, to leave a 24px gap at the top (e.g. for a status bar):</p>
+<pre><code class="language-bash">bspc config top_padding 24
+bspc config bottom_padding 0
+bspc config left_padding 0
+bspc config right_padding 0
+</code></pre>
+<p>With this, bspwm will tile windows below that 24px area.</p>
+<p>Bspwm can also manage multiple monitors dynamically. The boolean flags remove_disabled_monitors, remove_unplugged_monitors, and merge_overlapping_monitors (all default false) adjust bspwm’s behavior on monitor changes. <strong>For instance, if you set bspc config remove_unplugged_monitors true, any monitor that is unplugged (e.g. a laptop lid closing) will be treated as disconnected and its desktops moved elsewhere. These are advanced options for multi-head setups</strong>.</p>
+<h3 id="global-misc-settings"><a class="header" href="#global-misc-settings">Global Misc Settings</a></h3>
+<p><strong>status_prefix:</strong> a string prefixed to each bspc event line (used in status scripts). For example, setting</p>
+<pre><code class="language-bash">bspc config status_prefix "[bspwm] "
+</code></pre>
+<p>causes all window/desktop events sent to status bars to start with “ ”.</p>
+<p><strong>external_rules_command:</strong> path to an external script that provides window rule assignments. If set, bspwm will call this command each time a new window appears, passing it the window’s ID, class, and instance, and expecting key=value outputs for rule keys (like split_ratio=0.7, desktop=2, etc.). For example:</p>
+<pre><code class="language-bash">bspc config external_rules_command "$HOME/.config/bspwm/rules.sh"
+</code></pre>
+<p>where rules.sh might output something like center=on follow=on. This allows dynamic, programmatic control of window placement.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>These global options are less frequently changed, but status_prefix can help integrate bspwm with custom panels, and external_rules_command enables advanced window rule logic.</p>
+</blockquote>
+<h3 id="usage-examples"><a class="header" href="#usage-examples">Usage Examples</a></h3>
+<p>Below is a sample snippet of a bspwmrc configuring several options (annotated for clarity):</p>
+<pre><code class="language-bash">
+# Set focused/unfocused border colors
+bspc config focused_border_color "#3585ce"    # blue border for focused windows
+bspc config normal_border_color "#444444"     # gray for others
 
-# Float all "Save As" dialogs
-if [ "$class" = "Gtkwave" ] &amp;&amp; [ "$instance" = "file_chooser" ]; then
-    echo "state=floating"
-    echo "center=on"
-fi
+# Set default split ratio and gaps
+bspc config split_ratio 0.55                  # 55/45 split by default
+bspc config window_gap 10                     # 10px gap between windows
+
+# Monocle layout tweaks
+bspc config borderless_monocle true           # no borders in monocle mode
+bspc config top_monocle_padding 20            # 20px padding on top in monocle
+
+# Pointer/mouse actions
+bspc config pointer_modifier mod4             # use Super key for pointer actions
+bspc config pointer_action3 none              # disable corner resize
+bspc config click_to_focus any                # any click focuses window
+bspc config swallow_first_click true         # do not forward the click event
+
+# Automatic tiling scheme
+bspc config automatic_scheme alternate        # alternate insert (default)
+bspc config initial_polarity second_child     # new windows on second child by default
+
+# Layout hints
+bspc config focus_follows_pointer true        # focus on mouse-over
+bspc config center_pseudo_tiled false        # disable centering pseudo-tiled
+
+# Padding for panels
+bspc config top_padding 30                   # leave 30px at top for panel
 </code></pre>
-<h3 id="42-state-restoration-layouts"><a class="header" href="#42-state-restoration-layouts">4.2 State Restoration (Layouts)</a></h3>
-<p>Because the state is purely data (JSON), you can save and restore layouts.</p>
-<ul>
-<li><strong>Save</strong>: <code>bspc query -T -d &gt; layout.json</code>.</li>
-<li><strong>Restore</strong>: A script is needed to parse this JSON. It would iterate through the tree, using <code>bspc node -i</code> to create receptacles in the exact structure of the saved tree, and then launch applications to fill those receptacles.</li>
-</ul>
-<h3 id="43-the-subscriber-bspc-subscribe"><a class="header" href="#43-the-subscriber-bspc-subscribe">4.3 The Subscriber (<code>bspc subscribe</code>)</a></h3>
-<p>For status bars (like Polybar) or event-driven scripts.
-<code>bspc subscribe report</code> streams a continuous string describing the state:
-<code>W:m:DP-0:O:I:f:II:o:III:m:HDMI-0:o:IV:o:V</code></p>
-<ul>
-<li><code>W</code>: Start of report.</li>
-<li><code>m:DP-0</code>: Monitor DP-0.</li>
-<li><code>O:I</code>: Desktop I is Occupied.</li>
-<li><code>f:II</code>: Desktop II is Free (empty).</li>
-<li><code>F:III</code>: Desktop III is Focused.
-This allows bars to update instantly without polling.</li>
-</ul>
-<h2 id="5-event-flow-a-step-by-step"><a class="header" href="#5-event-flow-a-step-by-step">5. Event Flow: A Step-by-Step</a></h2>
-<p>When you press <code>Super + Enter</code> (Terminal):</p>
-<ol>
-<li><strong>X Server</strong> receives KeyPress.</li>
-<li><strong>sxhkd</strong> (listening for keys) matches <code>super + Return</code>.</li>
-<li><strong>sxhkd</strong> executes <code>$TERMINAL</code> (e.g., Alacritty).</li>
-<li><strong>Alacritty</strong> starts and asks X11 for a window (<code>CreateWindow</code>).</li>
-<li><strong>X Server</strong> sends <code>MapRequest</code> to bspwm.</li>
-<li><strong>bspwm</strong> intercepts:
-<ul>
-<li>Runs <code>external_rules_command</code>.</li>
-<li>Consults the <code>bspwmrc</code> rules (<code>bspc rule -a ...</code>).</li>
-<li>Finds the “insertion point” (focused node or preselection).</li>
-<li>Splits the tree node.</li>
-<li>Resizes existing windows.</li>
-</ul>
-</li>
-<li><strong>bspwm</strong> grants the MapRequest.</li>
-<li><strong>X Server</strong> draws the window.</li>
-</ol>
-<p>This entire chain happens in milliseconds, driven by the binary tree logic that ensures no two windows ever overlap (unless floating).</p>
+<p>Each bspc config command above changes an aspect of bspwm’s layout or behavior, as documented. For a complete reference of all options and their meanings, see the bspwm manual (man page).</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../ch1/Introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../basics/Bspwm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../ch2/Basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../ch3/Interface.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -368,11 +344,11 @@ This allows bars to update instantly without polling.</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../ch1/Introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../basics/Bspwm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../ch2/Basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../ch3/Interface.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
