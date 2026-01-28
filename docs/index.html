@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4d7dad8f.js";
+            window.path_to_searchindex_js = "searchindex-d9cceb3e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-b59e5799.js"></script>
@@ -181,17 +181,15 @@
                         <h2 id="what-is-bspwm-wiki"><a class="header" href="#what-is-bspwm-wiki">What is bspwm-wiki?</a></h2>
 <p>It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).</p>
 <p>Bspwm is a tiling window manager which uses binary space partition system. (C students must have known what it means). Unlike other dynamic window managers like dwm and awesomewm, bspwm is what you configure and use. It is possible to do anything with correct integration of configs : bspwm + sxhkd + eww or polybar, you will get a perfectly aligned environment that obeys your thoughts. I named this documentation as bspwm-wiki because it is short and aligns with documentation policy of my interest.</p>
-<div class="admonish tip">
-<p>If you do not know what exactly is binary space partitioning, don't worry, the documentation will teach you.</p>
-
-</div>
-
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>If you do not know what exactly is binary space partitioning, don’t worry, the documentation will teach you.</p>
+</blockquote>
 <h2 id="what-exactly-is-the-purpose-of-the-bspwm-wiki"><a class="header" href="#what-exactly-is-the-purpose-of-the-bspwm-wiki">What exactly is the purpose of The bspwm-wiki?</a></h2>
 <p>There has not been a very good documentation about the bspwm window manager in the web. Many beginners in linux stumble upon understanding the workflow and the exact process behind bspwm and struggle by copying someone else’s configuration blindly hoping that it works on their system too. Real power users do not copy, they build upon an already existing config or build something entirely from the scratch.</p>
 <p>Linux punishes weak fundamentals, not because it is cruel towards you, but because it wants to make you stronger. Understanding about The Binary Space Partitioning Window Manager and Binary Space Partitioning before writing your first bspwm configuration will make you write optimised and good configs better than your copycat versions.</p>
 <p>Most of the configurations are using bspwm in an underrated way. For example, people rerely use the <code>query selectors with flags</code> to batch-manipulate windows. Here’s an on-liner that toggles hidden states across all windows…</p>
-<p><strong>bash</strong></p>
-<pre><code>if [ -n "$(bspc query -N -n .hidden)" ]; then flag=off; else flag=on; fi
+<pre><code class="language-bash">if [ -n "$(bspc query -N -n .hidden)" ]; then flag=off; else flag=on; fi
 for i in $(bspc query -N); do 
     bspc node $i --flag hidden=$flag
 done
@@ -209,10 +207,11 @@ done
 <li>
 <p>If you find this documentation really useful to you, you can star this <a href="https://github.com/rdbhvr-001/bspwm-wiki.git">repository</a> which will increase the ease with which this documentation is found and make it easier for people to reach out to this.</p>
 </li>
-<li>
-<p>If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository.</p>
-</li>
 </ol>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository.</p>
+</blockquote>
 <h2 id="github-repositories"><a class="header" href="#github-repositories">Github repositories</a></h2>
 <ol>
 <li><a href="https://github.com/baskerville/bspwm.git">Official BSPWM Binary : baskerville/bspwm</a></li>
@@ -252,6 +251,22 @@ done
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

@@ -23,16 +23,15 @@ Before contributing, keep these principles in mind:
 4) Keep a neutral, respectful tone
 5) Make sure that your content has clarity
 
-<div class="admonish warn">
-<p>bspwm-wiki aims to <b>reduce blind config copying</b>, not encourage it. But this documentation shall include some configuration files and references purely for learning purposes.</p>
-</div>
+> [!WARNING]
+> bspwm-wiki aims to **reduce blind config copying**, not encourage it. But this documentation shall include some configuration files and references purely for learning purposes.
 
 ### How to contribute
 1) Fork the repository from github : [rdbhvr-001/bspwm-wiki](https://github.com/rdbhvr-001/bspwm-wiki.git)
 2) Create a new branch for your change in that forked repository
 3) Install `rust mdbook` for documentation by the following commands
 
-```
+```bash
 # Make sure that you have cargo and rust installed. A simple surf in web can help you install them.
 # Install mdbook via cargo
 
@@ -45,7 +44,7 @@ cargo install mdbook
 4) Learn how to use [mdbook](https://rust-lang.github.io/mdBook/).
 5) In the forked repository, you will find `SUMMARY.md` file and other md files inside src directory, which is basically the index and source for bspwm-wiki, follow the instructions given in step 4.
 6) After editting the markdown files or adding new ones, you can use the following command to generate the book from the project root dir.
-```
+```bash
 # To test it in your friendly local browser test with
 mdbook serve
 
@@ -58,6 +57,5 @@ mdbook build
 7) Rename the `./book` to `./docs`
 8) Open up a pull request after testing the book locally in browser
 
-<div class="admonish tip">
-<p><b>An Easier Way to Contribute :</b><br>You can click that edit source button on the navbar near print button to directly edit the source, make a pull request and make changes.</p>
-</div>
+> [!TIP]
+> **An Easier Way to Contribute :** You can click that edit source button on the navbar near print button to directly edit the source, make a pull request and make changes.

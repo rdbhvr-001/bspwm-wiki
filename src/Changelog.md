@@ -44,3 +44,7 @@ This project follows a documentation-first workflow; updates may include new top
 ### Changed
 - Optimised naming for navigation and SEO searches
 - Aligned bullets in `How to master bspwm`
+
+### Fixed
+- Added native admonishments
+- Enhanced code snippets

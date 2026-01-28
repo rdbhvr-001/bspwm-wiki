@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4d7dad8f.js";
+            window.path_to_searchindex_js = "searchindex-d9cceb3e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-b59e5799.js"></script>
@@ -201,18 +201,17 @@ If something confused you while learning bspwm, that’s probably worth document
 <li>Keep a neutral, respectful tone</li>
 <li>Make sure that your content has clarity</li>
 </ol>
-<div class="admonish warn">
-<p>bspwm-wiki aims to <b>reduce blind config copying</b>, not encourage it. But this documentation shall include some configuration files and references purely for learning purposes.</p>
-
-</div>
-
+<blockquote class="blockquote-tag blockquote-tag-warning">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p>bspwm-wiki aims to <strong>reduce blind config copying</strong>, not encourage it. But this documentation shall include some configuration files and references purely for learning purposes.</p>
+</blockquote>
 <h3 id="how-to-contribute"><a class="header" href="#how-to-contribute">How to contribute</a></h3>
 <ol>
 <li>Fork the repository from github : <a href="https://github.com/rdbhvr-001/bspwm-wiki.git">rdbhvr-001/bspwm-wiki</a></li>
 <li>Create a new branch for your change in that forked repository</li>
 <li>Install <code>rust mdbook</code> for documentation by the following commands</li>
 </ol>
-<pre><code># Make sure that you have cargo and rust installed. A simple surf in web can help you install them.
+<pre><code class="language-bash"># Make sure that you have cargo and rust installed. A simple surf in web can help you install them.
 # Install mdbook via cargo
 
 cargo install mdbook
@@ -225,7 +224,7 @@ cargo install mdbook
 <li>In the forked repository, you will find <code>SUMMARY.md</code> file and other md files inside src directory, which is basically the index and source for bspwm-wiki, follow the instructions given in step 4.</li>
 <li>After editting the markdown files or adding new ones, you can use the following command to generate the book from the project root dir.</li>
 </ol>
-<pre><code># To test it in your friendly local browser test with
+<pre><code class="language-bash"># To test it in your friendly local browser test with
 mdbook serve
 
 # To build the book, in the terminal typeos
@@ -237,11 +236,10 @@ mdbook build
 <li>Rename the <code>./book</code> to <code>./docs</code></li>
 <li>Open up a pull request after testing the book locally in browser</li>
 </ol>
-<div class="admonish tip">
-<p><b>An Easier Way to Contribute :</b><br>You can click that edit source button on the navbar near print button to directly edit the source, make a pull request and make changes.</p>
-
-</div>
-
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p><strong>An Easier Way to Contribute :</strong> You can click that edit source button on the navbar near print button to directly edit the source, make a pull request and make changes.</p>
+</blockquote>
 
                     </main>
 
@@ -278,6 +276,22 @@ mdbook build
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

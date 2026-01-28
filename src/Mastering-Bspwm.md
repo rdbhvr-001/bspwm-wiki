@@ -6,7 +6,8 @@ Here is the exhaustive curriculum for total bspwm mastery, structured from archi
 
 ### The Theoretical Foundation
 
-You cannot predict window behavior without understanding the data structure.
+> [!IMPORTANT]
+> You cannot predict window behavior without understanding the data structure.
 
 1) **The Full Binary Tree**: Understand how every desktop is a root node that splits recursively.
 2) **Internal Nodes vs. Leaves**:

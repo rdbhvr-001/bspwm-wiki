@@ -4,9 +4,8 @@ It is a comprehensive and complete documentation for the Binary Space Partitioni
 
 Bspwm is a tiling window manager which uses binary space partition system. (C students must have known what it means). Unlike other dynamic window managers like dwm and awesomewm, bspwm is what you configure and use. It is possible to do anything with correct integration of configs : bspwm + sxhkd + eww or polybar, you will get a perfectly aligned environment that obeys your thoughts. I named this documentation as bspwm-wiki because it is short and aligns with documentation policy of my interest.
 
-<div class="admonish tip">
-<p>If you do not know what exactly is binary space partitioning, don't worry, the documentation will teach you.</p>
-</div>
+> [!TIP]
+> If you do not know what exactly is binary space partitioning, don't worry, the documentation will teach you.
 
 ## What exactly is the purpose of The bspwm-wiki?
 
@@ -16,9 +15,8 @@ Linux punishes weak fundamentals, not because it is cruel towards you, but becau
 
 Most of the configurations are using bspwm in an underrated way. For example, people rerely use the `query selectors with flags` to batch-manipulate windows. Here's an on-liner that toggles hidden states across all windows...
 
-**bash**
 
-```
+```bash
 if [ -n "$(bspc query -N -n .hidden)" ]; then flag=off; else flag=on; fi
 for i in $(bspc query -N); do 
     bspc node $i --flag hidden=$flag
@@ -40,7 +38,8 @@ Everything you want to know about the bspwm window manager, you will get it here
 
 2) If you find this documentation really useful to you, you can star this [repository](https://github.com/rdbhvr-001/bspwm-wiki.git) which will increase the ease with which this documentation is found and make it easier for people to reach out to this.
 
-3) If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository.
+> [!NOTE]
+> If you have any issues related to codes provided in this documentation, you can open up an issue in the github repository.
 
 ## Github repositories
 
