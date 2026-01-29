@@ -37,10 +37,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fd703830.js";
+            window.path_to_searchindex_js = "searchindex-3563a7dd.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a26a57cb.js"></script>
+        <script src="toc-e6a777cb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -876,8 +876,6 @@ This allows bars to update instantly without polling.</li>
 </ol>
 <p>This entire chain happens in milliseconds, driven by the binary tree logic that ensures no two windows ever overlap (unless floating).</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="basics-of-bspwm"><a class="header" href="#basics-of-bspwm">Basics of bspwm</a></h1>
-<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="the-bspc-config-command"><a href="#the-bspc-config-command" class="header">The bspc config command</a></h1>
 <h2 id="introduction-to-bspc-command"><a class="header" href="#introduction-to-bspc-command">Introduction to <code>bspc</code> command</a></h2>
 <p>Bspwm is controlled and configured via the <code>bspc</code> command.  In practice one writes a shell script (typically $XDG_CONFIG_HOME/bspwm/bspwmrc) that calls bspc config to set various options.  The general syntax is:</p>
@@ -1027,7 +1025,1453 @@ bspc config top_padding 30                   # leave 30px at top for panel
 </code></pre>
 <p>Each bspc config command above changes an aspect of bspwm’s layout or behavior, as documented. For a complete reference of all options and their meanings, see the bspwm manual (man page).</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="bspwm-interfaces-and-usage"><a class="header" href="#bspwm-interfaces-and-usage">Bspwm interfaces and usage</a></h1>
+<h1 id="bspwm-interfaces-and-usage"><a href="#bspwm-interfaces-and-usage" class="header">Bspwm interfaces and usage</a></h1>
+<h2 id="overview-and-architecture"><a class="header" href="#overview-and-architecture">Overview and Architecture</a></h2>
+<p><strong>bspc</strong> (bspwm socket client) is the foundational command-line interface that enables all user interaction with the <strong>bspwm</strong> window manager. Rather than implementing complex, built-in keyboard handling or graphical menus, bspwm delegates this responsibility entirely to external tools, with bspc acting as the primary bridge between user scripts (commonly managed by sxhkd—the simple X hotkey daemon) and the bspwm daemon itself.</p>
+<p>The architectural elegance of this design cannot be overstated. By separating concerns, bspwm maintains a lean, focused responsibility: managing the window tree structure and responding to X11 events. Meanwhile, bspc becomes the universal command-line API through which virtually all administrative and operational commands flow. This philosophy—described as “do one thing and do it well”—has enabled bspwm to become highly scriptable and customizable.</p>
+<p>The communication model between these components follows a clear client-server pattern: <strong>sxhkd</strong> listens for keyboard and pointer events, translates them into <strong>bspc</strong> invocations, and <strong>bspc</strong> then connects to a Unix domain socket maintained by the <strong>bspwm</strong> daemon, transmitting the command and receiving responses. This architecture is typically represented as:</p>
+<pre><code>        PROCESS SOCKET
+sxhkd --------&gt; bspc &lt;------&gt; bspwm
+</code></pre>
+<p>This design ensures that bspc requires the bspwm daemon to be running; without it, commands will fail as there’s no daemon to process the messages.</p>
+<h2 id="understanding-bspcs-command-structure"><a class="header" href="#understanding-bspcs-command-structure">Understanding bspc’s Command Structure</a></h2>
+<h3 id="domain-based-command-hierarchy"><a class="header" href="#domain-based-command-hierarchy">Domain-Based Command Hierarchy</a></h3>
+<p>bspc organizes all of its functionality around several primary <strong>domains</strong>, which represent different aspects of the window manager’s state that can be queried or modified. The general syntax follows this pattern:</p>
+<pre><code>bspc DOMAIN [SELECTOR] COMMAND [OPTIONS] [ARGUMENTS]
+</code></pre>
+<p>The primary domains are:</p>
+<ul>
+<li><strong>node</strong>: Operations targeting individual windows (which are represented as leaf nodes in the binary tree structure)</li>
+<li><strong>desktop</strong>: Operations targeting virtual desktops or workspaces</li>
+<li><strong>monitor</strong>: Operations targeting physical displays or monitors</li>
+<li><strong>query</strong>: Retrieving information about the current state without modifying it</li>
+<li><strong>rule</strong>: Defining automatic rules for new windows</li>
+<li><strong>config</strong>: Reading or setting configuration values</li>
+<li><strong>wm</strong>: Whole-window-manager operations like restarting or dumping state</li>
+<li><strong>subscribe</strong>: Listening to events emitted by bspwm</li>
+</ul>
+<p>Each domain has its own set of subcommands and options.</p>
+<h3 id="selectors-the-selection-language"><a class="header" href="#selectors-the-selection-language">Selectors: The Selection Language</a></h3>
+<p>One of the most powerful aspects of bspc is its sophisticated selector language, which allows precise specification of targets for commands. A selector consists of an optional reference, a descriptor, and any number of modifiers:</p>
+<pre><code>[REFERENCE#]DESCRIPTOR(.MODIFIER)*
+</code></pre>
+<p>This hierarchical structure enables complex queries and operations. The exclamation mark (<code>!</code>) can be prepended to any modifier to reverse its meaning.</p>
+<h4 id="node-selectors"><a class="header" href="#node-selectors">Node Selectors</a></h4>
+<p>Node selectors target individual windows or tree nodes. The complete grammar for node selection includes:</p>
+<pre><code>NODE_SEL := [NODE_SEL#](DIR|CYCLE_DIR|PATH|any|first_ancestor|last|newest|
+            older|newer|focused|pointed|biggest|smallest|
+            &lt;node_id&gt;)[.[!]focused][.[!]active][.[!]automatic][.[!]local]
+            [.[!]leaf][.[!]window][.[!]STATE][.[!]FLAG][.[!]LAYER]
+            [.[!]SPLIT_TYPE][.[!]same_class][.[!]descendant_of]
+            [.[!]ancestor_of]
+</code></pre>
+<p>The descriptors include directional references (<code>DIR</code> meaning north, west, south, or east), cycle directions (next, prev), path-based selection, and absolute identification by node ID.</p>
+<p>For example:</p>
+<pre><code class="language-bash"># Focus the window to the east
+bspc node east --focus
+
+# Focus the previously focused window
+bspc node last --focus
+
+# Focus the biggest window
+bspc node biggest --focus
+
+# Focus a window by its ID
+bspc node 0x01E00009 --focus
+
+# Focus the focused window that is tiled (not floating)
+bspc node focused.tiled --focus
+
+# Focus nodes that are descendants of a specific node
+bspc node @parent/descendant_of --focus
+</code></pre>
+<p>Modifiers allow filtering based on window properties:</p>
+<ul>
+<li><code>[!]focused</code>: Only consider the currently focused node</li>
+<li><code>[!]active</code>: Only consider active nodes across all desktops</li>
+<li><code>[!]automatic</code>: Only consider nodes in automatic insertion mode</li>
+<li><code>[!]local</code>: Only consider nodes within the reference monitor</li>
+<li><code>[!]leaf</code>: Only consider leaf nodes (actual windows)</li>
+<li><code>[!]window</code>: Only consider nodes that hold windows</li>
+<li><code>[!]STATE</code>: Filter by window state (tiled, pseudo_tiled, floating, fullscreen)</li>
+<li><code>[!]FLAG</code>: Filter by node flags (hidden, sticky, private, locked, marked, urgent)</li>
+<li><code>[!]LAYER</code>: Filter by stacking layer (below, normal, above)</li>
+<li><code>[!]SPLIT_TYPE</code>: Filter by parent split type (horizontal, vertical)</li>
+<li><code>[!]same_class</code>: Only consider windows of the same class as the reference</li>
+<li><code>[!]descendant_of</code>: Only consider descendants of a specific node</li>
+<li><code>[!]ancestor_of</code>: Only consider ancestors of a specific node</li>
+</ul>
+<h4 id="desktop-selectors"><a class="header" href="#desktop-selectors">Desktop Selectors</a></h4>
+<p>Desktop selectors work similarly to node selectors but operate on the desktop (workspace) level:</p>
+<pre><code>DESKTOP_SEL := [DESKTOP_SEL#](CYCLE_DIR|any|last|newest|older|newer|
+               [MONITOR_SEL:](focused|^&lt;n&gt;)|
+               &lt;desktop_id&gt;|&lt;desktop_name&gt;)[.[!]focused][.[!]active]
+               [.[!]occupied][.[!]urgent][.[!]local]
+</code></pre>
+<p>Desktop descriptors include:</p>
+<ul>
+<li><code>CYCLE_DIR</code>: Select next or previous desktop</li>
+<li><code>any</code>: Select the first matching desktop</li>
+<li><code>last</code>: Select the previously focused desktop</li>
+<li><code>newest</code>: Select the newest desktop in the history</li>
+<li><code>older</code>/<code>newer</code>: Select desktops relative to the reference in history</li>
+<li><code>focused</code>: Select the currently focused desktop</li>
+<li><code>^&lt;n&gt;</code>: Select the nth desktop (e.g., <code>^2</code> for the second desktop)</li>
+<li><code>&lt;desktop_id&gt;</code>: Select by unique ID</li>
+<li><code>&lt;desktop_name&gt;</code>: Select by name</li>
+</ul>
+<p>Desktop modifiers include:</p>
+<ul>
+<li><code>[!]focused</code>: Only consider the focused desktop</li>
+<li><code>[!]active</code>: Only consider desktops that are active on their monitor</li>
+<li><code>[!]occupied</code>: Only consider desktops with windows</li>
+<li><code>[!]urgent</code>: Only consider desktops with urgent windows</li>
+<li><code>[!]local</code>: Only consider desktops on the reference monitor</li>
+</ul>
+<h4 id="monitor-selectors"><a class="header" href="#monitor-selectors">Monitor Selectors</a></h4>
+<p>Monitor selectors target physical displays:</p>
+<pre><code>MONITOR_SEL := [MONITOR_SEL#](DIR|CYCLE_DIR|any|last|newest|older|newer|
+               focused|pointed|primary|^&lt;n&gt;|
+               &lt;monitor_id&gt;|&lt;monitor_name&gt;)[.[!]focused][.[!]occupied]
+</code></pre>
+<p>Monitor descriptors include:</p>
+<ul>
+<li><code>DIR</code>: Select monitors in directional order</li>
+<li><code>CYCLE_DIR</code>: Cycle to next or previous monitor</li>
+<li><code>any</code>: Select any monitor</li>
+<li><code>last</code>: Select the previously focused monitor</li>
+<li><code>newest</code>/<code>older</code>/<code>newer</code>: Historical monitor selection</li>
+<li><code>focused</code>: Select the currently focused monitor</li>
+<li><code>pointed</code>: Select the monitor containing the pointer</li>
+<li><code>primary</code>: Select the primary monitor</li>
+<li><code>^&lt;n&gt;</code>: Select the nth monitor</li>
+<li><code>&lt;monitor_id&gt;</code>: Select by unique ID</li>
+<li><code>&lt;monitor_name&gt;</code>: Select by name (e.g., <code>DP-1</code>, <code>HDMI-1</code>)</li>
+</ul>
+<p>Monitor modifiers include:</p>
+<ul>
+<li><code>[!]focused</code>: Only consider the focused monitor</li>
+<li><code>[!]occupied</code>: Only consider monitors with occupied desktops</li>
+</ul>
+<h2 id="the-node-domain-window-management"><a class="header" href="#the-node-domain-window-management">The Node Domain: Window Management</a></h2>
+<p>The <strong>node</strong> domain provides the most direct window manipulation capabilities. Nodes represent either windows (leaf nodes) or internal branching points in the binary tree structure.</p>
+<h3 id="node-commands-overview"><a class="header" href="#node-commands-overview">Node Commands Overview</a></h3>
+<p>The complete set of node commands includes:</p>
+<pre><code class="language-bash"># Focus operations
+bspc node [NODE_SEL] --focus [NODE_SEL]
+bspc node [NODE_SEL] --activate [NODE_SEL]
+
+# Movement operations
+bspc node [NODE_SEL] --to-desktop DESKTOP_SEL [--follow]
+bspc node [NODE_SEL] --to-monitor MONITOR_SEL [--follow]
+bspc node [NODE_SEL] --to-node NODE_SEL [--follow]
+bspc node [NODE_SEL] --swap NODE_SEL [--follow]
+
+# Preselection (manual insertion mode)
+bspc node [NODE_SEL] --presel-dir [~] DIR|cancel
+bspc node [NODE_SEL] --presel-ratio RATIO
+
+# Geometric operations
+bspc node [NODE_SEL] --move dx dy
+bspc node [NODE_SEL] --resize DIRECTION dx dy
+bspc node [NODE_SEL] --ratio RATIO|(+|-)(PIXELS|FRACTION)
+bspc node [NODE_SEL] --rotate 90|270|180
+bspc node [NODE_SEL] --flip horizontal|vertical
+bspc node [NODE_SEL] --equalize
+bspc node [NODE_SEL] --balance
+
+# Tree operations
+bspc node [NODE_SEL] --circulate forward|backward
+bspc node [NODE_SEL] --insert-receptacle
+
+# State and property operations
+bspc node [NODE_SEL] --state [~](tiled|pseudo_tiled|floating|fullscreen)
+bspc node [NODE_SEL] --flag hidden|sticky|private|locked|marked[=on|off]
+bspc node [NODE_SEL] --layer below|normal|above
+
+# Lifecycle operations
+bspc node [NODE_SEL] --close
+bspc node [NODE_SEL] --kill
+</code></pre>
+<h3 id="practical-node-operations"><a class="header" href="#practical-node-operations">Practical Node Operations</a></h3>
+<h4 id="focus-management"><a class="header" href="#focus-management">Focus Management</a></h4>
+<p>Focus management is perhaps the most frequently used node operation. When a node is focused, it becomes the active window, receives keyboard input, and is typically highlighted with a colored border:</p>
+<pre><code class="language-bash"># Focus the focused window (appears redundant but useful in scripts)
+bspc node focused --focus
+
+# Focus a specific window by ID
+bspc node 0x01E00009 --focus
+
+# Focus the east window relative to currently focused
+bspc node east --focus
+
+# Focus the next window in cycle order
+bspc node next --focus
+
+# Focus the biggest window on the current desktop
+bspc node biggest --focus
+
+# Focus the smallest window on the current desktop
+bspc node smallest --focus
+
+# Focus a window that is in floating state
+bspc node focused.floating --focus
+
+# Focus a window that is NOT in floating state
+bspc node focused.!floating --focus
+
+# Focus all tiled windows on the focused desktop
+# (useful in loops for batch operations)
+bspc query -N -n focused -n .tiled
+</code></pre>
+<h4 id="window-movement-and-sending"><a class="header" href="#window-movement-and-sending">Window Movement and Sending</a></h4>
+<p>Moving windows between desktops and monitors is fundamental to bspwm’s functionality:</p>
+<pre><code class="language-bash"># Send the focused window to desktop 2
+bspc node focused --to-desktop ^2
+
+# Send the focused window to desktop 2 and follow it
+bspc node focused --to-desktop ^2 --follow
+
+# Send the focused window to the next desktop without following
+bspc node focused --to-desktop next
+
+# Send the focused window to the previous desktop
+bspc node focused --to-desktop prev
+
+# Send the focused window to the last desktop
+bspc node focused --to-desktop last
+
+# Send the focused window to the next monitor
+bspc node focused --to-monitor next
+
+# Send the focused window to the primary monitor and follow
+bspc node focused --to-monitor primary --follow
+
+# Send all windows on the current desktop to desktop 3
+bspc query -N -d focused -n .window | while read node_id; do
+    bspc node "$node_id" --to-desktop ^3
+done
+</code></pre>
+<p>The <code>--follow</code> flag is particularly important. Without it, the focus remains where it was. With it, the focus “follows” the node being moved, shifting to wherever the node is sent.</p>
+<h4 id="swapping-windows"><a class="header" href="#swapping-windows">Swapping Windows</a></h4>
+<p>Swapping exchanges the positions of two nodes in the tree, making it useful for rearranging windows:</p>
+<pre><code class="language-bash"># Swap the focused window with the east window
+bspc node focused --swap east
+
+# Swap the focused window with the next window
+bspc node focused --swap next
+
+# Swap with a specific window by ID
+bspc node focused --swap 0x01E00009
+
+# Swap focused window with its parent (all siblings swap implicitly)
+bspc node focused --swap @parent
+
+# Swap the entire desktop tree with the tree of desktop 2
+bspc query -N -d focused -n @parent | head -1 | \
+    xargs -I {} bspc node {} --swap @parent
+</code></pre>
+<h4 id="preselection-manual-window-insertion"><a class="header" href="#preselection-manual-window-insertion">Preselection: Manual Window Insertion</a></h4>
+<p>Preselection allows users to manually specify where the next window will be placed, overriding the automatic insertion scheme:</p>
+<pre><code class="language-bash"># Preselect the north direction for the next window
+bspc node focused --presel-dir north
+
+# Preselect west with default ratio (0.5)
+bspc node focused --presel-dir west
+
+# Preselect south with a specific ratio (30% to the south window)
+bspc node focused --presel-dir south
+bspc node focused --presel-ratio 0.3
+
+# Preselect east with custom ratio (70% to the east window)
+bspc node focused --presel-dir east
+bspc node focused --presel-ratio 0.7
+
+# Cancel preselection
+bspc node focused --presel-dir cancel
+
+# Toggle preselection (cancel if already set, otherwise set north)
+bspc node focused --presel-dir ~north
+
+# Preselect with dynamic ratio adjustment
+# If already north, cancel; otherwise set north with ratio change
+bspc node focused --presel-dir ~north
+bspc node focused --presel-ratio 0.4
+</code></pre>
+<p>The preselection feedback visual (border and fill) helps users see where the window will be placed. This can be configured with:</p>
+<pre><code class="language-bash"># Set the preselection feedback color (RGB hex)
+bspc config presel_feedback_color '#ff0000'
+
+# Enable or disable the feedback visual
+bspc config presel_feedback true
+</code></pre>
+<h4 id="window-state-transitions"><a class="header" href="#window-state-transitions">Window State Transitions</a></h4>
+<p>Windows can exist in four primary states, each representing different layout and interaction modes:</p>
+<pre><code class="language-bash"># Set window to tiled state (participates in tree layout)
+bspc node focused --state tiled
+
+# Set window to pseudo_tiled (tiled position, manually sizable)
+bspc node focused --state pseudo_tiled
+
+# Set window to floating (free positioning and sizing)
+bspc node focused --state floating
+
+# Set window to fullscreen (occupies entire monitor)
+bspc node focused --state fullscreen
+
+# Toggle between current and previous state
+bspc node focused --state ~fullscreen
+
+# Set multiple nodes to floating
+bspc query -N -n .leaf | while read node_id; do
+    bspc node "$node_id" --state floating
+done
+
+# Switch back to tiled from fullscreen
+bspc node focused --state tiled
+</code></pre>
+<p>State transitions are crucial for workflow management. For instance, switching a window to floating state immediately removes it from the tree layout.</p>
+<h4 id="node-flags-additional-properties"><a class="header" href="#node-flags-additional-properties">Node Flags: Additional Properties</a></h4>
+<p>Beyond state, nodes have several boolean flags that modify behavior:</p>
+<pre><code class="language-bash"># Hide a window (still in tree but not displayed)
+bspc node focused --flag hidden on
+
+# Unhide a hidden window
+bspc node focused --flag hidden off
+
+# Make a window sticky (visible on all desktops)
+bspc node focused --flag sticky on
+
+# Make a window private (can't be tiled with unrelated windows)
+bspc node focused --flag private on
+
+# Lock a node (prevents removal or structural changes)
+bspc node focused --flag locked on
+
+# Mark a node (mark for batch operations)
+bspc node focused --flag marked on
+
+# Set a node as urgent (needs attention)
+bspc node focused --flag urgent on
+
+# Toggle a flag
+bspc node focused --flag marked !
+</code></pre>
+<h4 id="geometric-operations"><a class="header" href="#geometric-operations">Geometric Operations</a></h4>
+<p>Beyond the tree structure, individual nodes support geometric manipulations:</p>
+<pre><code class="language-bash"># Resize by moving the right edge 20 pixels right
+bspc node focused --resize right 20 0
+
+# Resize by moving the bottom edge 30 pixels down
+bspc node focused --resize bottom 0 30
+
+# Resize by moving both right and bottom
+bspc node focused --resize bottom 20 30
+
+# Move the window by 10 pixels right and 5 pixels down
+bspc node focused --move 10 5
+
+# Adjust the split ratio (controls window size relative to sibling)
+bspc node focused --ratio 0.6  # This window gets 60% of space
+
+# Adjust ratio by delta (add 10 pixels or +0.1 fraction)
+bspc node focused --ratio +10
+bspc node focused --ratio +0.1
+
+# Rotate the split orientation of the parent node
+bspc node focused --rotate 90
+
+# Flip the orientation (vertical &lt;-&gt; horizontal)
+bspc node focused --flip horizontal
+
+# Equalize the sizes of all children under parent
+bspc node focused --equalize
+
+# Balance the tree (adjust ratios for visual balance)
+bspc node focused --balance
+</code></pre>
+<h4 id="tree-circulation-and-recycling"><a class="header" href="#tree-circulation-and-recycling">Tree Circulation and Recycling</a></h4>
+<p>Advanced tree operations include circulation, which rotates windows around the tree:</p>
+<pre><code class="language-bash"># Circulate windows forward
+bspc node focused --circulate forward
+
+# Circulate windows backward
+bspc node focused --circulate backward
+
+# Circulate all windows on the desktop
+bspc node @root --circulate forward
+</code></pre>
+<h4 id="window-lifecycle"><a class="header" href="#window-lifecycle">Window Lifecycle</a></h4>
+<p>Finally, nodes can be closed or killed:</p>
+<pre><code class="language-bash"># Close the focused window gracefully (sends close event)
+bspc node focused --close
+
+# Kill the focused window forcefully (terminates process)
+bspc node focused --kill
+
+# Close all windows on the current desktop
+bspc query -N -d focused -n .window | while read node_id; do
+    bspc node "$node_id" --close
+done
+</code></pre>
+<h2 id="the-desktop-domain-virtual-workspace-management"><a class="header" href="#the-desktop-domain-virtual-workspace-management">The Desktop Domain: Virtual Workspace Management</a></h2>
+<p>The <strong>desktop</strong> domain manages virtual workspaces, allowing users to organize windows across multiple logical spaces.</p>
+<h3 id="desktop-commands"><a class="header" href="#desktop-commands">Desktop Commands</a></h3>
+<p>Complete desktop command syntax:</p>
+<pre><code class="language-bash"># Focus operations
+bspc desktop [DESKTOP_SEL] --focus [DESKTOP_SEL]
+bspc desktop [DESKTOP_SEL] --activate [DESKTOP_SEL]
+
+# Movement and organization
+bspc desktop [DESKTOP_SEL] --to-monitor MONITOR_SEL [--follow]
+bspc desktop [DESKTOP_SEL] --swap DESKTOP_SEL [--follow]
+
+# Layout control
+bspc desktop [DESKTOP_SEL] --layout monocle|tiled|cycle_dir
+
+# Administrative operations
+bspc desktop [DESKTOP_SEL] --rename &lt;new_name&gt;
+bspc desktop [DESKTOP_SEL] --bubble next|prev
+bspc desktop [DESKTOP_SEL] --remove
+</code></pre>
+<h3 id="practical-desktop-operations"><a class="header" href="#practical-desktop-operations">Practical Desktop Operations</a></h3>
+<h4 id="desktop-navigation"><a class="header" href="#desktop-navigation">Desktop Navigation</a></h4>
+<p>Moving between desktops is essential for multi-workspace workflows:</p>
+<pre><code class="language-bash"># Focus the next desktop on the current monitor
+bspc desktop next --focus
+
+# Focus the previous desktop
+bspc desktop prev --focus
+
+# Focus desktop by name
+bspc desktop 'web' --focus
+
+# Focus the second desktop on the current monitor
+bspc desktop ^2 --focus
+
+# Focus a specific desktop by ID
+bspc desktop 0x0C00001 --focus
+
+# Focus the last focused desktop
+bspc desktop last --focus
+
+# Cycle through unfocused desktops
+bspc desktop prev.!focused --focus
+</code></pre>
+<h4 id="desktop-layout-control"><a class="header" href="#desktop-layout-control">Desktop Layout Control</a></h4>
+<p>Each desktop can use one of two primary layouts:</p>
+<pre><code class="language-bash"># Switch to tiled layout (auto-partition)
+bspc desktop focused --layout tiled
+
+# Switch to monocle layout (one window at a time, like fullscreen)
+bspc desktop focused --layout monocle
+
+# Cycle between layouts
+bspc desktop focused --layout next
+
+# Get current desktop layout
+bspc query -D -d focused --names
+</code></pre>
+<p>The layout system is configurable with automatic schemes:</p>
+<pre><code class="language-bash"># Set automatic insertion scheme to longest_side
+bspc config automatic_scheme longest_side
+
+# Set to alternate (alternates split direction from parent)
+bspc config automatic_scheme alternate
+
+# Set to spiral (rotates windows in a spiral pattern)
+bspc config automatic_scheme spiral
+
+# Set initial polarity (where first child vs second child appears)
+bspc config initial_polarity first_child
+bspc config initial_polarity second_child
+</code></pre>
+<h4 id="desktop-movement-between-monitors"><a class="header" href="#desktop-movement-between-monitors">Desktop Movement Between Monitors</a></h4>
+<p>For multi-monitor setups, desktops can be moved between displays:</p>
+<pre><code class="language-bash"># Move the current desktop to the next monitor
+bspc desktop focused --to-monitor next
+
+# Move the current desktop to a specific monitor by name
+bspc desktop focused --to-monitor DP-1
+
+# Move and follow (focus moves to the desktop on new monitor)
+bspc desktop focused --to-monitor next --follow
+
+# Swap two desktops (swaps all their contents)
+bspc desktop 1 --swap 2
+
+# Swap with follow
+bspc desktop focused --swap next --follow
+</code></pre>
+<h4 id="desktop-renaming-and-organization"><a class="header" href="#desktop-renaming-and-organization">Desktop Renaming and Organization</a></h4>
+<p>Desktops can be renamed and reordered:</p>
+<pre><code class="language-bash"># Rename the focused desktop
+bspc desktop focused --rename 'workspace-1'
+
+# Rename a specific desktop
+bspc desktop web --rename 'browsing'
+
+# Bubble the desktop (reorder within monitor)
+bspc desktop focused --bubble next
+bspc desktop focused --bubble prev
+
+# Remove an empty desktop
+bspc desktop empty --remove
+</code></pre>
+<h2 id="the-monitor-domain-multi-display-management"><a class="header" href="#the-monitor-domain-multi-display-management">The Monitor Domain: Multi-Display Management</a></h2>
+<p>The <strong>monitor</strong> domain handles operations on physical displays, critical for multi-monitor workflows.</p>
+<h3 id="monitor-commands"><a class="header" href="#monitor-commands">Monitor Commands</a></h3>
+<p>Complete monitor command syntax:</p>
+<pre><code class="language-bash"># Focus operations
+bspc monitor [MONITOR_SEL] --focus [MONITOR_SEL]
+
+# Swapping and organization
+bspc monitor [MONITOR_SEL] --swap MONITOR_SEL
+
+# Desktop management
+bspc monitor [MONITOR_SEL] --add-desktops &lt;name&gt;...
+bspc monitor [MONITOR_SEL] --reset-desktops &lt;name&gt;...
+bspc monitor [MONITOR_SEL] --reorder-desktops &lt;name&gt;...
+
+# Geometric operations
+bspc monitor [MONITOR_SEL] --rectangle WxH+X+Y
+
+# Administrative
+bspc monitor [MONITOR_SEL] --rename &lt;new_name&gt;
+bspc monitor [MONITOR_SEL] --remove
+</code></pre>
+<h3 id="practical-monitor-operations"><a class="header" href="#practical-monitor-operations">Practical Monitor Operations</a></h3>
+<h4 id="multi-monitor-navigation"><a class="header" href="#multi-monitor-navigation">Multi-Monitor Navigation</a></h4>
+<p>For users with multiple displays:</p>
+<pre><code class="language-bash"># Focus the next monitor
+bspc monitor next --focus
+
+# Focus the previous monitor
+bspc monitor prev --focus
+
+# Focus the primary monitor
+bspc monitor primary --focus
+
+# Focus the monitor under the pointer
+bspc monitor pointed --focus
+
+# Focus a specific monitor by name (e.g., HDMI-1, DP-1)
+bspc monitor DP-1 --focus
+
+# Focus a monitor in a specific direction
+bspc monitor north --focus
+bspc monitor west --focus
+</code></pre>
+<h4 id="desktop-assignment-to-monitors"><a class="header" href="#desktop-assignment-to-monitors">Desktop Assignment to Monitors</a></h4>
+<p>A common configuration task is assigning specific desktops to each monitor:</p>
+<pre><code class="language-bash"># Add five desktops to the primary monitor
+bspc monitor primary --add-desktops 1 2 3 4 5
+
+# Add desktops to another monitor
+bspc monitor DP-1 --add-desktops 6 7 8 9 10
+
+# Reset desktops (replaces all existing ones)
+bspc monitor primary --reset-desktops I II III IV V
+
+# Reorder desktops on a monitor
+bspc monitor focused --reorder-desktops 3 1 2
+</code></pre>
+<h4 id="complete-multi-monitor-configuration"><a class="header" href="#complete-multi-monitor-configuration">Complete Multi-Monitor Configuration</a></h4>
+<p>A typical multi-monitor bspwmrc might look like:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Kill any existing bars
+killall -q polybar
+
+# Wait for process termination
+while pgrep -u $UID -x polybar &gt;/dev/null; do sleep 1; done
+
+# Get connected monitors using xrandr
+# Configure monitors with xrandr first
+xrandr --output DP-1 --primary --mode 2560x1440 --rate 60
+xrandr --output HDMI-1 --mode 1920x1080 --rate 60 --right-of DP-1
+
+# Configure bspwm for multiple monitors
+bspc monitor DP-1 --reset-desktops I II III IV V
+bspc monitor HDMI-1 --reset-desktops VI VII VIII IX X
+
+# Global settings
+bspc config border_width        2
+bspc config window_gap         10
+bspc config split_ratio        0.52
+bspc config automatic_scheme   alternate
+bspc config initial_polarity   second_child
+bspc config remove_disabled_monitors true
+bspc config remove_unplugged_monitors true
+
+# Launch polybar for each monitor
+polybar -c ~/.config/polybar/config primary &amp;
+polybar -c ~/.config/polybar/config secondary &amp;
+
+# Start window manager
+exec bspwm
+</code></pre>
+<h4 id="swapping-monitors"><a class="header" href="#swapping-monitors">Swapping Monitors</a></h4>
+<p>In complex multi-monitor setups, entire monitor configurations can be swapped:</p>
+<pre><code class="language-bash"># Swap two monitors
+bspc monitor primary --swap DP-1
+
+# This swaps both the desktops and their layouts
+</code></pre>
+<h2 id="the-query-domain-state-inspection"><a class="header" href="#the-query-domain-state-inspection">The Query Domain: State Inspection</a></h2>
+<p>The <strong>query</strong> domain allows users to retrieve information about bspwm’s state without modifying it. This is essential for scripting and dynamic configuration.</p>
+<h3 id="query-commands"><a class="header" href="#query-commands">Query Commands</a></h3>
+<p>Complete query command syntax:</p>
+<pre><code class="language-bash"># Query commands
+bspc query --nodes [NODE_SEL]      # List matching node IDs
+bspc query --desktops [DESKTOP_SEL] # List matching desktop IDs or names
+bspc query --monitors [MONITOR_SEL] # List matching monitor IDs or names
+bspc query --tree [SELECTOR]        # Print JSON tree structure
+
+# Query options
+bspc query [OPTIONS]
+  --monitor [MONITOR_SEL]
+  --desktop [DESKTOP_SEL]
+  --node [NODE_SEL]
+  --names                  # Print names instead of IDs
+  --history               # Print node/desktop history
+  --stack                 # Print window stacking order
+</code></pre>
+<h3 id="practical-query-operations"><a class="header" href="#practical-query-operations">Practical Query Operations</a></h3>
+<h4 id="finding-nodes"><a class="header" href="#finding-nodes">Finding Nodes</a></h4>
+<p>One of the most critical query operations is finding specific nodes/windows:</p>
+<pre><code class="language-bash"># List all node IDs on the focused desktop
+bspc query -N -d focused
+
+# List all window nodes (exclude parent nodes)
+bspc query -N -n .window
+
+# List all hidden nodes
+bspc query -N -n .hidden
+
+# List all floating windows on the focused desktop
+bspc query -N -d focused -n .floating
+
+# List all tiled windows on the focused desktop
+bspc query -N -d focused -n .tiled
+
+# List the biggest window on the focused desktop
+bspc query -N -d focused -n biggest
+
+# List all windows with the same class as the focused window
+bspc query -N -n focused.same_class
+
+# Find all urgent windows
+bspc query -N -n .urgent
+
+# Find the parent of the focused node
+bspc query -N -n focused -n @parent
+
+# List with names
+bspc query -N --names -d focused
+
+# Print node IDs and their names
+bspc query -N -d focused --names
+</code></pre>
+<p>The output from query commands is typically node IDs in hexadecimal format (e.g., <code>0x01E00009</code>), which can then be used in subsequent bspc commands.</p>
+<h4 id="desktop-and-monitor-queries"><a class="header" href="#desktop-and-monitor-queries">Desktop and Monitor Queries</a></h4>
+<p>Similar queries work for desktops and monitors:</p>
+<pre><code class="language-bash"># List all desktops
+bspc query -D
+
+# List desktops on a specific monitor
+bspc query -D -m DP-1
+
+# List desktop names instead of IDs
+bspc query -D --names
+
+# List occupied desktops
+bspc query -D -d .occupied
+
+# List all monitors
+bspc query -M
+
+# List primary monitor
+bspc query -M -m primary
+
+# Print monitor names
+bspc query -M --names
+
+# List monitors with occupied desktops
+bspc query -M -m .occupied
+</code></pre>
+<h4 id="tree-queries"><a class="header" href="#tree-queries">Tree Queries</a></h4>
+<p>For advanced diagnostics and state inspection, tree queries return JSON representations:</p>
+<pre><code class="language-bash"># Print the tree rooted at the focused desktop
+bspc query -T -d focused
+
+# Print the entire window tree on the primary monitor
+bspc query -T -m primary
+
+# Print the tree starting from the focused node
+bspc query -T -n focused
+</code></pre>
+<p>The JSON structure provides complete tree information, useful for debugging and external tools.</p>
+<h4 id="practical-query-use-cases"><a class="header" href="#practical-query-use-cases">Practical Query Use Cases</a></h4>
+<p>Queries enable sophisticated scripting patterns:</p>
+<pre><code class="language-bash"># Move the focused window to a desktop and follow it
+id=$(bspc query -N -n focused); \
+  bspc node -d ^2; \
+  bspc node -f ${id}
+
+# Move all floating windows to a specific desktop
+bspc query -N -n .floating | while read node; do
+    bspc node "$node" -d ^3
+done
+
+# Kill all hidden windows
+bspc query -N -n .hidden | while read node; do
+    bspc node "$node" -k
+done
+
+# Close all windows on a desktop except the focused one
+focused_id=$(bspc query -N -n focused)
+bspc query -N -d focused -n .window | grep -v "$focused_id" | while read node; do
+    bspc node "$node" -c
+done
+
+# Get the largest window and focus it
+largest=$(bspc query -N -d focused -n biggest)
+bspc node "$largest" -f
+
+# List all windows and their states
+bspc query -N -d focused --names | while read node; do
+    echo "Node: $node"
+done
+</code></pre>
+<h2 id="the-rule-domain-window-auto-configuration"><a class="header" href="#the-rule-domain-window-auto-configuration">The Rule Domain: Window Auto-Configuration</a></h2>
+<p>The <strong>rule</strong> domain defines automatic behaviors for new windows based on their class, instance, or name.</p>
+<h3 id="rule-commands"><a class="header" href="#rule-commands">Rule Commands</a></h3>
+<p>Complete rule command syntax:</p>
+<pre><code class="language-bash"># Add a rule
+bspc rule --add (&lt;class_name&gt;|*)[:(&lt;instance_name&gt;|*)[:(&lt;name&gt;|*)]]
+           [-o|--one-shot]
+           [monitor=MONITOR_SEL|desktop=DESKTOP_SEL|node=NODE_SEL]
+           [state=STATE]
+           [layer=LAYER]
+           [split_dir=DIR]
+           [split_ratio=RATIO]
+           [(hidden|sticky|private|locked|marked|center|follow|manage|focus|border)=(on|off)]
+           [rectangle=WxH+X+Y]
+
+# Remove rules
+bspc rule --remove ^&lt;n&gt;|head|tail|(&lt;class_name&gt;|*)[:(&lt;instance_name&gt;|*)[:(&lt;name&gt;|*)]]
+
+# List rules
+bspc rule --list
+</code></pre>
+<h3 id="window-classification"><a class="header" href="#window-classification">Window Classification</a></h3>
+<p>To create effective rules, one must first identify window class and instance names. The standard tool for this is <code>xprop</code>:</p>
+<pre><code class="language-bash"># Get window properties
+xprop
+
+# Then click on the window you want to identify
+# Look for the WM_CLASS line, which shows format: "instance", "class"
+# Example output: WM_CLASS(STRING) = "firefox", "Firefox"
+</code></pre>
+<h3 id="common-rule-patterns"><a class="header" href="#common-rule-patterns">Common Rule Patterns</a></h3>
+<p>Typical bspwmrc rule definitions follow patterns like:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Remove all existing rules first
+bspc rule -r '*'
+
+# Define rules for various applications
+bspc rule -a Gimp desktop=^8 state=floating
+bspc rule -a Chromium desktop=^2
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off
+bspc rule -a Pavucontrol state=floating
+bspc rule -a Pcmanfm state=floating center=on
+
+# Firefox rules - instance:class format
+bspc rule -a firefox desktop=^1 focus=on
+
+# Terminal floating windows
+bspc rule -a st-floating state=floating
+
+# Specific floating size
+bspc rule -a st rectangle=800x600+10+10 state=floating
+
+# One-shot rules (apply only once)
+bspc rule -a 'VirtualBox.*' -o state=floating
+</code></pre>
+<h3 id="rule-properties"><a class="header" href="#rule-properties">Rule Properties</a></h3>
+<p>Rules can control numerous window properties:</p>
+<pre><code class="language-bash"># Monitor and desktop placement
+bspc rule -a myapp monitor=DP-1 desktop=^3
+
+# Node placement (insert into specific parent)
+bspc rule -a myapp node=@parent
+
+# Window state
+bspc rule -a myapp state=floating
+bspc rule -a myapp state=fullscreen
+bspc rule -a myapp state=pseudo_tiled
+
+# Stacking layer
+bspc rule -a myapp layer=above
+bspc rule -a myapp layer=below
+
+# Split parameters for new nodes
+bspc rule -a myapp split_dir=north split_ratio=0.5
+
+# Node flags
+bspc rule -a myapp hidden=on
+bspc rule -a myapp sticky=on
+bspc rule -a myapp private=on
+bspc rule -a myapp locked=on
+bspc rule -a myapp marked=on
+
+# Behavior modifiers
+bspc rule -a myapp follow=on           # Follow to new desktop
+bspc rule -a myapp center=on           # Center window
+bspc rule -a myapp manage=off          # Don't manage (no decorations)
+bspc rule -a myapp focus=on            # Focus immediately
+bspc rule -a myapp border=on           # Draw border
+
+# Floating rectangle specification
+bspc rule -a myapp rectangle=640x480+100+100
+</code></pre>
+<h3 id="advanced-rule-techniques"><a class="header" href="#advanced-rule-techniques">Advanced Rule Techniques</a></h3>
+<h4 id="one-shot-rules"><a class="header" href="#one-shot-rules">One-Shot Rules</a></h4>
+<p>One-shot rules apply only once and are then automatically removed:</p>
+<pre><code class="language-bash"># Rule applies only to the first instance
+bspc rule -a 'firefox' -o desktop=^1
+
+# Useful for startup applications
+bspc rule -a 'rofi' -o state=floating sticky=on
+</code></pre>
+<h4 id="pattern-matching-rules"><a class="header" href="#pattern-matching-rules">Pattern Matching Rules</a></h4>
+<p>Rules can use wildcards and patterns:</p>
+<pre><code class="language-bash"># Match all Firefox-derived applications
+bspc rule -a 'firefox*' desktop=^1
+
+# Match any instance of a class
+bspc rule -a 'st' state=floating
+
+# Match specific instance:class combination
+bspc rule -a 'keepassxc:KeePassXC' state=floating center=on
+</code></pre>
+<h4 id="complex-rule-chains"><a class="header" href="#complex-rule-chains">Complex Rule Chains</a></h4>
+<p>Multiple rules can be layered to create sophisticated behaviors:</p>
+<pre><code class="language-bash"># Specific application instances first (most specific)
+bspc rule -a 'mpv:mpv' state=floating rectangle=960x540+10+10
+
+# General class rules (less specific)
+bspc rule -a 'mpv' desktop=^4
+
+# Fallback behaviors
+bspc rule -a 'Floating*' state=floating
+</code></pre>
+<h2 id="the-config-domain-system-configuration"><a class="header" href="#the-config-domain-system-configuration">The Config Domain: System Configuration</a></h2>
+<p>The <strong>config</strong> domain allows reading and setting configuration values that control bspwm’s behavior.</p>
+<h3 id="global-settings"><a class="header" href="#global-settings">Global Settings</a></h3>
+<p>Global settings affect the entire window manager:</p>
+<pre><code class="language-bash"># Colors (RGB hex format)
+bspc config normal_border_color         '#222222'
+bspc config active_border_color         '#555555'
+bspc config focused_border_color        '#ff0000'
+bspc config presel_feedback_color       '#ff0000'
+
+# Dimensions
+bspc config border_width                2
+bspc config window_gap                  10
+bspc config split_ratio                 0.52
+
+# Insertion scheme
+bspc config automatic_scheme            alternate
+bspc config initial_polarity            second_child
+
+# Layout behavior
+bspc config borderless_monocle          true
+bspc config gapless_monocle             true
+bspc config single_monocle              false
+bspc config top_monocle_padding         0
+bspc config right_monocle_padding       0
+bspc config bottom_monocle_padding      0
+bspc config left_monocle_padding        0
+
+# Pointer interaction
+bspc config pointer_modifier            mod1
+bspc config pointer_motion_interval     25
+bspc config pointer_action1             move
+bspc config pointer_action2             resize_side
+bspc config pointer_action3             resize_corner
+bspc config click_to_focus              button1
+bspc config focus_follows_pointer       false
+bspc config pointer_follows_focus       false
+bspc config pointer_follows_monitor     false
+
+# Focus and behavior
+bspc config directional_focus_tightness low
+bspc config removal_adjustment          unbalanced
+bspc config center_pseudo_tiled         true
+bspc config honor_size_hints            true
+
+# External rules command
+bspc config external_rules_command      "/path/to/rules/script"
+
+# Status reporting
+bspc config status_prefix               ''
+bspc config mapping_events_count        -1
+
+# EWMH compliance
+bspc config ignore_ewmh_focus           false
+bspc config ignore_ewmh_fullscreen      'enter'
+bspc config ignore_ewmh_struts          false
+
+# Monitor management
+bspc config remove_disabled_monitors    true
+bspc config remove_unplugged_monitors   true
+bspc config merge_overlapping_monitors  false
+</code></pre>
+<h3 id="per-monitor-and-per-desktop-settings"><a class="header" href="#per-monitor-and-per-desktop-settings">Per-Monitor and Per-Desktop Settings</a></h3>
+<p>Some settings can be applied to specific monitors or desktops:</p>
+<pre><code class="language-bash"># Per-monitor padding
+bspc config -m DP-1 top_padding 50
+bspc config -m DP-1 bottom_padding 0
+bspc config -m DP-1 left_padding 0
+bspc config -m DP-1 right_padding 0
+
+# Per-desktop window gap
+bspc config -d '^1' window_gap 20
+bspc config -d '^2' window_gap 0
+
+# Per-node border width
+bspc config -n focused border_width 3
+bspc config -n unfocused border_width 1
+</code></pre>
+<h3 id="reading-configuration"><a class="header" href="#reading-configuration">Reading Configuration</a></h3>
+<p>To read current settings:</p>
+<pre><code class="language-bash"># Read a specific setting
+bspc config border_width
+
+# Read all settings (returns name value pairs)
+bspc config
+
+# Check a boolean setting
+bspc config focus_follows_pointer
+</code></pre>
+<h3 id="common-configuration-examples"><a class="header" href="#common-configuration-examples">Common Configuration Examples</a></h3>
+<p>A typical complete configuration:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# bspwmrc - bspwm configuration script
+
+# Monitor setup (done before bspc commands)
+xrandr --output DP-1 --mode 2560x1440 --rate 60 --primary
+xrandr --output HDMI-1 --mode 1920x1080 --rate 60 --right-of DP-1
+
+# Setup desktops
+bspc monitor DP-1 -d 1 2 3 4 5
+bspc monitor HDMI-1 -d 6 7 8 9 10
+
+# Border and window gap
+bspc config border_width 2
+bspc config window_gap 8
+
+# Colors
+bspc config focused_border_color "#ff6600"
+bspc config active_border_color "#0066ff"
+bspc config normal_border_color "#333333"
+bspc config presel_feedback_color "#ff6600"
+
+# Insertion and layout
+bspc config split_ratio 0.52
+bspc config automatic_scheme alternate
+bspc config initial_polarity first_child
+
+# Monocle layout settings
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config single_monocle false
+
+# Focus behavior
+bspc config focus_follows_pointer false
+bspc config pointer_follows_focus false
+
+# Rules
+bspc rule -r "*"
+bspc rule -a Gimp state=floating
+bspc rule -a firefox desktop=^1
+bspc rule -a Chromium desktop=^2
+bspc rule -a mpv state=floating
+</code></pre>
+<h2 id="the-subscribe-domain-event-streaming"><a class="header" href="#the-subscribe-domain-event-streaming">The Subscribe Domain: Event Streaming</a></h2>
+<p>The <strong>subscribe</strong> domain allows external programs to receive real-time notifications about changes in bspwm’s state.</p>
+<h3 id="subscribe-commands"><a class="header" href="#subscribe-commands">Subscribe Commands</a></h3>
+<p>Complete subscribe command syntax:</p>
+<pre><code class="language-bash"># Subscribe to events
+bspc subscribe [OPTIONS] (all|report|monitor|desktop|node|...)*
+
+# Options
+--fifo                  # Output to FIFO file
+--count COUNT           # Exit after COUNT events
+</code></pre>
+<h3 id="event-types"><a class="header" href="#event-types">Event Types</a></h3>
+<p>The available events include:</p>
+<pre><code>monitor events:
+  monitor_add &lt;monitor_id&gt; &lt;monitor_name&gt; &lt;monitor_geometry&gt;
+  monitor_rename &lt;monitor_id&gt; &lt;old_name&gt; &lt;new_name&gt;
+  monitor_remove &lt;monitor_id&gt;
+  monitor_swap &lt;src_monitor_id&gt; &lt;dst_monitor_id&gt;
+  monitor_focus &lt;monitor_id&gt;
+  monitor_geometry &lt;monitor_id&gt; &lt;monitor_geometry&gt;
+
+desktop events:
+  desktop_add &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;desktop_name&gt;
+  desktop_rename &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;old_name&gt; &lt;new_name&gt;
+  desktop_remove &lt;monitor_id&gt; &lt;desktop_id&gt;
+  desktop_swap &lt;src_monitor_id&gt; &lt;src_desktop_id&gt; &lt;dst_monitor_id&gt; &lt;dst_desktop_id&gt;
+  desktop_transfer &lt;src_monitor_id&gt; &lt;src_desktop_id&gt; &lt;dst_monitor_id&gt;
+  desktop_focus &lt;monitor_id&gt; &lt;desktop_id&gt;
+  desktop_activate &lt;monitor_id&gt; &lt;desktop_id&gt;
+  desktop_layout &lt;monitor_id&gt; &lt;desktop_id&gt; tiled|monocle
+
+node events:
+  node_add &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;ip_id&gt; &lt;node_id&gt;
+  node_remove &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt;
+  node_swap &lt;src_monitor_id&gt; &lt;src_desktop_id&gt; &lt;src_node_id&gt; 
+            &lt;dst_monitor_id&gt; &lt;dst_desktop_id&gt; &lt;dst_node_id&gt;
+  node_transfer &lt;src_monitor_id&gt; &lt;src_desktop_id&gt; &lt;src_node_id&gt;
+                &lt;dst_monitor_id&gt; &lt;dst_desktop_id&gt; &lt;dst_node_id&gt;
+  node_focus &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt;
+  node_activate &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt;
+  node_presel &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt; (dir DIR|ratio RATIO|cancel)
+  node_stack &lt;node_id_1&gt; below|above &lt;node_id_2&gt;
+  node_geometry &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt; &lt;node_geometry&gt;
+  node_state &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt; tiled|pseudo_tiled|floating|fullscreen on|off
+  node_flag &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt; hidden|sticky|private|locked|marked|urgent on|off
+  node_layer &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt; below|normal|above
+
+pointer events:
+  pointer_action &lt;monitor_id&gt; &lt;desktop_id&gt; &lt;node_id&gt; move|resize_corner|resize_side begin|end
+
+report events:
+  report &lt;status_string&gt;
+</code></pre>
+<h3 id="practical-subscription-usage"><a class="header" href="#practical-subscription-usage">Practical Subscription Usage</a></h3>
+<p>Event subscription is typically used for status bars, external tools, and automation:</p>
+<pre><code class="language-bash"># Subscribe to all events
+bspc subscribe all
+
+# Subscribe to only desktop changes
+bspc subscribe desktop
+
+# Subscribe to node-related events only
+bspc subscribe node
+
+# Subscribe and exit after 10 events
+bspc subscribe --count 10 all
+
+# Parse events in a script
+bspc subscribe monitor desktop | while read -r event; do
+    case "$event" in
+        monitor_focus*)
+            echo "Monitor focus changed: $event"
+            ;;
+        desktop_focus*)
+            echo "Desktop focus changed: $event"
+            ;;
+    esac
+done
+
+# Use with FIFO for status bar
+bspc subscribe --fifo /tmp/bspwm_fifo report &amp;
+while true; do
+    read -r status &lt; /tmp/bspwm_fifo
+    echo "$status"  # Update polybar or other status system
+done
+</code></pre>
+<h3 id="status-report-format"><a class="header" href="#status-report-format">Status Report Format</a></h3>
+<p>The report event provides a compact status string with specific format:</p>
+<pre><code>Each report event consists of items separated by colons, where each item has the form `&lt;type&gt;&lt;value&gt;`:
+</code></pre>
+<pre><code>M&lt;monitor_name&gt;     - Monitor
+m&lt;monitor_name&gt;     - Focused monitor
+O&lt;desktop_name&gt;     - Occupied desktop (has windows)
+o&lt;desktop_name&gt;     - Focused desktop
+F&lt;desktop_name&gt;     - Active desktop
+f&lt;desktop_name&gt;     - Focused and active desktop
+U&lt;desktop_name&gt;     - Urgent desktop
+u&lt;desktop_name&gt;     - Focused and urgent desktop
+L(T|M)              - Layout (Tiled or Monocle)
+T(T|P|F|=|@)        - Window state (Tiled, Pseudo-tiled, Floating, Equal, or Parent)
+G(S?P?L?M?)         - Geometric flags
+</code></pre>
+<p>Example status strings:</p>
+<pre><code>m1:o1:Lclient:client.focused:O2:o3:o4:T1:L2:Tiled
+m1:O1:o2:T1:L3:Monocle
+</code></pre>
+<h2 id="the-wm-domain-window-manager-operations"><a class="header" href="#the-wm-domain-window-manager-operations">The Wm Domain: Window Manager Operations</a></h2>
+<p>The <strong>wm</strong> domain provides system-level operations on the window manager itself.</p>
+<h3 id="wm-commands"><a class="header" href="#wm-commands">Wm Commands</a></h3>
+<p>Complete wm command syntax:</p>
+<pre><code class="language-bash"># State operations
+bspc wm --dump-state
+bspc wm --load-state &lt;file_path&gt;
+
+# Monitor operations
+bspc wm --add-monitor &lt;name&gt; WxH+X+Y
+bspc wm --reorder-monitors &lt;name&gt;...
+bspc wm --adopt-orphans
+
+# History and status
+bspc wm --record-history on|off
+bspc wm --get-status
+
+# Lifecycle
+bspc wm --restart
+</code></pre>
+<h3 id="practical-wm-operations"><a class="header" href="#practical-wm-operations">Practical Wm Operations</a></h3>
+<h4 id="state-dump-and-restore"><a class="header" href="#state-dump-and-restore">State Dump and Restore</a></h4>
+<p>The most complex wm operations involve saving and restoring complete window manager state:</p>
+<pre><code class="language-bash"># Dump the entire window manager state to a file
+bspc wm --dump-state &gt; ~/bspwm_state.json
+
+# Later, restore the state
+bspc wm --load-state ~/bspwm_state.json
+
+# This is useful for:
+# - Saving layouts before reconfiguring monitors
+# - Recreating specific desktop layouts
+# - Session persistence
+</code></pre>
+<h4 id="monitor-reordering"><a class="header" href="#monitor-reordering">Monitor Reordering</a></h4>
+<p>The reorder-monitors command allows changing monitor order:</p>
+<pre><code class="language-bash"># Reorder monitors (affects desktop cycling order)
+bspc wm --reorder-monitors DP-1 HDMI-1
+
+# Useful in multi-monitor scripts
+xrandr --output DP-1 --mode 2560x1440 --primary
+xrandr --output HDMI-1 --mode 1920x1080 --right-of DP-1
+bspc wm --reorder-monitors DP-1 HDMI-1
+</code></pre>
+<h4 id="adopting-orphaned-windows"><a class="header" href="#adopting-orphaned-windows">Adopting Orphaned Windows</a></h4>
+<p>When monitors are physically removed or disabled, windows may become orphaned:</p>
+<pre><code class="language-bash"># Reassign orphaned windows to remaining monitors
+bspc wm --adopt-orphans
+
+# Useful in laptop docking/undocking scenarios
+</code></pre>
+<h4 id="history-recording"><a class="header" href="#history-recording">History Recording</a></h4>
+<p>For debugging and advanced use cases, window manager history can be recorded:</p>
+<pre><code class="language-bash"># Enable history recording
+bspc config record_history true
+
+# Disable it
+bspc config record_history false
+</code></pre>
+<h4 id="getting-manager-status"><a class="header" href="#getting-manager-status">Getting Manager Status</a></h4>
+<p>The get-status command provides current status information:</p>
+<pre><code class="language-bash"># Get the current manager status
+bspc wm --get-status
+
+# Returns the same format as report events
+</code></pre>
+<h4 id="restarting-the-window-manager"><a class="header" href="#restarting-the-window-manager">Restarting the Window Manager</a></h4>
+<p>One of the most important wm operations is restarting bspwm while preserving state:</p>
+<pre><code class="language-bash"># Restart bspwm (preserves window layout)
+bspc wm --restart
+
+# Full restart with state loss
+killall bspwm; bspwm &amp;
+</code></pre>
+<h2 id="advanced-bspc-patterns-and-use-cases"><a class="header" href="#advanced-bspc-patterns-and-use-cases">Advanced bspc Patterns and Use Cases</a></h2>
+<h3 id="complex-scripting-examples"><a class="header" href="#complex-scripting-examples">Complex Scripting Examples</a></h3>
+<h4 id="dynamic-workspace-creation"><a class="header" href="#dynamic-workspace-creation">Dynamic Workspace Creation</a></h4>
+<p>A common pattern is creating workspaces on demand:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Create a new desktop on the focused monitor if not already present
+create_desktop_if_missing() {
+    local desktop_name=$1
+    
+    # Check if desktop already exists
+    if bspc query -D -d "$desktop_name" &gt;/dev/null 2&gt;&amp;1; then
+        # Desktop exists, just focus it
+        bspc desktop "$desktop_name" --focus
+    else
+        # Create new desktop
+        bspc monitor focused --add-desktops "$desktop_name"
+        bspc desktop "$desktop_name" --focus
+    fi
+}
+
+# Usage
+create_desktop_if_missing 'work'
+</code></pre>
+<h4 id="intelligent-window-movement"><a class="header" href="#intelligent-window-movement">Intelligent Window Movement</a></h4>
+<p>Moving windows with context awareness:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Move window to a specific app's desktop
+move_to_app_desktop() {
+    local app_class=$1
+    local app_desktop
+    
+    # Find desktop where app exists
+    app_desktop=$(bspc query -D -d ".occupied" | while read desktop; do
+        if bspc query -N -d "$desktop" -n ".window" | \
+           xdotool search --class "$app_class" 2&gt;/dev/null &gt;/dev/null; then
+            echo "$desktop"
+            break
+        fi
+    done)
+    
+    if [ -n "$app_desktop" ]; then
+        # Move focused window to app's desktop
+        bspc node focused --to-desktop "$app_desktop" --follow
+    fi
+}
+
+# Usage
+move_to_app_desktop 'Firefox'
+</code></pre>
+<h4 id="window-layout-templates"><a class="header" href="#window-layout-templates">Window Layout Templates</a></h4>
+<p>Pre-configured layouts that can be applied to desktops:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Apply a three-column layout to the focused desktop
+layout_three_column() {
+    # Add three windows vertically first
+    local desktop=$(bspc query -D -d focused)
+    
+    # First window gets 50% width (splits vertically)
+    bspc node -d "$desktop" -n first -p west -o 0.5
+    
+    # Second window gets 25% width
+    bspc node -d "$desktop" -n second -p west -o 0.5
+}
+
+# Apply a main+side layout
+layout_main_side() {
+    bspc node focused --presel-dir east --presel-ratio 0.7
+}
+</code></pre>
+<h4 id="focus-ring-management"><a class="header" href="#focus-ring-management">Focus Ring Management</a></h4>
+<p>Cycling through windows in focus order:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Cycle focus through windows
+cycle_focus() {
+    local direction=${1:-next}
+    
+    # Get current node
+    local current=$(bspc query -N -n focused)
+    
+    # Get all window nodes on desktop
+    local nodes=$(bspc query -N -n ".window" | grep -v "$current")
+    
+    # Focus next or previous
+    local next_node=$(echo "$nodes" | head -1)
+    if [ -n "$next_node" ]; then
+        bspc node "$next_node" --focus
+    fi
+}
+
+# Usage
+cycle_focus next
+cycle_focus prev
+</code></pre>
+<h4 id="workspace-stashing"><a class="header" href="#workspace-stashing">Workspace Stashing</a></h4>
+<p>Temporarily hiding windows for focus:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Hide all windows except focused on current desktop
+stash_others() {
+    local focused=$(bspc query -N -n focused)
+    
+    bspc query -N -d focused -n ".window" | while read node; do
+        if [ "$node" != "$focused" ]; then
+            bspc node "$node" --flag hidden on
+        fi
+    done
+}
+
+# Restore stashed windows
+unstash() {
+    bspc query -N -n ".hidden" -d focused | while read node; do
+        bspc node "$node" --flag hidden off
+    done
+}
+</code></pre>
+<h4 id="interactive-window-selection"><a class="header" href="#interactive-window-selection">Interactive Window Selection</a></h4>
+<p>Using external tools with bspc for enhanced interactivity:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Use dmenu to select and focus window
+select_window_dmenu() {
+    # Get list of windows
+    local windows=$(bspc query -N -n ".window" --names)
+    
+    # Use dmenu for selection
+    local selected=$(echo "$windows" | dmenu -l 10)
+    
+    if [ -n "$selected" ]; then
+        # Extract node ID and focus it
+        # Note: This is a simplified example
+        local node_id=$(bspc query -N -n ".window" --names | \
+                       grep "$selected" | head -1)
+        bspc node "$node_id" --focus
+    fi
+}
+</code></pre>
+<h3 id="integration-with-other-tools"><a class="header" href="#integration-with-other-tools">Integration with Other Tools</a></h3>
+<h4 id="polybar-integration"><a class="header" href="#polybar-integration">Polybar Integration</a></h4>
+<p>Status bars need constant bspwm state updates:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Module for polybar
+get_bspwm_status() {
+    bspc subscribe report | while read -r report; do
+        # Parse report format
+        # Extract relevant parts for display
+        
+        # Get focused desktop
+        focused_desktop=$(echo "$report" | grep -o 'o[0-9]*' | sed 's/o//')
+        
+        # Get occupied desktops
+        occupied=$(echo "$report" | grep -o 'O[0-9]*' | sed 's/O//')
+        
+        # Format for display
+        echo "[$focused_desktop] $occupied"
+    done
+}
+</code></pre>
+<h4 id="dunst-notifications"><a class="header" href="#dunst-notifications">Dunst Notifications</a></h4>
+<p>Sending notifications on bspwm events:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+# Watch for desktop changes and notify
+bspc subscribe desktop | while read -r event; do
+    case "$event" in
+        desktop_focus*)
+            desktop=$(echo "$event" | awk '{print $NF}')
+            dunstify -u low -t 1000 "Focus: Desktop $desktop"
+            ;;
+    esac
+done
+</code></pre>
+<h4 id="external-rules-commands"><a class="header" href="#external-rules-commands">External Rules Commands</a></h4>
+<p>Complex rule logic can be delegated to external scripts:</p>
+<pre><code class="language-bash">#!/bin/bash
+# external-rules.sh
+
+# Get window properties
+id=$1
+class=$2
+instance=$3
+name=$4
+
+# Complex rule logic
+if [[ "$class" == "Firefox" ]]; then
+    desktop=1
+elif [[ "$class" == "Blender" ]]; then
+    desktop=3
+    echo "state=fullscreen"
+else
+    desktop=0
+fi
+
+echo "desktop=^$desktop"
+</code></pre>
+<p>Then configure bspwm to use it:</p>
+<pre><code class="language-bash">bspc config external_rules_command "/path/to/external-rules.sh"
+</code></pre>
+<h3 id="performance-optimization"><a class="header" href="#performance-optimization">Performance Optimization</a></h3>
+<p>For efficient scripting with large numbers of windows:</p>
+<pre><code class="language-bash"># Batch operations
+# Instead of:
+for i in {1..100}; do
+    bspc node $id --resize right 10 0
+done
+
+# Do:
+bspc node $id --resize right 1000 0
+
+# Query once and reuse results
+nodes=$(bspc query -N -d focused -n .window)
+echo "$nodes" | while read node; do
+    # Use $node multiple times
+    bspc node "$node" --state floating
+    bspc node "$node" --move 100 100
+done
+
+# Use pipes efficiently
+bspc query -N -n .marked | xargs -I {} bspc node {} --flag marked off
+</code></pre>
+<h2 id="internal-implementation-details"><a class="header" href="#internal-implementation-details">Internal Implementation Details</a></h2>
+<h3 id="socket-communication-protocol"><a class="header" href="#socket-communication-protocol">Socket Communication Protocol</a></h3>
+<pre><code>bspc communicates with bspwm via a Unix domain socket, typically located at `/tmp/bspwm&lt;hostname&gt;_&lt;display&gt;_&lt;screen&gt;-socket`[^1_1][^1_17][^1_2][^1_7]. The protocol is text-based, with commands formatted as strings sent to the socket[^1_1][^1_17][^1_2].
+</code></pre>
+<p>The message format follows this pattern:</p>
+<pre><code>&lt;COMMAND&gt; [SELECTOR] &lt;OPERATIONS&gt;
+</code></pre>
+<p>Where each component is space-separated and parameters with special characters are properly quoted.</p>
+<p>The socket communication flow works as follows:</p>
+<ol>
+<li>bspc opens a connection to the bspwm socket</li>
+<li>Sends the formatted command string</li>
+<li>Receives a response (typically empty for successful commands, or an error message)</li>
+<li>For query commands, receives the requested data</li>
+<li>Closes the connection</li>
+</ol>
+<p>This is a one-shot request-response model, with each invocation of bspc creating a new socket connection.</p>
+<h3 id="selector-parsing-and-resolution"><a class="header" href="#selector-parsing-and-resolution">Selector Parsing and Resolution</a></h3>
+<p>The selector system involves complex parsing logic that resolves descriptors and modifiers into specific tree nodes. The parsing follows a hierarchical approach:</p>
+<ol>
+<li><strong>Reference Parsing</strong>: Extract the reference node/desktop/monitor using <code>#</code> as separator</li>
+<li><strong>Descriptor Parsing</strong>: Parse the primary descriptor (DIR, name, ID, etc.)</li>
+<li><strong>Modifier Parsing</strong>: Apply each modifier in sequence with <code>.</code> as separator</li>
+<li><strong>Resolution</strong>: Walk the tree structure to find the target</li>
+</ol>
+<p>For directional selectors, bspwm walks the tree looking for nodes in the specified direction. For ID-based selectors, it performs a hash lookup. For name-based selectors, it searches the tree by name property.</p>
+<h3 id="binary-tree-structure"><a class="header" href="#binary-tree-structure">Binary Tree Structure</a></h3>
+<p>The core data structure in bspwm is a full binary tree where:</p>
+<ul>
+<li>Each internal node represents a split (horizontal or vertical)</li>
+<li>Each internal node has exactly two children</li>
+<li>Each leaf node holds a window</li>
+<li>Each node has associated geometry (rectangle) and split parameters</li>
+</ul>
+<p>When a window is inserted, the tree is restructured to accommodate it according to the insertion mode (automatic or manual). The insertion process:</p>
+<ol>
+<li>Finds the insertion point (usually the focused leaf)</li>
+<li>Creates a new internal node</li>
+<li>Attaches the existing window as one child</li>
+<li>Attaches the new window as the other child</li>
+<li>Assigns split parameters based on insertion mode</li>
+</ol>
+<p>When a window is removed:</p>
+<ol>
+<li>The containing leaf node is removed</li>
+<li>The parent internal node is also removed</li>
+<li>The sibling subtree is promoted to replace the parent</li>
+</ol>
+<p>This tree structure enables efficient window layout management and complex tiling patterns.</p>
+<h2 id="so-far"><a class="header" href="#so-far">So Far</a></h2>
+<ul>
+<li>
+<p>The <strong>bspc</strong> command and its underlying infrastructure represent a masterpiece of Unix philosophy applied to window management. By separating concerns between the window manager daemon, the command-line interface, and external tools, bspwm achieves remarkable flexibility and scriptability.</p>
+</li>
+<li>
+<p>Understanding bspc deeply—from basic window operations through advanced query patterns and complex scripting—unlocks the full potential of bspwm. Whether managing a simple two-monitor setup or automating complex workflows across dozens of windows, bspc provides the precise control necessary to bend window management to your specific needs.</p>
+</li>
+<li>
+<p>The socket-based communication model, sophisticated selector language, and event streaming capabilities combine to create an environment where external tools can seamlessly integrate with and extend bspwm’s functionality. This design has proven so effective that it has influenced other window managers and continues to attract a dedicated community of power users.</p>
+</li>
+<li>
+<p>As you become more proficient with bspc, you’ll find yourself creating increasingly sophisticated workflows, custom integrations, and automated tasks that would be impossible or extremely difficult to implement in monolithic window managers. The investment in learning bspc’s command structure and internals pays dividends through a remarkably powerful and personalized window management system.</p>
+</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="writing-configs-using-bspc"><a href="#writing-configs-using-bspc" class="header">Writing configs using bspc</a></h1>
 <h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
@@ -1307,7 +2751,7 @@ bspc config top_padding 30                   # leave 30px at top for panel
 <li><strong>[!]occupied</strong>: Has/doesn’t have occupied desktops</li>
 </ul>
 <h2 id="query-domain-state-information-retrieval"><a class="header" href="#query-domain-state-information-retrieval">Query Domain: State Information Retrieval</a></h2>
-<h3 id="query-commands"><a class="header" href="#query-commands">Query Commands</a></h3>
+<h3 id="query-commands-1"><a class="header" href="#query-commands-1">Query Commands</a></h3>
 <p>The <strong>query</strong> domain retrieves metadata and state information. Syntax: <code>bspc query COMMANDS [OPTIONS]</code>.</p>
 <h4 id="node-query--n-and---nodes"><a class="header" href="#node-query--n-and---nodes">Node Query: <code>-N</code> and <code>--nodes</code></a></h4>
 <p>The <strong>-N</strong> or <code>--nodes</code> flag returns node IDs. Syntax: <code>bspc query -N [NODE_SEL]</code>. Without selectors, returns all node IDs. With selectors, returns matching nodes. Example:</p>
@@ -1391,7 +2835,7 @@ esac
 <p>The <strong>config</strong> domain manages global, monitor-specific, desktop-specific, and node-specific settings.</p>
 <h4 id="general-syntax"><a class="header" href="#general-syntax">General Syntax</a></h4>
 <p><code>bspc config [-m MONITOR_SEL|-d DESKTOP_SEL|-n NODE_SEL] &lt;setting&gt; [&lt;value&gt;]</code></p>
-<h3 id="global-settings"><a class="header" href="#global-settings">Global Settings</a></h3>
+<h3 id="global-settings-1"><a class="header" href="#global-settings-1">Global Settings</a></h3>
 <h4 id="color-settings"><a class="header" href="#color-settings">Color Settings</a></h4>
 <p>Colors are specified in hexadecimal format: <code>#RRGGBB</code></p>
 <ul>
@@ -1798,7 +3242,7 @@ polybar main &amp;
 # Launch background apps
 nm-applet &amp;
 </code></pre>
-<h2 id="so-far"><a class="header" href="#so-far">So Far</a></h2>
+<h2 id="so-far-1"><a class="header" href="#so-far-1">So Far</a></h2>
 <ul>
 <li>
 <p>BSPWM represents a paradigm shift in window manager configuration philosophy. Rather than implementing every feature directly within the window manager, BSPWM provides a powerful, scriptable interface through <strong>bspc</strong> that enables users to build sophisticated configurations entirely from shell scripts. This approach offers unprecedented flexibility and transparency—users can see exactly what commands are being executed and modify them without learning specialized syntax.</p>
@@ -5001,22 +6445,6 @@ mdbook build
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
         <script>
