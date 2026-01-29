@@ -48,3 +48,16 @@ This project follows a documentation-first workflow; updates may include new top
 ### Fixed
 - Added native admonishments
 - Enhanced code snippets
+
+## [0.1.3] - Initial Release
+
+### Added
+- Complete documentation for `bspc query` command.
+- Added assets and images for future edits.
+
+### Changed
+- Optimised naming for navigation and SEO searches
+- Optimised the navigation layout with topics and subtopics
+
+### Fixed
+- Fixed the missing interface chapter in advanced topic.

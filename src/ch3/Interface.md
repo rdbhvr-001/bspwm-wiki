@@ -1,1 +1,0 @@
-# Bspwm interfaces and usage

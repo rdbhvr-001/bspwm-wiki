@@ -14,6 +14,7 @@
 # Basics
 
   - [The bspc config command](./basics/Bspc-Config.md)
+  - [The bspc query command](./basics/Bspc-Query.md)
 
 ***
 
@@ -26,6 +27,7 @@
 # Configurations
 
   - [Writing configs using bspc](./configs/Writing-Configs.md)
+  - [Introduction to writing modular configs](./configs/Modular-Intro.md)
   - [Configuration gallery](./refs/Refs.md)
 
 ***

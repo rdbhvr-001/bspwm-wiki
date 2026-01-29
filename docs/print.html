@@ -37,10 +37,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3563a7dd.js";
+            window.path_to_searchindex_js = "searchindex-701d625a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e6a777cb.js"></script>
+        <script src="toc-27448d2a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -1025,6 +1025,228 @@ bspc config top_padding 30                   # leave 30px at top for panel
 </code></pre>
 <p>Each bspc config command above changes an aspect of bspwm’s layout or behavior, as documented. For a complete reference of all options and their meanings, see the bspwm manual (man page).</p>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="the-bspc-query-command"><a href="#the-bspc-query-command" class="header">The bspc query command</a></h1>
+<h2 id="bspc-query-commands-and-flags"><a class="header" href="#bspc-query-commands-and-flags">BSPC Query Commands and Flags</a></h2>
+<p>The bspc query interface provides read-only commands to inspect BSPWM’s internal state.  The core query subcommands are:</p>
+<p><code>-N, --nodes</code> – list matching node IDs (windows or internal tree nodes).</p>
+<p><code>-D, --desktops</code> – list matching desktop IDs (or names with –names).</p>
+<p><code>-M, --monitors</code> – list matching monitor IDs (or names with –names).</p>
+<p><code>-T, --tree</code> – print a JSON representation of the matching object (monitor, desktop or node).</p>
+<p>Each of the above accepts optional selectors (given in brackets) to filter which items match. For example,</p>
+<pre><code class="language-bash">bspc query -N  # (with no selector) 
+</code></pre>
+<p>prints all node IDs on the current desktop (including parent and receptacle nodes and leaf windows).</p>
+<p>To list only window (leaf) nodes, one can add a node selector:</p>
+<pre><code class="language-bash">bspc query -N -n .window
+</code></pre>
+<p>lists just the actual window nodes.</p>
+<p>In general a selector like <code>.window</code>, <code>.leaf</code>, <code>.tiled</code>, etc., may be appended (after a <code>-n</code> or <code>-d</code> flag) to match only nodes with that property.  (Any valid node, desktop or monitor selector can be used according to the BSPWM reference.)</p>
+<p>For example, if two windows are open on the focused desktop, running:</p>
+<pre><code class="language-bash">bspc query -N
+
+# Outputs
+# 0x01A00001
+# 0x01B00001
+</code></pre>
+<p>lists their <strong>node IDs</strong> (hex values may vary).
+Using a selector,</p>
+<pre><code class="language-bash">bspc query -N -n .window
+</code></pre>
+<p>would return the same IDs in this case, whereas without <code>-n .window</code> BSPWM might include an <strong>extra internal parent</strong> node ID as well.</p>
+<p><strong>Desktop listing (-D, –desktops):</strong> The <code>-D</code> subcommand lists the IDs of matching desktops.  By default it outputs hex IDs, but adding <code>--names</code> prints desktop names.  For example, on a monitor with desktops named “1”, “2”, “3”,</p>
+<pre><code class="language-bash">bspc query -D --names 
+</code></pre>
+<p>might output:</p>
+<pre><code class="language-bash">1
+2
+3
+</code></pre>
+<p>while the query -</p>
+<pre><code class="language-bash">bspc query -D 
+</code></pre>
+<p>(IDs only) might output:</p>
+<pre><code class="language-c">0x00A00001
+0x00A00002
+0x00A00003
+</code></pre>
+<p><strong>The -D command can also be scoped:</strong> e.g. <code>bspc query -D -m HDMI-1</code> lists only desktops on monitor “HDMI-1”.  Similarly, using -D -d focused lists only the (ID or name of the) currently focused desktop.</p>
+<p><strong>Monitor listing (-M, –monitors):</strong> The <code>-M</code> subcommand lists <strong>monitor IDs</strong>.  With <code>--names</code>, it prints monitor names (the X11 output names).  For example,</p>
+<pre><code class="language-bash">bspc query -M --names 
+</code></pre>
+<p>might output:</p>
+<pre><code class="language-bash">HDMI-1
+DP-1
+</code></pre>
+<p>on a two-monitor setup.  Without <code>--names</code>, it might show corresponding hexadecimal IDs.  Monitors can also be filtered: <code>bspc query -M -n focused</code> lists just the focused monitor (which yields a single ID/name).</p>
+<p><strong>Tree output (-T, –tree):</strong> The <code>-T</code> flag instructs bspc query to output a <strong>JSON-formatted tree</strong> of the matching object.  By itself (with no selectors) <code>bspc query -T</code> prints a JSON object for the focused desktop: it includes the <em>layout, nodes,</em> and <em>metadata</em> for all windows on that desktop.  You can combine it with other flags to select the target: for example,</p>
+<pre><code class="language-bash">bspc query -T -d focused # or simply bspc query -T 
+</code></pre>
+<p>You can also query subtrees: e.g.</p>
+<pre><code class="language-bash">bspc query -T -n focused
+</code></pre>
+<p>emits the JSON tree rooted at the currently focused window (containing just that leaf).  The output is verbose JSON; in scripts you might pipe it through jq or similar to extract fields.</p>
+<p><strong>Scope options (-m, -d, -n):</strong> The flags <code>-m [MON_SEL]</code>, <code>-d [DESK_SEL]</code>, and <code>-n [NODE_SEL]</code> constrain a query to a specific monitor, desktop, or node.  For example, <code>bspc query -N -d 2</code> lists nodes on desktop index 2.  (Selectors can be numeric indices, names, or special syntax like <code>^1</code> for the first desktop.)  Likewise, <code>bspc query -D -m ^2</code> lists desktops on the second monitor (by order).  These options accept the same selector syntax as used in other bspc commands.  Omitting the descriptor is allowed: e.g.</p>
+<pre><code class="language-bash">bspc query -M -d focused 
+</code></pre>
+<p>first selects the focused desktop then lists its monitor.</p>
+<p><strong>Name output (–names):</strong> The <code>--names</code> flag causes -M or -D to output human-readable names instead of hex IDs.  It has no effect with -N (node IDs always appear as hex) or -T (JSON always uses IDs internally).  For instance, bspc query -D –names on desktops named “web” and “code” would print those names.</p>
+<p><strong>Deprecated query flags:</strong> In older BSPWM versions (≈0.8.x), there was a -W, <code>--windows</code> subcommand that listed window (leaf) node IDs.  For example, forum discussions show:</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><code>bspc query -W -d $DESKTOP | wc -l</code> will return the number of windows on $DESKTOP.
+This <code>-W</code> option was removed in <strong>BSPWM 0.9</strong> in favor of using <code>-N</code> with a <code>.window</code> selector.  (In modern BSPWM, you would do <code>bspc query -N -n .window</code> to get the same list of window IDs.)</p>
+</blockquote>
+<p><strong>Examples:</strong>  Here are some illustrative commands. To list all node IDs on the current desktop:</p>
+<p><code>bspc query -N</code></p>
+<p>To list only window (leaf) nodes:</p>
+<pre><code class="language-bash">bspc query -N -n .window
+</code></pre>
+<p>To list all desktop names on monitor HDMI-1:</p>
+<pre><code class="language-bash">bspc query -D -m HDMI-1 --names
+</code></pre>
+<p>To show the JSON tree of the focused desktop:</p>
+<pre><code class="language-bash">bspc query -T -d focused
+</code></pre>
+<p>In summary, all bspc query subcommands across BSPWM releases are <code>-N/--nodes</code>, <code>-D/--desktops</code>, <code>-M/--monitors</code>, and <code>-T/--tree</code>, along with the filtering flags <code>-m/--monitor</code>, <code>-d/--desktop</code>, <code>-n/--node</code>, and the formatting flag <code>--names</code>.</p>
+<blockquote class="blockquote-tag blockquote-tag-warning">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p>The <code>-W/--windows</code> command existed in older 0.8-series releases but is no longer present and is currently deprecated. We recommend you to avoid the usage of <code>--windows</code> flag in the configuration.</p>
+</blockquote>
+<h2 id="the-query-selectors"><a class="header" href="#the-query-selectors">The query selectors</a></h2>
+<p><strong>Selectors</strong> choose a <strong>node (window)</strong>, <strong>desktop (workspace)</strong> or <strong>monitor</strong> for <code>bspc</code> commands. The general shape is an optional reference, a descriptor, and zero or more modifiers, written like:</p>
+<pre><code class="language-c">[REFERENCE#]DESCRIPTOR(.MODIFIER)*
+</code></pre>
+<p>The <strong>reference</strong> is another selector (used when computing a relative target). <strong>Modifiers</strong> narrow or invert the descriptor. All of the concrete descriptors and modifiers below are taken from the official bspc manual — use them exactly as shown.</p>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>In order to flip the descriptor, you have to prefix it with and exclamatory mark <code>!</code>. Yeah, the one which looks like the <code>inverted i</code> is used to invert the meaning , i.e negate the meaning of the discriptor.</p>
+</blockquote>
+<h3 id="node-selectors-windows--tree-leaves"><a class="header" href="#node-selectors-windows--tree-leaves">Node selectors (windows / tree leaves)</a></h3>
+<p>A node selector (NODE_SEL) picks a node (a leaf or internal node in BSPWM’s binary tree). Its descriptor can be a direction (<code>north|west|south|east</code>), a cyclic direction (<code>next|prev</code>), an explicit path, <code>any</code>, <code>first_ancestor</code>, <code>last</code>, <code>newest</code>, <code>older</code>, <code>newer</code>, <code>focused</code>, <code>pointed</code>, <code>biggest</code>, <code>smallest</code>, or a <code>raw node id</code>. Examples and detailed meanings follow; each paragraph explains one descriptor and includes an example showing how to use it with <code>bspc query -N</code>.</p>
+<p><code>focused</code> selects the currently focused node. To print the node id for the focused window:</p>
+<pre><code class="language-bash">bspc query -N focused
+</code></pre>
+<p><code>pointed</code> selects the leaf under the pointer (mouse). Useful when combining pointer actions with scripts:</p>
+<pre><code class="language-bash">bspc query -N pointed
+</code></pre>
+<p><strong>Directional descriptors</strong> (<code>north</code>, <code>south</code>, <code>east</code>, <code>west</code>) select a window in that spatial direction relative to the reference node (default reference is the focused node). For example, to get the node id to the west of the focused window:</p>
+<pre><code class="language-bash">bspc query -N west
+</code></pre>
+<p><strong>Cyclic descriptors</strong> <code>next</code> / <code>prev</code> walk the tree in a depth-first in-order traversal;</p>
+<pre><code class="language-bash">bspc query -N next 
+</code></pre>
+<p>returns the next node in that ordering relative to the reference.</p>
+<p><strong><code>any</code></strong> returns the first node matching any appended modifiers; it’s a convenience for “give me a node that matches these constraints”. For example, to find any floating window on the current desktop:</p>
+<pre><code class="language-bash">bspc query -N any.floating
+</code></pre>
+<p><strong><code>first_ancestor</code></strong> jumps up the tree from the reference node and returns the first ancestor that matches appended modifiers (useful when you want the container rather than the leaf). Example:</p>
+<pre><code class="language-bash">bspc query -N first_ancestor.window
+</code></pre>
+<p><strong><code>last returns</code></strong> the previously focused node relative to the reference node (i.e., focus history), and newest, older, newer are history-based descriptors referring to nodes in the focus history. Example asking for the newest node in the focused-node history:</p>
+<pre><code class="language-bash">bspc query -N newest
+</code></pre>
+<p><strong><code>biggest and smallest</code></strong> select the leaf with the largest or smallest onscreen area (size metrics come from the window tree). Example:</p>
+<pre><code class="language-bash">bspc query -N biggest.window
+</code></pre>
+<p><strong>A raw <code>&lt; node_id &gt;</code> also works:</strong> if you already have a node id (e.g., 0x80000d), you can pass it as the descriptor to target exactly that node:</p>
+<pre><code class="language-bash">bspc query -N 0x80000d
+</code></pre>
+<p><strong>Paths let you jump around the tree explicitly.</strong> The <code>PATH</code> form is written with a leading <code>@</code> and optional <code>desktop prefix</code>, then jumps (<code>first|1</code>, <code>second|2</code>, <code>brother</code>, <code>parent</code>, or a <code>DIR</code>).</p>
+<p>For instance, <code>@/first</code> starts from the root of the default (or referenced) desktop and jumps to its <code>first child</code>; to query that node id:</p>
+<pre><code class="language-bash">bspc query -N @/first
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p><strong>Modifiers refine matching.</strong> For <em>nodes</em> you can append <code>.focused</code>, <code>.active</code>, <code>.automatic</code>, <code>.local</code>, <code>.leaf</code>, <code>.window</code>, a <em>state</em> like <code>.floating</code> or <code>.tiled</code>, <em>flags</em> like <code>.hidden</code> or <code>.urgent</code>, <em>layer</em> <code>.above</code>, <code>.normal</code>, <code>.below</code>, <em>split type</em> <code>.horizontal</code> / <code>.vertical</code>, or <em>relations</em> like <code>.same_class</code>, <code>.descendant_of</code>, .<code>ancestor_of</code>. Prefix any modifier with <code>!</code> to invert it.</p>
+</blockquote>
+<p>Example: return the node id of the focused window <strong>only if it is floating:</strong></p>
+<pre><code class="language-bash">bspc query -N focused.floating
+</code></pre>
+<p>Use <code>!</code> to invert: find a focused node <strong>that is not floating:</strong></p>
+<pre><code class="language-bash">bspc query -N focused.!floating
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>Everything in this node section follows the canonical NODE_SEL grammar in the man page.</p>
+</blockquote>
+<h3 id="desktop-selectors-workspaces"><a class="header" href="#desktop-selectors-workspaces">Desktop selectors (workspaces)</a></h3>
+<p>Desktop selectors (DESKTOP_SEL) pick a desktop. Descriptors include <code>next|prev</code> (cyclic), <code>any</code>, <code>last</code>, <code>newest</code>, <code>older</code>, <code>newer</code>, <code>focused</code>, <code>numeric ^&lt; n &gt;</code> (nth desktop), <em>desktop id</em>, or <em>desktop name</em>; you may also prefix with a monitor selector MONITOR_SEL: to pick the nth desktop on a particular monitor.</p>
+<p>Example to print the name or id of the focused desktop:</p>
+<pre><code class="language-bash">bspc query -D focused --names
+</code></pre>
+<p>To pick the second desktop on the currently focused monitor use the <code>^&lt;n&gt;</code> notation:</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>You have to quote the <code>^&lt;n&gt;</code> as shown in the code below. Otherwise the shell (bash, zsh or any POSIX shell) wil expand ‘^’ and you may run into errors or unexpected behaviours.</p>
+</blockquote>
+<pre><code class="language-bash">bspc query -D '^2' --names
+</code></pre>
+<p>To pick the nth desktop on a specific monitor by monitor selector (e.g., primary):</p>
+<pre><code class="language-bash">bspc query -D primary:^3 --names
+</code></pre>
+<p><strong>Desktop modifiers include</strong> <code>.focused</code> (only consider focused desktops), <code>.active</code> (desktops that are focused on their monitor), <code>.occupied</code> (contain windows), <code>.urgent</code>, and <code>.local</code> (limit to the reference monitor).</p>
+<p>For example, <strong>to list IDs of all occupied desktops on the current monitor</strong>:</p>
+<pre><code class="language-bash">bspc query -D any.occupied
+</code></pre>
+<p>If you leave out a descriptor where allowed (the descriptor can be omitted for <code>-D/-M/-N</code> in some cases), the default is the focused target for that domain. The desktop selector details and modifier names are from the bspc manual.</p>
+<h3 id="monitor-selectors"><a class="header" href="#monitor-selectors">Monitor selectors</a></h3>
+<p><strong>Monitor selectors (MONITOR_SEL) choose monitors.</strong> Descriptors are <code>north|west|south|east</code> (spacial DIR relative to the reference monitor), <code>next|prev</code> (cycle), <code>any</code>, <code>last</code>, <code>newest</code>, <code>older</code>, <code>newer</code>, <code>focused</code>, <code>pointed</code>, <code>primary</code>, <code>^&lt;n&gt;</code> (nth monitor), <em>monitor id</em>, or <em>monitor name</em>.</p>
+<p>For example, <strong>to print the names of all monitors</strong>:</p>
+<pre><code class="language-bash">bspc query -M --names
+</code></pre>
+<p>To target the primary monitor:</p>
+<pre><code class="language-bash">bspc query -M primary --names
+</code></pre>
+<p>Monitor modifiers are <code>.focused</code> and <code>.occupied</code> (where the focused desktop on that monitor is occupied). For example, to find the monitor under the pointer and get its id:</p>
+<pre><code class="language-bash">bspc query -M pointed
+</code></pre>
+<h3 id="practical-bspc-query-examples-using-selectors"><a class="header" href="#practical-bspc-query-examples-using-selectors">Practical bspc query examples using selectors</a></h3>
+<p>Show node ids for all windows on the focused desktop (returns a list of node ids):</p>
+<pre><code class="language-bash">bspc query -N
+</code></pre>
+<p>Show node ids for windows that are floating on the focused desktop:</p>
+<pre><code class="language-bash">bspc query -N any.floating
+</code></pre>
+<p>Show the id of the window under the mouse pointer:</p>
+<pre><code class="language-bash">bspc query -N pointed
+</code></pre>
+<p>Show the id (or name with –names) of the currently focused desktop:</p>
+<pre><code class="language-bash">bspc query -D focused --names
+</code></pre>
+<p>Show names of all monitors in visual order:</p>
+<pre><code class="language-bash">bspc query -M --names
+</code></pre>
+<p>Return the previously focused desktop (useful when scripting focus toggles):</p>
+<pre><code class="language-bash">bspc query -D last --names
+</code></pre>
+<p>Select the first ancestor of the focused node that is a container (useful to operate on the subtree enclosing a window):</p>
+<pre><code class="language-bash">bspc query -N first_ancestor
+</code></pre>
+<p>Combine selectors and modifiers to target a node by class relation: for example, choose any node that has the same class as the focused node but is not floating:</p>
+<pre><code class="language-bash">bspc query -N any.same_class.!floating
+</code></pre>
+<h2 id="notes-pitfalls-and-best-practices"><a class="header" href="#notes-pitfalls-and-best-practices">Notes, pitfalls and best practices</a></h2>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<ul>
+<li>
+<p>Selectors are evaluated relative to a reference (default is the focused item).</p>
+</li>
+<li>
+<p>Use explicit references when you need deterministic behavior across monitors/desktops, for example prefix a path with a desktop selector <code>@[DESKTOP_SEL:]</code>….</p>
+</li>
+<li>
+<p>Remember to quote shell-sensitive tokens like <code>^2</code> or tokens containing <code>!</code>.</p>
+</li>
+<li>
+<p>The <code>!</code> inversion applies to individual modifiers (e.g., <code>.!occupied</code>), <strong>not to whole descriptors.</strong></p>
+</li>
+<li>
+<p>The man page or the bspwm-wiki(this) is the authoritative source for the exact names, allowed modifiers and the path jump syntax — consult it when you need exhaustive precision.</p>
+</li>
+</ul>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="bspwm-interfaces-and-usage"><a href="#bspwm-interfaces-and-usage" class="header">Bspwm interfaces and usage</a></h1>
 <h2 id="overview-and-architecture"><a class="header" href="#overview-and-architecture">Overview and Architecture</a></h2>
 <p><strong>bspc</strong> (bspwm socket client) is the foundational command-line interface that enables all user interaction with the <strong>bspwm</strong> window manager. Rather than implementing complex, built-in keyboard handling or graphical menus, bspwm delegates this responsibility entirely to external tools, with bspc acting as the primary bridge between user scripts (commonly managed by sxhkd—the simple X hotkey daemon) and the bspwm daemon itself.</p>
@@ -1128,7 +1350,7 @@ bspc node @parent/descendant_of --focus
 <li><code>[!]urgent</code>: Only consider desktops with urgent windows</li>
 <li><code>[!]local</code>: Only consider desktops on the reference monitor</li>
 </ul>
-<h4 id="monitor-selectors"><a class="header" href="#monitor-selectors">Monitor Selectors</a></h4>
+<h4 id="monitor-selectors-1"><a class="header" href="#monitor-selectors-1">Monitor Selectors</a></h4>
 <p>Monitor selectors target physical displays:</p>
 <pre><code>MONITOR_SEL := [MONITOR_SEL#](DIR|CYCLE_DIR|any|last|newest|older|newer|
                focused|pointed|primary|^&lt;n&gt;|
@@ -3257,6 +3479,8 @@ nm-applet &amp;
 <p>This documentation provides the authoritative reference for every flag, option, and configuration technique available in BSPWM, extracted from official sources and community expertise, enabling users to build the most sophisticated window management configurations possible.</p>
 </li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="introduction-to-writing-modular-configs"><a class="header" href="#introduction-to-writing-modular-configs">Introduction to writing modular configs</a></h1>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="configuration-gallery"><a href="#configuration-gallery" class="header">Configuration gallery</a></h1>
 <h2 id="the-config-ref"><a class="header" href="#the-config-ref">The Config-Ref</a></h2>
@@ -6420,6 +6644,21 @@ mdbook build
 <ul>
 <li>Added native admonishments</li>
 <li>Enhanced code snippets</li>
+</ul>
+<h2 id="013---initial-release"><a class="header" href="#013---initial-release">[0.1.3] - Initial Release</a></h2>
+<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
+<ul>
+<li>Complete documentation for <code>bspc query</code> command.</li>
+<li>Added assets and images for future edits.</li>
+</ul>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<ul>
+<li>Optimised naming for navigation and SEO searches</li>
+<li>Optimised the navigation layout with topics and subtopics</li>
+</ul>
+<h3 id="fixed-2"><a class="header" href="#fixed-2">Fixed</a></h3>
+<ul>
+<li>Fixed the missing interface chapter in advanced topic.</li>
 </ul>
 
                     </main>
