@@ -1,3 +1,5 @@
+![bspwm-wiki](./assets/imgs/featured-image.png)
+
 ## What is bspwm-wiki?
 
 It is a comprehensive and complete documentation for the Binary Space Partitioning Window Manager (BSPWM).
